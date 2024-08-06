@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+//import HelloWorld from './components/HelloWorld.vue'
 import AppHeader from './components/AppHeader.vue';
 import AppFooter from './components/AppFooter.vue';
 
@@ -16,7 +16,7 @@ import AppFooter from './components/AppFooter.vue';
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    //HelloWorld,
     AppHeader,
     AppFooter,
   }
