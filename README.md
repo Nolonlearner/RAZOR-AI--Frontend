@@ -67,6 +67,7 @@ RAZOR-AI-frontend/
 └── vue.config.js                # Vue CLI 配置文件
 ```
 ## 项目结构说明
+```
 public/：存放公共静态文件，如网站图标和入口 HTML 文件。
 src/：包含源代码和资源文件。
 assets/：资源文件夹，包含图片和样式等。
@@ -81,6 +82,7 @@ main.js：入口文件。
 .gittattributes: Git 文本文件换行默认为crtl
 package.json：项目依赖和脚本。
 vue.config.js：Vue CLI 配置文件。
+```
 
 # 脚本说明
 ## Project setup
