@@ -1,23 +1,125 @@
+# Operating System files 操作系统文件
 .DS_Store
-node_modules
-/dist
+Thumbs.db
 
+# Node modules Node模块
+node_modules/
 
-# local env files
+# Production 生产环境
+/dist/
+/build/
+/public
+
+# Local environment files 本地环境文件
 .env.local
-.env.*.local
-
-# Log files
+.env.development.local
+.env.test.local
+.env.production.local
+ 
+# Log files 日志文件
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Editor directories and files
-.idea
-.vscode
+# Editor directories and files 编辑器文件
+.idea/
+.vscode/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Vue.js specific Vue.js 特有
+.vuepress/
+.vuetify/
+.vue_cache
+
+# Mac specific Mac特有
+*.DS_Store
+
+# Windows specific Windows特有
+Thumbs.db
+
+# Linux specific Linux特有
+*~
+
+# JetBrains IDEs 编译输出
+*.iml
+*.iws
+.idea/
+out/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# WebStorm 
+*.idea/
+*.iml
+
+# Visual Studio Code
+.vscode/
+
+# Miscellaneous 
+*.log
+*.tmp
+*.bak
+*.swp
+*.lock
+
+# Compiled output 编译输出：忽略 dist、build 和 .cache 文件夹。
+/dist/
+/build/
+/*.cache
+
+# Coverage directory used by tools like istanbul 覆盖目录：忽略 coverage 文件夹。
+coverage/
+
+# Dependency directories 依赖目录：忽略 jspm_packages 和 node_modules 文件夹。
+jspm_packages/
+node_modules/
+ 
+# TypeScript cache TypeScript缓存：忽略 *.tsbuildinfo 文件。
+*.tsbuildinfo
+
+# Optional npm cache directory 可选的npm缓存目录：忽略 .npm 文件夹。
+.npm
+
+# Optional eslint cache 可选的eslint缓存：忽略 .eslintcache 文件。
+.eslintcache
+
+# Optional REPL history 可选的REPL历史：忽略 .node_repl_history 文件。
+.node_repl_history
+
+# dotenv environment variables file
+.env
+.env.development
+.env.test
+.env.production
+
+# Yarn Integrity file Yarn完整性文件：忽略 .yarn-integrity 文件。
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.test
+.env.production
+
+# Parcel-bundler cache (https://parceljs.org/) Parcel-bundler缓存：忽略 .cache 和 .parcel-cache 文件夹。
+.cache
+.parcel-cache
+
+# TernJS port file TernJS端口文件：忽略 .tern-port 文件。
+.tern-port
+
+# Storybook Storybook：忽略 .out 和 storybook-static 文件夹。
+.out
+storybook-static
+
+# Vuepress Vuepress：忽略 .vuepress/dist 文件夹。
+.vuepress/dist
+
+# Sapper  Sapper：忽略 __sapper__ 文件夹。
+__sapper__/
