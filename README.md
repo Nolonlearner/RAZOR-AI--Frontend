@@ -118,13 +118,16 @@ yarn serve
 yarn build
 ```
 - 配置位置
-vue.config.js：如果有自定义的构建配置，它会在这个文件中定义
-package.json 的 scripts 部分："build": "vue-cli-service build" 指定了构建的命令，实际的构建过程是由 vue-cli-service 执行的。
+- vue.config.js：如果有自定义的构建配置，它会在这个文件中定义
+- package.json 的 scripts 部分："build": "vue-cli-service build" 指定了构建的命令，实际的构建过程是由 vue-cli-service 执行的。
 
 - yarn test：用于运行测试。它会执行项目中定义的测试用例，确保代码的正确性。测试可以包括单元测试、集成测试、端到端测试等。这个命令的具体行为取决于你选择的测试框架和配置。
+```
+yarn test
+```
 - 配置位置
-package.json 的 scripts 部分："test": "vue-cli-service test:unit" 或类似的命令，指定了运行测试的命令。
-jest.config.js 或 karma.conf.js：如果使用 Jest 或 Karma 作为测试框架，测试配置会在这些文件中定义。
+- package.json 的 scripts 部分："test": "vue-cli-service test:unit" 或类似的命令，指定了运行测试的命令。
+- jest.config.js 或 karma.conf.js：如果使用 Jest 或 Karma 作为测试框架，测试配置会在这些文件中定义。
 
 ### Lints and fixes files 运行 ESLint 检查代码风格
 ```
