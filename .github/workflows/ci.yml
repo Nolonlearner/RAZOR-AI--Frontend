@@ -1,0 +1,56 @@
+# 这个文件定义了一个 CI/CD 流程，包括安装依赖、运行 ESLint 和 Prettier 检查、运行测试和构建项目。
+# name: 工作流的名称。
+name: CI/CD Pipeline
+
+# on: 触发工作流的条件。在这里，工作流会在 main 分支的代码推送（push）和针对 main 分支的 Pull Request（pull_request）时被触发。
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# jobs: 定义工作流的作业。在这里定义了一个名为 build 的作业。
+jobs:
+  build:
+    # runs-on: 定义作业运行的环境。在这里使用了 ubuntu-latest，表示在最新的 Ubuntu 运行环境下执行作业。
+    runs-on: ubuntu-latest
+
+    #steps: 作业中的步骤。第一个步骤是使用 actions/checkout@v2 动作来检出（下载）代码。
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+        # 这个步骤设置 Node.js 环境。actions/setup-node@v2 动作会安装 Node.js 版本 14。
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+        
+        # 这个步骤运行 yarn install 来安装项目的所有依赖项。
+      - name: Install dependencies
+        run: yarn install
+
+        # 这个步骤运行 yarn lint 来检查代码风格问题，确保代码符合 ESLint 的规则。
+      - name: Lint code
+        run: yarn lint
+
+        # 这个步骤运行 yarn test 来执行测试，确保代码在各种情况下都能正常工作。
+      - name: Run tests
+        run: yarn test
+
+        # 这个步骤运行 yarn build 来构建项目，为生产环境准备构建好的代码。
+      - name: Build project
+        run: yarn build
+
+        # github.ref == 'refs/heads/main': 仅在 main 分支上进行部署。
+        # run: 运行部署命令。在这里你可以添加具体的部署命令，例如将构建好的文件上传到服务器或云平台。
+      - name: Deploy
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Deploying to production..."
+          # 这里添加部署命令，例如将文件上传到服务器或者云平台
+          # 例如使用 rsync 将文件上传到服务器
+          # rsync -avz --delete dist/ user@your-server.com:/path/to/your/site/
+          # deploy 这个工作流只有在 main 分支有更改时才会执行。部署命令可以根据你的具体需求进行修改。比如，使用 rsync 将构建好的文件上传到服务器，或者使用云平台的 CLI 工具（如 AWS CLI、Azure CLI 等）来部署。

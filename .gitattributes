@@ -1,5 +1,5 @@
-# 为所有文本文件设置 CRLF 作为行结束符
-* text=auto eol=crlf
+# 为所有文本文件设置 LF 作为行结束符
+* text=auto eol=lf
 
-# 设置特定文件类型
+# 设置特定文件类型（如果需要）
 *.sh text eol=lf
