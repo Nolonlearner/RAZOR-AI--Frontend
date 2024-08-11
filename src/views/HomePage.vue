@@ -2,7 +2,7 @@
 <template>
   <div class="home">
     <AppHeader />
-    <h1>Hiiiiiiii! Welcome to RAZOR-AI!!!</h1>
+    <h1>Hiiiiiiii! Welcome to RAZOR-AIIiIIIIII!!!</h1>
     <img src="@/assets/images/logo.png" alt="test logo" />
     <p>test test</p>
     <AppFooter />
