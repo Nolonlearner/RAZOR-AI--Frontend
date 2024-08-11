@@ -1,13 +1,22 @@
 <!-- src/views/HomePage.vue -->
 <template>
   <div class="home">
-    <h1>Home Page</h1>
+    <AppHeader />
+    <h1>Welcome to RAZOR-AI!!!</h1>
+    <AppFooter />
   </div>
 </template>
 
 <script>
+import AppHeader from '@/components/AppHeader.vue';
+import AppFooter from '@/components/AppFooter.vue';
+
 export default {
-  name: 'HomePage',
+  name: 'Home',
+  components: {
+    AppHeader,
+    AppFooter,
+  },
 };
 </script>
 

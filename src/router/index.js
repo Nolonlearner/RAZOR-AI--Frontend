@@ -1,21 +1,21 @@
 // src/router/index.js
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import HomePage from '../views/HomePage.vue';
-import ProductPage from '../views/ProductPage.vue';
+import Home from '@/views/HomePage.vue';
+import About from '@/views/AboutPage.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    name: 'HomePage',
-    component: HomePage,
+    name: 'Home',
+    component: Home,
   },
   {
-    path: '/product',
-    name: 'ProductPage',
-    component: ProductPage,
+    path: '/about',
+    name: 'About',
+    component: About,
   },
 ];
 
