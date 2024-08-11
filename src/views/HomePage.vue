@@ -3,8 +3,8 @@
   <div class="home">
     <AppHeader />
     <h1>Hiiiiiiii! Welcome to RAZOR-AI!!!</h1>
-    < img src="@/assets/images/logo.png" alt="test logo" />
-    <p> test test </p>
+    <img src="@/assets/images/logo.png" alt="test logo" />
+    <p>test test</p>
     <AppFooter />
   </div>
 </template>
