@@ -30,9 +30,9 @@
     </aside>
 
     <!-- 右侧内容区域 -->
-    <main>
+    <el-main>
       <router-view></router-view>
-    </main>
+    </el-main>
   </div>
 </template>
 

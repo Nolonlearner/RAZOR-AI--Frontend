@@ -2,7 +2,7 @@
   <div class="home-page">
     <!-- 页头部分 -->
     <el-row class="header" justify="center">
-      <el-col :span="20">
+      <el-col :span="18">
         <h1>主页</h1>
         <p>欢迎来到 RAZOR-AI 主页。以下是一个搜索框和 AI 产品推送。</p>
       </el-col>
@@ -10,7 +10,7 @@
 
     <!-- 搜索框 -->
     <el-row class="search-section" justify="center">
-      <el-col :span="16">
+      <el-col :span="14">
         <el-input
           v-model="searchQuery"
           placeholder="搜索 AI 产品、服务或其他内容"
@@ -114,7 +114,7 @@ export default {
   .el-button {
     width: 100%;
     height: 40px;
-    line-height: 40px;
+    line-height: 10px;
   }
 }
 
