@@ -6,6 +6,7 @@
 .layout-container {
    display: flex;
    height: 100vh;
+   width: 100vw;
 }
 
 /* 左侧菜单栏 */
@@ -69,23 +70,3 @@
     }
 }
 
-/* 右侧内容区域 */
-.content-area {
-    flex: 1; /* 占据剩余的空间 */
-    background-color: $background-color;
-    padding: 2rem;
-    overflow-y: auto; /* 如果内容超出视口高度，允许滚动 */
-
-    /* 可以根据需要定义更多样式 */
-    .header {
-       font-size: 1.5rem;
-       color: $text-color;
-       margin-bottom: 1.5rem;
-    }
-
-    .content {
-       font-size: 1rem;
-       color: $text-color;
-       line-height: 1.6;
-    }
-}
