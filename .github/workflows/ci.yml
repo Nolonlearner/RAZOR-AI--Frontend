@@ -22,11 +22,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-        # 这个步骤设置 Node.js 环境。actions/setup-node@v2 动作会安装 Node.js 版本 14。
+        # 这个步骤设置 Node.js 环境。actions/setup-node@v3 动作会安装 Node.js 版本 20.15.1。
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '20.15.1'
         
         # 这个步骤运行 yarn install 来安装项目的所有依赖项。
       - name: Install dependencies
