@@ -6,6 +6,7 @@ import Home from '@/views/HomePage.vue';
 import About from '@/views/AboutPage.vue';
 import Setting from '@/views/UserSettingPage.vue';
 import PersonalHome from '@/views/PersonalHomePage.vue';
+import Test from '@/views/TestPage.vue';
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,11 @@ const routes = [
         path: '/personalhome',
         name: 'PersonalHome',
         component: PersonalHome,
+      },
+      {
+        path: '/test',
+        name: 'Test',
+        component: Test,
       },
     ],
   },

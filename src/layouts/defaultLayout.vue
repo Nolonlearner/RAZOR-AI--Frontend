@@ -23,6 +23,10 @@
         <el-icon name="setting"></el-icon>设置
       </div>
       <div class="divider"></div>
+      <div class="menu-item" @click="navigateTo('Test')">
+        <el-icon name="loading"></el-icon>测试
+      </div>
+      <div class="divider"></div>
     </aside>
 
     <!-- 右侧内容区域 -->
