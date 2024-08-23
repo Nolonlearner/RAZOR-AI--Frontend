@@ -1,0 +1,31 @@
+// src/assets/styles/buttons.scss
+@import './variables.scss';
+@import './mixins.scss';
+
+.primary-button {
+   @include button($primary-color, $text-color);
+   &:hover {
+      background-color: $hover-background-color;
+   }
+}
+
+.secondary-button {
+   @include button($secondary-color, $text-color);
+   &:hover {
+      background-color: $hover-background-color;
+   }
+}
+
+.danger-button {
+   @include button(#dc274e, $text-color);
+   &:hover {
+      background-color: darken($additional-color, 10%);
+   }
+}
+
+.success-button {
+   @include button(#4caf50, $text-color); // 绿色按钮
+   &:hover {
+      background-color: darken(#4caf50, 10%);
+   }
+}

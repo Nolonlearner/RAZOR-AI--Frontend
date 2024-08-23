@@ -1,0 +1,31 @@
+/* src/assets/styles/variables.scss */
+//统一管理颜色、字体等基本样式变量
+
+// 颜色变量
+$primary-color: #3c5669; // 主颜色
+$secondary-color: #758694; // 副颜色
+$text-color: #FFF8F3; // 字体颜色
+$hover-text-color: lighten($text-color, 10%);; // 字体悬浮颜色
+$additional-color: #987D9A; // 额外颜色
+$hover-background-color: lighten($primary-color, 10%);; // 背景悬浮颜色
+$background-color: #3c5669; // 背景颜色
+$border-color: #0b1303;// 边框颜色
+$divider-color: #539396;// 分割线颜色
+
+//字体变量
+$font-family: 'Avenir', Helvetica, Arial, sans-serif;
+$line-height: 1.5;
+$small-font-size: 0.875rem;
+$base-font-size: 1.0rem;
+$large-font-size: 1.25rem;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+
+//间距
+$base-spacing: 16px;
+$small-spacing: 8px;
+$large-spacing: 32px;
+
+//边框
+$border-radius: 4px;
+$border-color: $primary-color;

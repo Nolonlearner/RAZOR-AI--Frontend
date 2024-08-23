@@ -1,0 +1,24 @@
+/* src/assets/styles/utilities.scss */
+.text-center {
+   text-align: center !important;
+}
+
+.hidden {
+   display: none !important;
+}
+
+@import './mixins';
+
+.responsive-text {
+   @include respond-to(small) {
+      font-size: 12px;
+   }
+
+   @include respond-to(medium) {
+      font-size: 14px;
+   }
+
+   @include respond-to(large) {
+      font-size: 16px;
+   }
+}
