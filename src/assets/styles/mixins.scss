@@ -1,0 +1,44 @@
+/* src/assets/styles/mixins.scss */
+// 混合样式 (Mixins)
+//用于添加过渡效果的 mixin。可以传入不同的属性、持续时间和动画曲线。
+@mixin transition($property: all, $duration: 0.3s, $timing: ease-in-out) {
+   transition: $property $duration $timing;
+}
+
+//将元素水平和垂直居中
+@mixin flex-center {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+// 添加阴影效果，可以自定义阴影的偏移量、模糊程度和颜色
+@mixin box-shadow($x: 0px, $y: 4px, $blur: 6px, $color: rgba(0, 0, 0, 0.1)) {
+   box-shadow: $x $y $blur $color;
+}
+@mixin button($background-color, $color) {
+   background-color: $background-color;
+   color: $color;
+   padding: 0.5rem 1rem;
+   border: none;
+   border-radius: $border-radius;
+   cursor: pointer;
+   @include transition(background-color);
+}
+
+// 响应式设计
+@mixin respond-to($breakpoint) {
+   @if $breakpoint == small {
+      @media (max-width: 600px) {
+         @content;
+      }
+   } @else if $breakpoint == medium {
+      @media (max-width: 900px) {
+         @content;
+      }
+   } @else if $breakpoint == large {
+      @media (max-width: 1200px) {
+         @content;
+      }
+   }
+}

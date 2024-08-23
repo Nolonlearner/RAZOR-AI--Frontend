@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'ProductPage',
+  name: 'Product',
 };
 </script>
 

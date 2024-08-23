@@ -1,0 +1,28 @@
+/* src/assets/styles/forms.scss */
+@import './variables.scss';
+@import './mixins.scss';
+
+input[type='text'] {
+   padding: 0.5rem;
+   border: 1px solid $secondary-color;
+   @include transition(border-color);
+
+   &:focus {
+      border-color: $primary-color;
+   }
+}
+
+input[type='checkbox'] {
+   margin-right: $small-spacing;
+}
+
+select {
+   padding: 0.5rem;
+   border: 1px solid $border-color;
+   border-radius: $border-radius;
+   @include transition(border-color);
+
+   &:focus {
+      border-color: $primary-color;
+   }
+}

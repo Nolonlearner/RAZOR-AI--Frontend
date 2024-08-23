@@ -1,24 +1,15 @@
 <!-- src/views/HomePage.vue -->
 <template>
   <div class="home">
-    <AppHeader />
-    <h1>Hiiiiiiii! Welcome to RAZOR-AIIiIIIIII!!!</h1>
-    <img src="@/assets/images/logo.png" alt="test logo" />
-    <p>test test</p>
-    <AppFooter />
+    <h1>主页</h1>
+    <p>欢迎来到RAZOR-AI主页。这里将会是一个大搜索框，底部有一些AI产品推送</p>
   </div>
 </template>
 
 <script>
-import AppHeader from '@/components/AppHeader.vue';
-import AppFooter from '@/components/AppFooter.vue';
-
 export default {
   name: 'Home',
-  components: {
-    AppHeader,
-    AppFooter,
-  },
+  components: {},
 };
 </script>
 
