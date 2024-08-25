@@ -3,6 +3,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Layout from '@/layouts/defaultLayout.vue';
 import Home from '@/views/HomePage.vue';
+import ProductDetail from '@/views/ProductDetail.vue';
 import About from '@/views/AboutPage.vue';
 import Setting from '@/views/UserSettingPage.vue';
 import PersonalHome from '@/views/PersonalHomePage.vue';
@@ -20,6 +21,11 @@ const routes = [
         path: '',
         name: 'Home',
         component: Home,
+      },
+      {
+        path: '/product/:id',
+        name: 'ProductDetail',
+        component: ProductDetail,
       },
       {
         path: '/about',

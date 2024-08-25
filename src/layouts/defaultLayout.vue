@@ -1,3 +1,4 @@
+<!--src/layouts/defaultLayout.vue-->
 <template>
   <div class="layout-container">
     <!-- 左侧菜单栏 -->

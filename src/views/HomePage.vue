@@ -1,157 +1,77 @@
 <template>
-  <div class="home-page">
+  <el-container>
     <!-- 页头部分 -->
-    <el-row class="header" justify="center">
-      <el-col :span="18">
-        <h1>主页</h1>
-        <p>欢迎来到 RAZOR-AI 主页。以下是一个搜索框和 AI 产品推送。</p>
-      </el-col>
-    </el-row>
-
-    <!-- 搜索框 -->
-    <el-row class="search-section" justify="center">
-      <el-col :span="14">
-        <el-input
-          v-model="searchQuery"
-          placeholder="搜索 AI 产品、服务或其他内容"
-          prefix-icon="el-icon-search"
-          clearable
-        />
-      </el-col>
-      <el-col :span="4">
-        <el-button type="primary" icon="el-icon-search" @click="handleSearch">
-          搜索
-        </el-button>
-      </el-col>
-    </el-row>
-
+    <el-header>
+      <h1>主页</h1>
+      <p>
+        欢迎来到 RAZOR-AI 主页。这里放logo和名字，以下是一个搜索框和 AI
+        产品推送。
+      </p>
+    </el-header>
     <!-- AI 产品推送部分 -->
-    <el-row class="products-section" gutter="20" justify="center">
-      <el-col :span="20">
-        <h2>推荐产品</h2>
-        <el-row gutter="20">
-          <el-col :span="8" v-for="(product, index) in products" :key="index">
-            <el-card shadow="hover" class="product-item">
-              <img :src="product.image" alt="" class="product-image" />
-              <h3>{{ product.name }}</h3>
-              <p>{{ product.description }}</p>
-              <el-button type="text">查看详情</el-button>
-            </el-card>
-          </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
-  </div>
+    <el-main>
+      <div class="search">
+        <p>此处是一个搜索框===搜索按钮</p>
+        <p>下面放一系列的AI产品推荐</p>
+      </div>
+      <div class="showProducts"></div>
+      <el-row :gutter="30">
+        <el-col
+          v-for="(product, index) in aiProducts"
+          :key="product.id"
+          :span="8"
+          :offset="index === 0 ? 3 : 0"
+          :xs="24"
+          :sm="12"
+          :md="8"
+          :lg="6"
+          :xl="4"
+        >
+          <div class="ai-product-card">
+            <img
+              :src="product.imgSrc"
+              :alt="product.name"
+              class="ai-product-logo"
+            />
+            <div class="ai-product-name">{{ product.name }}</div>
+            <p>{{ product.description }}</p>
+            <!-- 查看详情按钮 -->
+            <button
+              class="secondary-button"
+              @click="viewDetails(product.routeName, product.id)"
+              size="mini"
+            >
+              查看详情
+            </button>
+          </div>
+        </el-col>
+      </el-row>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
+import { aiProducts } from '@/assets/products/aiProducts.js';
 export default {
   name: 'Home',
   data() {
     return {
-      searchQuery: '',
-      products: [
-        {
-          name: '产品 1',
-          description: '这是产品 1 的描述信息。',
-          image: 'https://via.placeholder.com/300',
-        },
-        {
-          name: '产品 2',
-          description: '这是产品 2 的描述信息。',
-          image: 'https://via.placeholder.com/300',
-        },
-        {
-          name: '产品 3',
-          description: '这是产品 3 的描述信息。',
-          image: 'https://via.placeholder.com/300',
-        },
-      ],
+      aiProducts, //引入产品数据
     };
   },
   methods: {
-    handleSearch() {
-      this.$message({
-        message: `搜索关键词: ${this.searchQuery}`,
-        type: 'success',
-      });
+    viewDetails(routeName, id) {
+      this.$router.push({ name: routeName, params: { id } });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/variables.scss';
+@import '@/assets/styles/homeProductsCards.scss';
 /* 主页整体布局 */
-.home-page {
-  padding: 2rem;
-  background-color: #f9f9f9;
-}
-
-/* 页头部分样式 */
-.header {
-  text-align: center;
-  margin-bottom: 2rem;
-
-  h1 {
-    font-size: 2.5rem;
-    color: #333;
-  }
-
-  p {
-    font-size: 1.2rem;
-    color: #666;
-  }
-}
-
-/* 搜索框样式 */
-.search-section {
-  margin-bottom: 2rem;
-
-  .el-input {
-    width: 100%;
-  }
-
-  .el-button {
-    width: 100%;
-    height: 40px;
-    line-height: 10px;
-  }
-}
-
-/* AI 产品推送部分样式 */
-.products-section {
-  margin-top: 2rem;
-
-  h2 {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 1.5rem;
-    text-align: center;
-  }
-
-  .product-item {
-    text-align: center;
-
-    .product-image {
-      width: 100%;
-      height: auto;
-      margin-bottom: 1rem;
-    }
-
-    h3 {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    p {
-      font-size: 1rem;
-      color: #666;
-      margin-bottom: 1rem;
-    }
-
-    .el-button {
-      color: #2e073f;
-    }
-  }
+.el-row {
+  margin-bottom: 10px;
 }
 </style>
