@@ -17,7 +17,7 @@
       </div>
       <div class="divider"></div>
       <div class="menu-item" @click="navigateTo('PersonalHome')">
-        <el-icon name="edit-outline"></el-icon>个人主页
+        <el-icon name="s-custom"></el-icon>个人主页
       </div>
       <div class="divider"></div>
       <div class="menu-item" @click="navigateTo('Setting')">
