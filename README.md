@@ -40,40 +40,63 @@ A managed purchase, maintenance, and update platform for AI products. This is th
    yarn serve
 # 项目结构
 ```
-RAZOR-AI-frontend/
-├── public/                      # 公共静态文件
-│   ├── favicon.ico              # 网站图标
-│   └── index.html               # 入口 HTML 文件
-├── src/
-│   ├── assets/                  # 资源文件（图片、样式等）
-│   │   ├── images/              # 图片文件夹
-│   │   └── styles/              # 样式文件夹
-│   ├── components/              # 公共组件
-│   │   ├── Header.vue           # 头部导航组件
-│   │   └── Footer.vue           # 页脚组件
-│   ├── views/                   # 页面组件
-│   │   ├── Home.vue             # 首页
-│   │   └── Product.vue          # 产品页面
-│   ├── router/                  # 路由配置
-│   │   └── index.js             # 路由入口文件
-│   ├── store/                   # Vuex 状态管理
-│   │   └── index.js             # Vuex 入口文件
-│   ├── utils/                   # 工具函数
-│   │   └── api.js               # API 请求封装
-│   ├── App.vue                  # 根组件
-│   └── main.js                  # 入口文件
-├── .gitignore                   # Git 忽略文件
-├── .prettierrc                  # Prettier 配置文件
-├── .prettierignore              # Prettier 忽略文件
-├── .eslintrc.js                 # ESLint 配置文件
-├── .eslintignore                # ESLint 忽略文件
-├── babel.config.js              # Babel 配置文件
-├── package.json                 # 项目依赖和脚本
-├── vue.config.js                # Vue CLI 配置文件
-├── yarn.lock                    # Yarn 锁定依赖版本文件
-└── .github/
-    └── workflows/
-        └── ci.yml              # GitHub Actions 配置文件
+RAZOR-AI-frontend           # 项目根目录
+├── .eslintignore           # ESLint 忽略配置文件，指定哪些文件和目录不应由 ESLint 检查
+├── .eslintrc.js            # ESLint 配置文件，用于定义代码质量和风格检查的规则
+├── .prettierignore         # Prettier 忽略文件，指定不应由 Prettier 格式化的文件和目录
+├── .prettierrc             # Prettier 配置文件，用于定义代码格式化的规则
+├── babel.config.js         # Babel 配置文件，用于 JavaScript 代码的转换和兼容性处理
+├── jest.config.js          # Jest 配置文件，用于单元测试的配置
+├── jsconfig.json           # JavaScript 项目配置文件，提供 IntelliSense 和模块路径别名支持
+├── package.json            # 项目元数据和依赖管理文件，定义项目使用的 npm 包和脚本命令
+├── public                  # 公共静态文件夹，存放不经过 Webpack 处理的文件
+│   └── index.html          # 项目入口 HTML 文件，作为单页面应用的模板
+├── README.md               # 项目简介和说明文档，通常包含如何运行和使用项目的信息
+├── src                     # 源代码目录，存放所有前端代码
+│   ├── App.vue             # 根组件文件，是整个应用的入口组件
+│   ├── assets              # 资源文件夹，存放图片、样式和其他静态资源
+│   │   ├── images          # 图片文件夹
+│   │   │   ├── aiproducts  # AI 产品相关图片
+│   │   │   │   ├── Kimi.png        # AI 产品 Kimi 的图片
+│   │   │   │   ├── TreeMind.png    # AI 产品 TreeMind 的图片
+│   │   │   │   └── Xunfei.png      # AI 产品 Xunfei 的图片
+│   │   │   └── logo.png    # 项目 Logo 图片
+│   │   ├── products        # 产品相关的资源文件夹
+│   │   │   └── aiProducts.js  # AI 产品的数据文件
+│   │   └── styles          # 样式文件夹，存放 SCSS 文件
+│   │       ├── buttons.scss          # 按钮样式文件
+│   │       ├── forms.scss            # 表单样式文件
+│   │       ├── homeProductsCards.scss # 主页产品卡片样式
+│   │       ├── layout.scss           # 页面布局样式文件
+│   │       ├── mixins.scss           # SCSS Mixins 文件，包含可复用的样式片段
+│   │       ├── utilities.scss        # 通用样式工具类文件
+│   │       └── variables.scss        # 颜色和其他全局样式变量定义文件
+│   ├── components           # 公共组件文件夹，存放项目中可复用的 Vue 组件
+│   ├── layouts              # 布局组件文件夹，定义不同页面的布局结构
+│   │   └── defaultLayout.vue  # 默认布局组件，应用于大多数页面
+│   ├── main.js              # 入口 JavaScript 文件，初始化 Vue 实例并挂载应用
+│   ├── router               # 路由配置文件夹，定义应用中的页面路径和导航规则
+│   │   └── index.js         # 路由入口文件，配置应用的路由规则
+│   ├── store                # Vuex 状态管理文件夹，集中管理应用的全局状态
+│   │   └── index.js         # Vuex 入口文件，定义状态树和状态管理逻辑
+│   ├── utils                # 工具函数文件夹，存放常用的 JavaScript 工具函数
+│   │   └── api.js           # API 请求封装文件，用于统一管理和调用后端接口
+│   └── views                # 视图文件夹，存放各个页面的 Vue 组件
+│       ├── AboutPage.vue       # 关于我们页面组件
+│       ├── HomePage.vue        # 首页组件
+│       ├── LoginPage.vue       # 登录页面组件
+│       ├── PersonalHomePage.vue # 个人主页组件
+│       ├── ProductDetail.vue   # 产品详情页面组件
+│       ├── RegisterPage.vue    # 注册页面组件
+│       ├── TestPage.vue        # 测试页面组件
+│       └── UserSettingPage.vue # 用户设置页面组件
+├── tests                    # 测试文件夹，存放单元测试和集成测试相关代码
+│   └── unit                 # 单元测试文件夹
+│       └── HomePage.spec.js # 首页的单元测试文件
+├── tree.txt                 # 生成的目录树文件，记录项目的目录结构
+├── vue.config.js            # Vue CLI 配置文件，用于自定义 Webpack 配置
+└── yarn.lock                # Yarn 锁定文件，确保每次安装的依赖版本一致
+
 
 ```
 ## 项目结构说明

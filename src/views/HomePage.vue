@@ -1,8 +1,9 @@
 <template>
   <el-container>
     <!-- 页头部分 -->
-    <el-header>
-      <h1>主页</h1>
+    <el-header class="header">
+      <img src="@/assets/images/logo.png" alt="ROZAR Logo" class="logo" />
+      <h1 class="company-name">ROZAR</h1>
     </el-header>
     <!-- AI 产品推送部分 -->
     <el-main>
@@ -95,8 +96,29 @@ export default {
 @import '@/assets/styles/variables.scss';
 @import '@/assets/styles/homeProductsCards.scss';
 /* 主页整体布局 */
+/* 页头部分样式 */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: $primary-color; // 可根据项目需求设置背景色
+
+  .logo {
+    height: 40px;
+    margin-right: 10px;
+    margin-left: 45%;
+  }
+
+  .company-name {
+    font-size: 24px;
+    color: $text-color; // 根据需求设置字体颜色
+    font-weight: bold;
+  }
+}
+
 .search {
-  margin-bottom: 20px;
+  margin-top: 100px;
+  margin-bottom: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
