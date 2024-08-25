@@ -9,6 +9,10 @@ import 'element-ui/lib/theme-chalk/index.css';
 // 引入全局样式
 import '@/assets/styles/variables.scss';
 import '@/assets/styles/mixins.scss';
+import '@/assets/styles/forms.scss';
+import '@/assets/styles/utilities.scss';
+import '@/assets/styles/buttons.scss';
+import '@/assets/styles/layout.scss';
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 

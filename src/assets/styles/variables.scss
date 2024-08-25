@@ -11,6 +11,7 @@ $hover-background-color: lighten($primary-color, 10%);; // 背景悬浮颜色
 $background-color: #3c5669; // 背景颜色
 $border-color: #0b1303;// 边框颜色
 $divider-color: #539396;// 分割线颜色
+$card-background-color: lighten($background-color, 50%);; // 产品卡片背景悬浮颜色
 
 //字体变量
 $font-family: 'Avenir', Helvetica, Arial, sans-serif;
