@@ -70,3 +70,22 @@
     }
 }
 
+.header {
+   display: flex;
+   align-items: center;
+   padding: 10px 20px;
+   background-color: $primary-color; // 可根据项目需求设置背景色
+ 
+   .logo {
+     height: 40px;
+     margin-right: 10px;
+     margin-left: 45%;
+   }
+ 
+   .company-name {
+     font-size: 24px;
+     color: $text-color; // 根据需求设置字体颜色
+     font-weight: bold;
+   }
+ }
+

@@ -32,6 +32,11 @@
 
     <!-- 右侧内容区域 -->
     <el-main>
+      <!-- 页头部分 -->
+      <el-header class="header">
+        <img src="@/assets/images/logo.png" alt="ROZAR Logo" class="logo" />
+        <h1 class="company-name">ROZAR-AI</h1>
+      </el-header>
       <router-view></router-view>
     </el-main>
   </div>
