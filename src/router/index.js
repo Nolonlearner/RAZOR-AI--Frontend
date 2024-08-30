@@ -7,6 +7,7 @@ import ProductDetail from '@/views/ProductDetail.vue';
 import About from '@/views/AboutPage.vue';
 import Setting from '@/views/UserSettingPage.vue';
 import PersonalHome from '@/views/PersonalHomePage.vue';
+import Login from '@/views/LoginPage.vue';
 import Test from '@/views/TestPage.vue';
 
 Vue.use(VueRouter);
@@ -46,6 +47,11 @@ const routes = [
         path: '/test',
         name: 'Test',
         component: Test,
+      },
+      {
+        path: '/login',
+        name: 'Login',
+        component: Login,
       },
     ],
   },
