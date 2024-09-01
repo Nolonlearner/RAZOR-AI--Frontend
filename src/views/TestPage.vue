@@ -21,7 +21,7 @@ export default {
   methods: {
     fetchData() {
       axios
-        .get('http://101.37.88.111:5000/test')
+        .get('http://101.37.88.111:5000/test') ///user/login    user_name user_password
         .then((response) => {
           this.data = JSON.stringify(response.data, null, 2);
         })
