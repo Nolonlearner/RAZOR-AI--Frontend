@@ -17,6 +17,14 @@ module.exports = defineConfig({
   },
   outputDir: 'dist', // 自定义构建文件的输出目录
   assetsDir: 'static', // 指定静态资源文件的目录
+  pages: {
+    index: {
+      entry: 'src/main.js', // 入口文件
+      template: 'public/index.html', // 模板文件
+      filename: 'index.html', // 输出文件名
+      title: 'ROZAR-AI', // 义网页标题
+    },
+  },
 });
 
 /**
