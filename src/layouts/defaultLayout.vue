@@ -1,4 +1,4 @@
-<!--src/layouts/defaultLayout.vue-->
+<!-- src/layouts/defaultLayout.vue -->
 <template>
   <div class="layout-container">
     <!-- 左侧菜单栏 -->
@@ -28,10 +28,6 @@
         <el-icon name="loading"></el-icon>测试
       </div>
       <div class="divider"></div>
-      <div class="menu-item" @click="navigateTo('Login')">
-        <el-icon name="user"></el-icon>登录
-      </div>
-      <div class="divider"></div>
     </aside>
 
     <!-- 右侧内容区域 -->
@@ -40,19 +36,48 @@
       <el-header class="header">
         <img src="@/assets/images/logo.png" alt="ROZAR Logo" class="logo" />
         <h1 class="company-name">ROZAR-AI</h1>
+        <div class="user-info">
+          <el-icon name="user"></el-icon>
+          <span v-if="!isLoggedIn" @click="openLoginDialog">用户登录</span>
+          <span v-else @click="navigateTo('PersonalHome')"
+            >你好，{{ user_id }}</span
+          >
+        </div>
       </el-header>
       <router-view></router-view>
     </el-main>
+
+    <!-- 登录对话框 -->
+    <el-dialog :visible.sync="loginDialogVisible" title="用户登录">
+      <login-form @close="loginDialogVisible = false" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import LoginForm from '@/components/LoginForm.vue'; // 引入登录表单组件
+
 export default {
+  components: {
+    LoginForm,
+  },
+  data() {
+    return {
+      loginDialogVisible: false,
+    };
+  },
+  computed: {
+    ...mapGetters(['isLoggedIn', 'user_id']),
+  },
   methods: {
     navigateTo(route) {
       if (this.$route.name !== route) {
         this.$router.push({ name: route });
       }
+    },
+    openLoginDialog() {
+      this.loginDialogVisible = true;
     },
   },
 };

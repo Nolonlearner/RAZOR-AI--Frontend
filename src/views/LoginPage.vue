@@ -1,3 +1,4 @@
+<!--src/views/testLogin.vue-->
 <template>
   <div class="login-container">
     <el-card class="login-card" shadow="hover">
@@ -6,54 +7,37 @@
       </div>
       <el-form
         :model="loginForm"
+        :rules="loginRules"
         ref="loginForm"
-        @submit.native.prevent="onSubmit"
+        @keyup.enter.native="onSubmit"
+        v-loading="isLoading"
       >
-        <el-form-item
-          prop="username"
-          :rules="[
-            {
-              required: true,
-              message: 'Please input your username',
-              trigger: 'blur',
-            },
-          ]"
-        >
+        <el-form-item prop="username">
           <el-input
             v-model="loginForm.username"
-            placeholder="Username"
+            placeholder="用户名"
             prefix-icon="el-icon-user"
           ></el-input>
         </el-form-item>
-        <el-form-item
-          prop="password"
-          :rules="[
-            {
-              required: true,
-              message: 'Please input your password',
-              trigger: 'blur',
-            },
-          ]"
-        >
+        <el-form-item prop="password">
           <el-input
             v-model="loginForm.password"
             type="password"
-            placeholder="Password"
+            placeholder="密码"
             prefix-icon="el-icon-lock"
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-checkbox v-model="loginForm.rememberMe">Remember me</el-checkbox>
+          <el-checkbox v-model="loginForm.rememberMe">记住我</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-button
             type="primary"
             @click="onSubmit"
-            :loading="loading"
             class="login-button"
-            >Login</el-button
+            :loading="isLoading"
+            >登录</el-button
           >
-          <button class="btn">test</button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -61,6 +45,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'LoginPage',
   data() {
@@ -70,23 +56,50 @@ export default {
         password: '',
         rememberMe: false,
       },
-      loading: false,
+
+      loginRules: {
+        username: [
+          { required: true, message: '请输入您的用户名', trigger: 'blur' },
+        ],
+        password: [
+          { required: true, message: '请输入您的密码', trigger: 'blur' },
+        ],
+      },
+      isLoading: false,
     };
   },
+  computed: {
+    ...mapGetters(['error', 'isLoggedIn']), // 获取Vuex中的error和isLoggedIn
+  },
   methods: {
-    onSubmit() {
-      this.$refs.loginForm.validate((valid) => {
+    ...mapActions(['login']), // 映射Vuex的login action
+
+    async onSubmit() {
+      this.$refs.loginForm.validate(async (valid) => {
         if (valid) {
-          this.loading = true;
-          // Simulate a login process
-          setTimeout(() => {
-            this.loading = false;
-            this.$message.success('Login successful');
-            // Redirect or perform further actions here
-          }, 1500);
+          this.isLoading = true;
+          try {
+            // 调用Vuex的login action
+            await this.login({
+              username: this.loginForm.username,
+              password: this.loginForm.password,
+            });
+
+            // 判断登录是否成功
+            if (this.isLoggedIn) {
+              this.$message.success('登录成功！');
+              this.$router.replace({ name: 'Home' }); // 跳转到首页
+            } else {
+              console.log('this.error:', this.error);
+              this.$message.error(this.error);
+            }
+          } catch (error) {
+            this.$message.error('网络错误');
+          } finally {
+            this.isLoading = false;
+          }
         } else {
-          this.$message.error('Please complete the form correctly');
-          return false;
+          this.$message.error('请正确填写表单');
         }
       });
     },
