@@ -56,7 +56,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import LoginForm from '@/views/LoginForm.vue'; // 引入登录表单组件
+import LoginForm from '@/components/LoginForm.vue'; // 引入登录表单组件
 
 export default {
   components: {
