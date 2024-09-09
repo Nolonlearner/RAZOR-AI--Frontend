@@ -38,10 +38,10 @@
         <h1 class="company-name">ROZAR-AI</h1>
         <div class="user-info">
           <el-icon name="user"></el-icon>
-          <span v-if="!isLoggedIn" @click="openLoginDialog" class="login-text"
-            >用户登录</span
+          <span v-if="!isLoggedIn" @click="openLoginDialog">用户登录</span>
+          <span v-else @click="navigateTo('PersonalHome')"
+            >你好，{{ user_id }}</span
           >
-          <span v-else>你好，{{ user_id }}</span>
         </div>
       </el-header>
       <router-view></router-view>
