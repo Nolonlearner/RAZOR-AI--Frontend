@@ -28,7 +28,7 @@
         <el-icon name="loading"></el-icon>测试
       </div>
       <div class="divider"></div>
-      <div class="menu-item" @click="navigateTo('testLogin')">
+      <div class="menu-item" @click="navigateTo('Login')">
         <el-icon name="loading"></el-icon>登录测试
       </div>
       <div class="divider"></div>
@@ -40,6 +40,13 @@
       <el-header class="header">
         <img src="@/assets/images/logo.png" alt="ROZAR Logo" class="logo" />
         <h1 class="company-name">ROZAR-AI</h1>
+        <div class="user-info">
+          <el-icon name="user"></el-icon>
+          <span v-if="!isLoggedIn" @click="openLoginDialog" class="login-text"
+            >用户登录</span
+          >
+          <span v-else>你好，{{ user_id }}</span>
+        </div>
       </el-header>
       <router-view></router-view>
     </el-main>
@@ -47,12 +54,19 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
+  computed: {
+    ...mapState('user', ['isLoggedIn', 'user_id']),
+  },
   methods: {
     navigateTo(route) {
       if (this.$route.name !== route) {
         this.$router.push({ name: route });
       }
+    },
+    openLoginDialog() {
+      this.$router.push({ name: 'Login' });
     },
   },
 };

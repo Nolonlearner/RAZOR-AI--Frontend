@@ -87,5 +87,11 @@
      color: $text-color; // 根据需求设置字体颜色
      font-weight: bold;
    }
+   .user-info {
+      display: flex;
+      align-items: center;
+      margin-left: auto; /* 将用户信息右对齐 */
+      cursor: pointer;
+    }
  }
 
