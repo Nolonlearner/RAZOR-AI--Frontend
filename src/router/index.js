@@ -66,15 +66,15 @@ const routes = [
           title: 'ROZAR-AI-测试页面', // 测试页面标题
         },
       },
-      {
-        path: '/login',
-        name: 'Login',
-        component: Login,
-        meta: {
-          title: 'ROZAR-AI-登录', // 登录页面标题
-        },
-      },
     ],
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta: {
+      title: 'ROZAR-AI-登录', // 登录页面标题
+    },
   },
 ];
 

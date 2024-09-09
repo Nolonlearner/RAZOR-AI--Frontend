@@ -28,9 +28,6 @@
         <el-icon name="loading"></el-icon>测试
       </div>
       <div class="divider"></div>
-      <div class="menu-item" @click="navigateTo('Login')">
-        <el-icon name="user"></el-icon>登录
-      </div>
       <div class="divider"></div>
     </aside>
 
