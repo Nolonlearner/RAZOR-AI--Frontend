@@ -1,6 +1,7 @@
 // src/store/index.js
 import Vue from 'vue';
 import Vuex from 'vuex';
+import user from './user';
 
 Vue.use(Vuex);
 
@@ -16,5 +17,6 @@ export default new Vuex.Store({
   },
   modules: {
     // 组织模块
+    user, // 注册 user 模块
   },
 });

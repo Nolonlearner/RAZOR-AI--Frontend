@@ -28,6 +28,9 @@
         <el-icon name="loading"></el-icon>测试
       </div>
       <div class="divider"></div>
+      <div class="menu-item" @click="navigateTo('testLogin')">
+        <el-icon name="loading"></el-icon>登录测试
+      </div>
       <div class="divider"></div>
     </aside>
 

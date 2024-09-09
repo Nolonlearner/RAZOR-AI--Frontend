@@ -8,6 +8,7 @@ import About from '@/views/AboutPage.vue';
 import Setting from '@/views/UserSettingPage.vue';
 import PersonalHome from '@/views/PersonalHomePage.vue';
 import Login from '@/views/LoginPage.vue';
+import testLogin from '@/views/testLogin.vue';
 import Test from '@/views/TestPage.vue';
 
 Vue.use(VueRouter);
@@ -72,6 +73,14 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+    meta: {
+      title: 'ROZAR-AI-登录', // 登录页面标题
+    },
+  },
+  {
+    path: '/testlogin',
+    name: 'testLogin',
+    component: testLogin,
     meta: {
       title: 'ROZAR-AI-登录', // 登录页面标题
     },
