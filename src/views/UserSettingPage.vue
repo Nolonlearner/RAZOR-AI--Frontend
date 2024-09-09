@@ -4,57 +4,57 @@
     <h1 class="title">系统设置</h1>
     <p class="description">在这里修改您的系统设置。</p>
 
-    <div class="setting-group">
-      <h2>账户设置</h2>
-      <div class="setting-item">
-        <label for="switch-account">切换账号:</label>
-        <el-button @click="switchAccount">切换</el-button>
-      </div>
-    </div>
+    <div class="settings-container">
+      <div class="setting-group left">
+        <h2>账户设置</h2>
+        <div class="setting-item">
+          <label for="switch-account">切换账号:</label>
+          <el-button @click="switchAccount">切换</el-button>
+        </div>
 
-    <div class="setting-group">
-      <h2>显示设置</h2>
-      <div class="setting-item">
-        <label for="mode-switch">切换模式:</label>
-        <el-switch
-          id="mode-switch"
-          v-model="isDarkMode"
-          active-text="暗黑模式"
-          inactive-text="亮色模式"
-          @change="toggleMode"
-        ></el-switch>
+        <h2>显示设置</h2>
+        <div class="setting-item">
+          <label for="mode-switch">切换模式:</label>
+          <el-switch
+            id="mode-switch"
+            v-model="isDarkMode"
+            active-text="暗黑模式"
+            inactive-text="亮色模式"
+            @change="toggleMode"
+          ></el-switch>
+        </div>
+        <div class="setting-item">
+          <label for="theme-color">主题颜色:</label>
+          <select v-model="themeColor" @change="changeTheme">
+            <option value="default">默认</option>
+            <option value="blue">蓝色</option>
+            <option value="green">绿色</option>
+          </select>
+        </div>
       </div>
-      <div class="setting-item">
-        <label for="theme-color">主题颜色:</label>
-        <select v-model="themeColor" @change="changeTheme">
-          <option value="default">默认</option>
-          <option value="blue">蓝色</option>
-          <option value="green">绿色</option>
-        </select>
-      </div>
-      <div class="setting-item">
-        <label for="language">语言:</label>
-        <select v-model="language" @change="changeLanguage">
-          <option value="en">英语</option>
-          <option value="zh">中文</option>
-          <option value="fr">法语</option>
-        </select>
-      </div>
-    </div>
 
-    <div class="setting-group">
-      <h2>权限设置</h2>
-      <div class="setting-item">
-        <label>修改权限:</label>
-        <el-button @click="modifyPermissions">修改权限</el-button>
-      </div>
-    </div>
+      <div class="setting-group right">
+        <h2>语言设置</h2>
+        <div class="setting-item">
+          <label for="language">语言:</label>
+          <select v-model="language" @change="changeLanguage">
+            <option value="en">英语</option>
+            <option value="zh">中文</option>
+            <option value="fr">法语</option>
+          </select>
+        </div>
 
-    <div class="setting-group">
-      <h2>历史记录</h2>
-      <div class="setting-item">
-        <label>查看历史浏览记录:</label>
-        <el-button @click="viewHistory">查看</el-button>
+        <h2>权限设置</h2>
+        <div class="setting-item">
+          <label>修改权限:</label>
+          <el-button @click="modifyPermissions">修改权限</el-button>
+        </div>
+
+        <h2>历史记录</h2>
+        <div class="setting-item">
+          <label>查看历史浏览记录:</label>
+          <el-button @click="viewHistory">查看</el-button>
+        </div>
       </div>
     </div>
 
@@ -76,33 +76,26 @@ export default {
   },
   methods: {
     switchAccount() {
-      // 切换账号的逻辑
       this.$message.info('切换账号功能待实现');
     },
     toggleMode() {
-      // 切换模式的逻辑
       this.$message.success(
         `已切换到 ${this.isDarkMode ? '暗黑模式' : '亮色模式'}`
       );
     },
     changeTheme() {
-      // 更改主题颜色的逻辑
       this.$message.success(`主题颜色已更改为 ${this.themeColor}`);
     },
     changeLanguage() {
-      // 更改语言的逻辑
       this.$message.success(`语言已更改为 ${this.language}`);
     },
     modifyPermissions() {
-      // 修改权限的逻辑
       this.$message.info('修改权限功能待实现');
     },
     viewHistory() {
-      // 查看历史记录的逻辑
       this.$message.info('查看历史记录功能待实现');
     },
     saveSettings() {
-      // 保存设置的逻辑
       console.log('Settings saved:', {
         isDarkMode: this.isDarkMode,
         themeColor: this.themeColor,
@@ -116,14 +109,17 @@ export default {
 
 <style scoped>
 .settings-page {
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 100%;
+  height: auto; /* 自适应高度 */
   padding: 20px;
   background-color: #1e1e1e; /* 深色背景 */
   border-radius: 8px; /* 圆角 */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
   color: #ffffff; /* 白色文字 */
   animation: fadeIn 0.5s ease; /* 动画效果 */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .title {
@@ -138,8 +134,15 @@ export default {
   color: #aaa; /* 灰色文字 */
 }
 
+.settings-container {
+  display: flex;
+  justify-content: space-between; /* 左右排列 */
+  flex: 1; /* 占满剩余空间 */
+}
+
 .setting-group {
-  margin-bottom: 20px;
+  width: 45%; /* 每个设置组宽度 */
+  margin: 0 10px; /* 左右间距 */
   padding: 15px;
   background-color: #2a2a2a; /* 每个设置组的背景 */
   border-radius: 5px; /* 圆角 */
