@@ -12,6 +12,7 @@ const mutations = {
     state.isLoggedIn = true;
     state.user_id = user_id;
     state.error = null; // 清空错误信息
+    console.log('state:', state);
   },
   LOGOUT(state) {
     state.isLoggedIn = false;
@@ -86,6 +87,7 @@ const actions = {
 const getters = {
   isLoggedIn: (state) => state.isLoggedIn,
   error: (state) => state.error, // 获取错误信息
+  user_id: (state) => state.user_id,
 };
 
 export default {

@@ -1,4 +1,4 @@
-<!--src/layouts/defaultLayout.vue-->
+<!-- src/layouts/defaultLayout.vue -->
 <template>
   <div class="layout-container">
     <!-- 左侧菜单栏 -->
@@ -28,10 +28,6 @@
         <el-icon name="loading"></el-icon>测试
       </div>
       <div class="divider"></div>
-      <div class="menu-item" @click="navigateTo('Login')">
-        <el-icon name="loading"></el-icon>登录测试
-      </div>
-      <div class="divider"></div>
     </aside>
 
     <!-- 右侧内容区域 -->
@@ -50,14 +46,29 @@
       </el-header>
       <router-view></router-view>
     </el-main>
+
+    <!-- 登录对话框 -->
+    <el-dialog :visible.sync="loginDialogVisible" title="用户登录">
+      <login-form @close="loginDialogVisible = false" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
+import LoginForm from '@/views/LoginForm.vue'; // 引入登录表单组件
+
 export default {
+  components: {
+    LoginForm,
+  },
+  data() {
+    return {
+      loginDialogVisible: false,
+    };
+  },
   computed: {
-    ...mapState('user', ['isLoggedIn', 'user_id']),
+    ...mapGetters(['isLoggedIn', 'user_id']),
   },
   methods: {
     navigateTo(route) {
@@ -66,7 +77,7 @@ export default {
       }
     },
     openLoginDialog() {
-      this.$router.push({ name: 'Login' });
+      this.loginDialogVisible = true;
     },
   },
 };

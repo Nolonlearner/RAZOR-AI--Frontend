@@ -62,7 +62,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['error', 'isLoggedIn']),
+    ...mapGetters(['error', 'isLoggedIn', 'user_id']),
   },
   methods: {
     ...mapActions(['login']),
