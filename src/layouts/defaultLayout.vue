@@ -52,7 +52,12 @@
     </el-main>
 
     <!-- 登录对话框 -->
-    <el-dialog :visible.sync="loginDialogVisible" title="用户登录">
+    <el-dialog
+      :visible.sync="loginDialogVisible"
+      title="用户登录"
+      :modal="true"
+      :close-on-click-modal="false"
+    >
       <login-form @close="loginDialogVisible = false" />
     </el-dialog>
   </div>

@@ -114,8 +114,7 @@ export default {
   height: auto; /* 自适应高度 */
   padding: 20px;
   background-color: #1e1e1e; /* 深色背景 */
-  border-radius: 8px; /* 圆角 */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  @include box-shadow(0 4px 20px rgba(0, 0, 0, 0.2)); // 使用 SCSS 混合宏
   color: #ffffff; /* 白色文字 */
   display: flex;
   flex-direction: column;
@@ -140,7 +139,6 @@ export default {
   flex: 1; /* 占满剩余空间 */
 }
 
-.description,
 .settings-container {
   @include fadeIn(0.5s); // 使用 SCSS 混合宏
 }

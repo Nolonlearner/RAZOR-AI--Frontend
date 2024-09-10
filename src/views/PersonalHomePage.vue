@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     navigateToChangePassword() {
-      this.$router.push({ name: 'ChangePassword' });
+      this.$message.info('修改密码功能待实现');
     },
     navigateToEditInfo() {
       this.$message.info('编辑个人信息功能待实现');
@@ -148,6 +148,7 @@ export default {
 .title {
   font-size: 2em;
   text-align: center;
+  margin-bottom: 10px;
 }
 
 .intro {
@@ -167,13 +168,9 @@ export default {
   padding: 15px;
   background-color: #2a2a2a;
   border-radius: 8px;
-  margin: 10px; /* 间隔 */
+  margin: 20px; /* 间隔 */
   @include transition(transform 0.3s); // 使用 SCSS 混合宏
-}
-
-.profile-left:hover,
-.profile-right:hover {
-  transform: scale(1.02); /* 鼠标悬停时放大 */
+  @include box-shadow(0 4px 20px rgba(0, 0, 0, 0.2)); // 使用 SCSS 混合宏
 }
 
 .avatar-container {
@@ -197,7 +194,7 @@ export default {
 .change-password-section {
   margin-bottom: 15px; /* 板块间隔 */
   opacity: 0; /* 初始透明度 */
-  @include fadeIn(1s); // 设置动画持续时间为 1 秒
+  @include fadeIn(0.5s); // 设置动画持续时间为 0.5 秒
 }
 
 .info-item,

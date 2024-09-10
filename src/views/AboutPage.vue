@@ -23,7 +23,10 @@
     <div class="contact-section">
       <p>如果你有任何建议</p>
       <p>如果你想加入我们</p>
-      <p>请联系我们：我们的联系方式: herulin11@outlook.com</p>
+      <p>
+        请联系我们：我们的联系方式:
+        <a href="mailto:herulin11@outlook.com">herulin11@outlook.com</a>
+      </p>
     </div>
   </div>
 </template>
@@ -42,7 +45,6 @@ export default {
   margin: 0; /* 无边距 */
   padding: 20px;
   background-color: #1e1e1e; /* 深色背景 */
-  border-radius: 8px; /* 圆角 */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
   color: #ffffff; /* 白色文字 */
   display: flex;
@@ -67,7 +69,7 @@ export default {
 .contact-section {
   margin-bottom: 30px; /* 板块间隔 */
   text-align: center; /* 内容居中 */
-  @include fadeIn(1s); // 设置动画持续时间为 1 秒
+  @include fadeIn(0.5s); // 设置动画持续时间为 0.5 秒
 }
 
 .section-title {
@@ -85,10 +87,12 @@ export default {
   margin: 0 15px; /* 左右间距 */
   padding: 10px;
   border-radius: 5px; /* 圆角 */
-  transition: background-color 0.3s; /* 背景色过渡效果 */
+  @include transition(background-color 0.2s); // 设置背景色过渡效果
+  cursor: pointer; // 设置鼠标样式为手型
 }
 
 .team-member:hover {
   background-color: #333; /* 悬停背景色 */
+  transform: scale(1.02); /* 鼠标悬停时放大 */
 }
 </style>
