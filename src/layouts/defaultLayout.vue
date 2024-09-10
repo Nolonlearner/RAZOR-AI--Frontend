@@ -5,7 +5,7 @@
     <aside class="sidebar">
       <div class="logo-container">
         <img class="logo" src="@/assets/images/logo.png" alt="Logo" />
-        <div class="company-name">ROZAR-AI</div>
+        <div class="company-name">RAZOR-AI</div>
       </div>
       <div class="divider"></div>
       <div class="menu-item" @click="navigateTo('Home')">
@@ -39,7 +39,7 @@
       <!-- 页头部分 -->
       <el-header class="header">
         <img src="@/assets/images/logo.png" alt="ROZAR Logo" class="logo" />
-        <h1 class="company-name">ROZAR-AI</h1>
+        <h1 class="company-name">RAZOR-AI</h1>
         <div class="user-info">
           <el-icon name="user"></el-icon>
           <span v-if="!isLoggedIn" @click="openLoginDialog">用户登录</span>
@@ -52,7 +52,12 @@
     </el-main>
 
     <!-- 登录对话框 -->
-    <el-dialog :visible.sync="loginDialogVisible" title="用户登录">
+    <el-dialog
+      :visible.sync="loginDialogVisible"
+      title="用户登录"
+      :modal="true"
+      :close-on-click-modal="false"
+    >
       <login-form @close="loginDialogVisible = false" />
     </el-dialog>
   </div>

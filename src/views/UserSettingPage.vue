@@ -107,16 +107,15 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/assets/styles/mixins.scss';
 .settings-page {
   max-width: 100%;
   height: auto; /* 自适应高度 */
   padding: 20px;
   background-color: #1e1e1e; /* 深色背景 */
-  border-radius: 8px; /* 圆角 */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  @include box-shadow(0 4px 20px rgba(0, 0, 0, 0.2)); // 使用 SCSS 混合宏
   color: #ffffff; /* 白色文字 */
-  animation: fadeIn 0.5s ease; /* 动画效果 */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -140,6 +139,10 @@ export default {
   flex: 1; /* 占满剩余空间 */
 }
 
+.settings-container {
+  @include fadeIn(0.5s); // 使用 SCSS 混合宏
+}
+
 .setting-group {
   width: 45%; /* 每个设置组宽度 */
   margin: 0 10px; /* 左右间距 */
@@ -153,6 +156,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
+  animation: fadeIn 2s ease; /* 动画效果 */
 }
 
 .setting-item label {
@@ -178,15 +182,5 @@ export default {
   display: flex;
   justify-content: center;
   margin-top: 20px;
-}
-
-/* 动画效果 */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
 </style>
