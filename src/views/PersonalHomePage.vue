@@ -132,7 +132,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/assets/styles/mixins.scss';
 .personal-home {
   max-width: 1200px; /* 增加画布宽度 */
   height: auto; /* 自适应高度 */
@@ -142,7 +143,6 @@ export default {
   display: flex;
   flex-direction: column;
   margin: auto; /* 居中 */
-  animation: fadeIn 0.5s ease;
 }
 
 .title {
@@ -168,7 +168,7 @@ export default {
   background-color: #2a2a2a;
   border-radius: 8px;
   margin: 10px; /* 间隔 */
-  transition: transform 0.3s; /* 添加过渡效果 */
+  @include transition(transform 0.3s); // 使用 SCSS 混合宏
 }
 
 .profile-left:hover,
@@ -197,18 +197,7 @@ export default {
 .change-password-section {
   margin-bottom: 15px; /* 板块间隔 */
   opacity: 0; /* 初始透明度 */
-  animation: fadeIn 0.5s ease forwards; /* 动画效果 */
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px); /* 初始向下位移 */
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0); /* 回到原位 */
-  }
+  @include fadeIn(1s); // 设置动画持续时间为 1 秒
 }
 
 .info-item,

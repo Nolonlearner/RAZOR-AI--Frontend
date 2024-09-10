@@ -34,7 +34,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/assets/styles/mixins.scss';
 .about-page {
   max-width: 100%; /* 填满整个宽度 */
   height: 100%; /* 填满整个高度 */
@@ -44,7 +45,6 @@ export default {
   border-radius: 8px; /* 圆角 */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
   color: #ffffff; /* 白色文字 */
-  animation: fadeIn 0.5s ease; /* 动画效果 */
   display: flex;
   flex-direction: column; /* 纵向排列 */
   align-items: center; /* 内容居中 */
@@ -67,6 +67,7 @@ export default {
 .contact-section {
   margin-bottom: 30px; /* 板块间隔 */
   text-align: center; /* 内容居中 */
+  @include fadeIn(1s); // 设置动画持续时间为 1 秒
 }
 
 .section-title {
@@ -89,17 +90,5 @@ export default {
 
 .team-member:hover {
   background-color: #333; /* 悬停背景色 */
-}
-
-/* 动画效果 */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px); /* 初始向下位移 */
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0); /* 回到原位 */
-  }
 }
 </style>

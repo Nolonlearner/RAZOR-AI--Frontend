@@ -76,7 +76,7 @@ export default {
 .title {
   font-size: 3em;
   margin-bottom: 20px;
-  animation: fadeIn 1s ease; /* 进入动画 */
+  animation: fadeIn 3s ease; /* 进入动画 */
 }
 
 .description {

@@ -5,6 +5,23 @@
    transition: $property $duration $timing;
 }
 
+
+@mixin fadeIn($duration: 0.5s) {
+   animation: fadeIn $duration forwards;
+ }
+ 
+ // 动画效果
+ @keyframes fadeIn {
+   from {
+     opacity: 0;
+     transform: translateY(-20px);
+   }
+   to {
+     opacity: 1;
+     transform: translateY(0);
+   }
+ }
+
 //将元素水平和垂直居中
 @mixin flex-center {
    display: flex;
