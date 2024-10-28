@@ -60,9 +60,13 @@ export default {
 
         // 调用后端 API 获取机器人的回复
         try {
-          const response = await axios.post('YOUR_BACKEND_API_URL', {
-            message: userMessage,
-          });
+          const response = await axios.post(
+            'http://localhost:5000/api/chatbot/reply',
+            {
+              message: userMessage,
+            }
+          );
+          console.log('response: ', response);
 
           // 假设后端返回的格式为 { reply: '机器人回复内容' }
           this.messages.push({ text: response.data.reply, type: 'bot' });
