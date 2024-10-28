@@ -32,6 +32,9 @@
         <el-icon name="loading"></el-icon>测试
       </div>
       <div class="divider"></div>
+      <div class="menu-item" @click="navigateTo('Chat')">
+        <el-icon name="message"></el-icon>与机器人交流吧
+      </div>
     </aside>
 
     <!-- 右侧内容区域 -->
