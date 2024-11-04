@@ -22,6 +22,7 @@
         </div>
       </div>
       <div class="input-container">
+        <button class="option-button" @click="toggleOptions">语言模型</button>
         <input
           type="text"
           v-model="newMessage"
@@ -31,6 +32,13 @@
           ref="inputField"
         />
         <button class="button" @click="sendMessage">发送</button>
+      </div>
+      <div v-if="showOptions" class="options-menu">
+        <ul>
+          <li @click="selectOption('kimi')">kimi</li>
+          <li @click="selectOption('chatgpt')">chatgpt</li>
+          <li @click="selectOption('文心一言')">文心一言</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -43,28 +51,46 @@ export default {
   data() {
     return {
       newMessage: '',
+      selectedOption: '', // 添加选中的选项
       messages: [],
-      userAvatar: 'path_to_user_avatar', // 替换为用户头像 URL
-      botAvatar: 'path_to_user_avatar', // 替换为机器人头像 URL
+      userAvatar: 'path_to_user_avatar',
+      botAvatar: 'path_to_bot_avatar',
+      showOptions: false,
     };
   },
   methods: {
+    toggleOptions() {
+      this.showOptions = !this.showOptions;
+    },
+    selectOption(option) {
+      this.selectedOption = option; // 保存选中的选项
+      this.newMessage = option; // 选项填入输入框
+      this.showOptions = false;
+    },
+    scrollToBottom() {
+      const chatLog = this.$refs.chatlog;
+      if (chatLog) {
+        console.log('chatLog:', chatLog); // 确保这里能够打印出 DOM 元素
+        chatLog.scrollTop = chatLog.scrollHeight; // 滚动到聊天日志的底部
+      } else {
+        console.error('chatLog is not defined');
+      }
+    },
     async sendMessage() {
       if (this.newMessage.trim() !== '') {
-        // 添加用户消息到聊天记录
         this.messages.push({ text: this.newMessage, type: 'user' });
-
-        // 清空输入框
         const userMessage = this.newMessage;
+        const optionMessage = this.selectedOption; // 获取选中的选项
         this.newMessage = '';
+        this.selectedOption = ''; // 发送后清空选项
 
         // 调用后端 API 获取机器人的回复
+        //这里一共发送userMessage和optionMessage两个字段
         try {
           const response = await axios.post('YOUR_BACKEND_API_URL', {
             message: userMessage,
+            selectedOption: optionMessage, // 发送选项到后端
           });
-
-          // 假设后端返回的格式为 { reply: '机器人回复内容' }
           this.messages.push({ text: response.data.reply, type: 'bot' });
         } catch (error) {
           console.error('Error fetching bot reply:', error);
@@ -72,31 +98,20 @@ export default {
             text: '无法接收后端传来的数据。',
             type: 'bot',
           });
+          this.scrollToBottom();
         }
-
-        // 滚动到最新消息
-        this.scrollToBottom();
       }
     },
     adjustInputWidth() {
       const inputField = this.$refs.inputField;
-      // 创建一个临时元素
       const tempSpan = document.createElement('span');
       document.body.appendChild(tempSpan);
-      tempSpan.style.visibility = 'hidden'; // 隐藏元素
-      tempSpan.style.whiteSpace = 'pre'; // 保持空格
-      tempSpan.style.font = getComputedStyle(inputField).font; // 获取输入框字体样式
-      tempSpan.textContent = inputField.value || inputField.placeholder; // 计算当前输入或占位符的宽度
-
-      // 设置输入框宽度
-      inputField.style.width = `${Math.max(100, tempSpan.scrollWidth + 20)}px`; // 20px 是边距
-
-      // 移除临时元素
+      tempSpan.style.visibility = 'hidden';
+      tempSpan.style.whiteSpace = 'pre';
+      tempSpan.style.font = getComputedStyle(inputField).font;
+      tempSpan.textContent = inputField.value || inputField.placeholder;
+      inputField.style.width = `${Math.max(100, tempSpan.scrollWidth + 20)}px`;
       document.body.removeChild(tempSpan);
-    },
-    scrollToBottom() {
-      const chatLog = this.$refs.chatLog;
-      chatLog.scrollTop = chatLog.scrollHeight;
     },
   },
 };
@@ -104,7 +119,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/mixins.scss';
-
 .about-page {
   max-width: 100%; /* 填满整个宽度 */
   height: 100%; /* 填满整个高度 */
@@ -129,12 +143,14 @@ export default {
   margin-bottom: 5px;
 }
 .chat-window {
+  position: relative; /* 使菜单相对于 chat-window 定位 */
   flex: 1; /* 占用剩余空间 */
   margin-top: 20px;
   padding: 10px;
   width: 100%;
   max-width: 1000px; /*最大高度8*/
   border-radius: 10px;
+  overflow-y: auto; /* 允许滚动 */
   display: flex;
   flex-direction: column; /* 纵向排列 */
   background-color: #2c2c2c; /* 设置背景颜色 */
@@ -143,9 +159,10 @@ export default {
 .chat-log {
   display: flex;
   flex-direction: column; /* 纵向排列消息 */
-  flex: 1; /* 占用剩余空间 */
   overflow-y: auto; /* 允许滚动 */
   padding: 10px;
+  flex: 1;
+  padding-bottom: 70px; /* 为发送框留出空间 */
   background-color: transparent; /* 使背景透明 */
 }
 
@@ -176,6 +193,8 @@ export default {
   justify-content: center; /* 居中对齐 */
   align-items: center; /* 垂直居中 */
   background-color: #2c2c2c; /* 背景颜色与聊天窗口一致 */
+  padding: 10px; /* 内边距 */
+  z-index: 10; /* 确保在其他元素之上 */
 }
 
 input[type='text'] {
@@ -201,5 +220,41 @@ button {
 
 button:hover {
   background-color: #0056b3; /* 悬停效果 */
+}
+
+.option-button {
+  margin-right: 10px; /* 与输入框之间的间距 */
+  background-color: #007bff; /* 按钮颜色 */
+  color: white; /* 按钮字体颜色 */
+  border: none; /* 去掉边框 */
+  padding: 10px; /* 按钮内边距 */
+  border-radius: 4px; /* 圆角 */
+  cursor: pointer; /* 鼠标悬停效果 */
+}
+
+.options-menu {
+  position: absolute; /* 绝对定位 */
+  background-color: #2c2c2c; /* 设置为深色背景 */
+  border: 1px solid #444; /* 边框 */
+  border-radius: 4px; /* 圆角 */
+  bottom: 50px;
+  left: 0; /* 对齐左侧 */
+  z-index: 10; /* 确保菜单在其他元素之上 */
+}
+
+.options-menu ul {
+  list-style: none; /* 去掉列表样式 */
+  padding: 0; /* 去掉内边距 */
+  margin: 0; /* 去掉外边距 */
+}
+
+.options-menu li {
+  padding: 10px; /* 每个选项的内边距 */
+  cursor: pointer; /* 鼠标悬停效果 */
+  color: white; /* 选项文字颜色 */
+}
+
+.options-menu li:hover {
+  background-color: #444; /* 悬停效果 */
 }
 </style>
