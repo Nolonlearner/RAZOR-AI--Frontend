@@ -1,0 +1,32 @@
+@startuml front-end-component-diagram
+package "AI机器人" {
+    [AI Robot] <<component>>
+    [AI Robot] --|> [API Request Handler] : 请求AI接口
+}
+
+package "用户管理" {
+    [User Management] <<component>>
+    [User Management] --|> [API Request Handler] : 调用登录/注册接口
+    [User Management] --> [User Info Display] : 展示用户信息
+}
+
+package "聊天界面" {
+    [Chat Interface] <<component>>
+    [Chat Interface] --|> [AI Robot] : 发送消息请求
+    [Chat Interface] --|> [API Request Handler] : 获取AI回复
+}
+
+package "AI机器人订阅管理" {
+    [Subscription Management] <<component>>
+    [Subscription Management] --> [User Management] : 更新订阅信息
+    [Subscription Management] --|> [API Request Handler] : 提交订阅数据
+}
+
+package "开发者管理" {
+    [Developer Management] <<component>>
+    [Developer Management] --> [AI Robot] : 配置机器人
+    [Developer Management] --|> [API Request Handler] : 更新机器人配置
+}
+
+[API Request Handler] --> [Backend API] : 请求数据
+@enduml

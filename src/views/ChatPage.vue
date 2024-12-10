@@ -1,3 +1,4 @@
+<!--src/views/ChatPage.vue-->
 <template>
   <div class="about-page">
     <title>Robot Center</title>

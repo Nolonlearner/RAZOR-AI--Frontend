@@ -84,6 +84,7 @@ RAZOR-AI-frontend           # 项目根目录
 │   └── views                # 视图文件夹，存放各个页面的 Vue 组件
 │       ├── AboutPage.vue       # 关于我们页面组件
 │       ├── HomePage.vue        # 首页组件
+│       ├── ChatPage.vue        # AI交流界面
 │       ├── LoginPage.vue       # 登录页面组件
 │       ├── PersonalHomePage.vue # 个人主页组件
 │       ├── ProductDetail.vue   # 产品详情页面组件
