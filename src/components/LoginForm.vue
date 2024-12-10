@@ -1,4 +1,4 @@
-<!-- src/views/LoginForm.vue -->
+<!-- src/components/LoginForm.vue -->
 <template>
   <el-form
     :model="loginForm"
