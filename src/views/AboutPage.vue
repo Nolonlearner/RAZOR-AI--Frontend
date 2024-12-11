@@ -11,13 +11,14 @@
         <span class="team-member">林楠烽</span>
         <span class="team-member">吴忱</span>
         <span class="team-member">叶济豪</span>
+        <span class="team-member">鄢祺昊</span>
         <span class="team-member">郑剡扬</span>
       </div>
     </div>
 
     <div class="platform-section">
       <h2 class="section-title">关于我们的平台</h2>
-      <p>ROZAR-AI 是一个集合 AI 产品的平台，提供营销、购买、维护等服务。</p>
+      <p>RAZOR-AI 可能是一个平台，但是RAZOR-AI是一个平台不太可能</p>
     </div>
 
     <div class="contact-section">
@@ -25,7 +26,7 @@
       <p>如果你想加入我们</p>
       <p>
         请联系我们：我们的联系方式:
-        <a href="mailto:herulin11@outlook.com">herulin11@outlook.com</a>
+        <a href="mailto:Razor-AI@outlook.com">Razor-AI@outlook.com</a>
       </p>
     </div>
   </div>

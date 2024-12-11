@@ -32,7 +32,7 @@
        margin-bottom: 1rem; /* 调整间距 */
 
        .logo {
-          width: 30%; /* 控制 Logo 大小 */
+          width: 25%; /* 控制 Logo 大小 */
           height: auto;
        }
 
@@ -48,9 +48,12 @@
     /* 内部菜单项 */
     .menu-item {
        width: 100%;
-       padding: 1.5rem;
+       padding: 1.3rem;
        color: $text-color;
-       cursor: pointer;
+       cursor: pointer;// 设置鼠标样式
+      text-align: center;// 文字居中
+      font-size: 1.3rem;// 设置文字大小
+      border-bottom: 1px solid $divider-color;
 
        &:hover {
           background-color: $hover-background-color;

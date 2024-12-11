@@ -3,7 +3,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Layout from '@/layouts/defaultLayout.vue';
 import Home from '@/views/HomePage.vue';
-import ProductDetail from '@/views/ProductDetail.vue';
+import ProductExpore from '@/views/ProductExpore.vue';
 import About from '@/views/AboutPage.vue';
 import Setting from '@/views/UserSettingPage.vue';
 import PersonalHome from '@/views/PersonalHomePage.vue';
@@ -25,15 +25,15 @@ const routes = [
         name: 'Home',
         component: Home,
         meta: {
-          title: 'ROZAR-AI-首页', // 首页标题
+          title: 'RazorAI-首页', // 首页标题
         },
       },
       {
-        path: '/product/:id',
-        name: 'ProductDetail',
-        component: ProductDetail,
+        path: '/explore',
+        name: 'ProductExpore',
+        component: ProductExpore,
         meta: {
-          title: 'ROZAR-AI-产品详情', // 产品详情页标题
+          title: 'RazorAI-探索机器人', // 探索机器人页标题
         },
       },
       {
@@ -41,7 +41,7 @@ const routes = [
         name: 'About',
         component: About,
         meta: {
-          title: 'ROZAR-AI-关于我们', // 关于页面标题
+          title: 'RazorAI-关于我们', // 关于页面标题
         },
       },
       {
@@ -49,7 +49,7 @@ const routes = [
         name: 'Setting',
         component: Setting,
         meta: {
-          title: 'ROZAR-AI-用户设置', // 用户设置页面标题
+          title: 'RazorAI-系统设置', // 系统设置页面标题
         },
       },
       {
@@ -57,7 +57,7 @@ const routes = [
         name: 'PersonalHome',
         component: PersonalHome,
         meta: {
-          title: 'ROZAR-AI-个人主页', // 个人主页标题
+          title: 'RazorAI-个人主页', // 个人主页标题
         },
       },
       {
@@ -65,7 +65,7 @@ const routes = [
         name: 'Test',
         component: Test,
         meta: {
-          title: 'ROZAR-AI-测试页面', // 测试页面标题
+          title: 'RazorAI-测试页面', // 测试页面标题
         },
       },
       {
@@ -73,7 +73,7 @@ const routes = [
         name: 'Login',
         component: Login,
         meta: {
-          title: 'ROZAR-AI-登录', // 登录页面标题
+          title: 'RazorAI-登录', // 登录页面标题
         },
       },
       {
@@ -81,7 +81,7 @@ const routes = [
         name: 'Chat',
         component: Chat,
         meta: {
-          title: 'ROZAR-AI-聊天',
+          title: 'RazorAI-聊天',
         },
       },
     ],
@@ -99,7 +99,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title;
   } else {
-    document.title = 'ROZAR-AI'; // 这里可以设置一个默认的标题
+    document.title = 'RazorAI'; // 这里可以设置一个默认的标题
   }
   next();
 });

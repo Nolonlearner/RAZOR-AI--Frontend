@@ -1,6 +1,6 @@
 <template>
   <div class="product-list">
-    <h1 class="page-title">我们的AI产品</h1>
+    <h1 class="page-title">探索AI机器人</h1>
     <div class="products-container">
       <div v-for="product in aiProducts" :key="product.id" class="product-card">
         <img :src="product.imgSrc" :alt="product.name" class="product-image" />
