@@ -11,13 +11,14 @@
         <span class="team-member">林楠烽</span>
         <span class="team-member">吴忱</span>
         <span class="team-member">叶济豪</span>
+        <span class="team-member">鄢祺昊</span>
         <span class="team-member">郑剡扬</span>
       </div>
     </div>
 
     <div class="platform-section">
       <h2 class="section-title">关于我们的平台</h2>
-      <p>ROZAR-AI 是一个集合 AI 产品的平台，提供营销、购买、维护等服务。</p>
+      <p>RAZOR-AI 可能是一个平台，但是RAZOR-AI是一个平台不太可能</p>
     </div>
 
     <div class="contact-section">
@@ -25,7 +26,7 @@
       <p>如果你想加入我们</p>
       <p>
         请联系我们：我们的联系方式:
-        <a href="mailto:herulin11@outlook.com">herulin11@outlook.com</a>
+        <a href="mailto:Razor-AI@outlook.com">Razor-AI@outlook.com</a>
       </p>
     </div>
   </div>
@@ -39,11 +40,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/mixins.scss';
+@import '@/assets/styles/variables.scss';
 .about-page {
   max-width: 100%; /* 填满整个宽度 */
   height: 100%; /* 填满整个高度 */
   margin: 0; /* 无边距 */
-  padding: 20px;
   background-color: #1e1e1e; /* 深色背景 */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
   color: #ffffff; /* 白色文字 */
@@ -87,12 +88,11 @@ export default {
   margin: 0 15px; /* 左右间距 */
   padding: 10px;
   border-radius: 5px; /* 圆角 */
-  @include transition(background-color 0.2s); // 设置背景色过渡效果
   cursor: pointer; // 设置鼠标样式为手型
 }
 
 .team-member:hover {
-  background-color: #333; /* 悬停背景色 */
-  transform: scale(1.02); /* 鼠标悬停时放大 */
+  background-color: $hover-background-color; /* 悬停背景色 */
+  transform: scale(1.05); /* 鼠标悬停时放大 */
 }
 </style>

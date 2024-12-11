@@ -23,7 +23,7 @@
       ></el-input>
     </el-form-item>
     <el-form-item>
-      <el-checkbox v-model="loginForm.rememberMe">记住我</el-checkbox>
+      <el-checkbox v-model="loginForm.rememberMe">记住我ya</el-checkbox>
     </el-form-item>
     <el-form-item>
       <el-button

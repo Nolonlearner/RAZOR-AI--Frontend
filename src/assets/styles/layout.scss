@@ -11,7 +11,8 @@
 
 /* 左侧菜单栏 */
 .sidebar {
-    width: 200px;
+    width: 15vw;// 设置宽度
+    height: 100vh;// 设置高度
     background-color: $primary-color;
     padding: 1rem;
     overflow-y: auto;
@@ -19,6 +20,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-right: 1px solid #dcdcdc;// 导航栏与内容区域分割线
     @include box-shadow(2px, 0, 10px, rgba(0, 0, 0, 0.2));
 
     /* Logo 和公司名称区域 */
@@ -30,13 +32,13 @@
        margin-bottom: 1rem; /* 调整间距 */
 
        .logo {
-          width: 40px; /* 控制 Logo 大小 */
+          width: 25%; /* 控制 Logo 大小 */
           height: auto;
        }
 
        .company-name {
           color: $text-color;
-          font-size: 1.2rem;
+          font-size: 1.5rem;
           font-weight: bold;
           margin-left: 0.5rem;
           flex-grow: 1;
@@ -46,17 +48,16 @@
     /* 内部菜单项 */
     .menu-item {
        width: 100%;
-       padding: 1rem;
+       padding: 1.3rem;
        color: $text-color;
-       cursor: pointer;
-       text-align: flex;
-       border-radius: 8px;
-       @include transition(all 0.3s ease-in-out);
+       cursor: pointer;// 设置鼠标样式
+      text-align: center;// 文字居中
+      font-size: 1.3rem;// 设置文字大小
+      border-bottom: 1px solid $divider-color;
 
        &:hover {
           background-color: $hover-background-color;
           color: $hover-text-color;
-          transform: translateY(-2px);
           @include box-shadow(0, 4px, 10px, rgba(0, 0, 0, 0.2));
        }
     }
@@ -66,15 +67,33 @@
        width: 100%;
        height: 1px;
        background-color: $divider-color;
-       margin: 0.5rem 0; /* 调整间距 */
+       padding-top: 0.5rem;
+       padding-left: 1rem;
+       padding-right: 1rem;
     }
 }
 
-.header {
-   display: flex;
-   align-items: center;
-   padding: 10px 20px;
-   background-color: $primary-color; // 可根据项目需求设置背景色
+.sidebar::-webkit-scrollbar {// 隐藏滚动条
+   width: 6px; /* 滚动条宽度 */
+ }
+
+ .sidebar::-webkit-scrollbar-thumb {// 滚动条样式
+   background: rgba(255, 255, 255, 0.3); /* 滚动条颜色 */
+   border-radius: 3px;
+ }
+ 
+ .sidebar::-webkit-scrollbar-track {// 滑轨样式
+   background: transparent; /* 滑轨背景色 */
+ }
+ 
+.ourHeader {
+   display: flex;// 设置为弹性布局
+   align-items: center;// 垂直居中
+   background-color: $primary-color; // 设置背景色
+   position:sticky;// 设置为粘性定位
+   top: 0;// 距离顶部0px
+   z-index: 1000;// 设置层级
+   border-bottom: #dcdcdc 1px solid;// 设置底部边框
  
    .logo {
      height: 40px;

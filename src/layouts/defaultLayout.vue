@@ -6,14 +6,21 @@
       <div class="logo-container">
         <img class="logo" src="@/assets/images/logo.png" alt="Logo" />
         <div class="company-name">RAZOR-AI</div>
+        <!-- 控制按钮：控制菜单栏是否隐藏-->
+        <button class="toggle-sidebar-btn" @click="toggleSidebar">
+          <el-icon :name="isSidebarHidden ? 'menu' : 'close'"></el-icon>
+        </button>
       </div>
       <div class="divider"></div>
       <div class="menu-item" @click="navigateTo('Home')">
-        <el-icon name="s-home"></el-icon>主页
+        <el-icon name="s-home"></el-icon>首页
       </div>
       <div class="divider"></div>
-      <div class="menu-item" @click="navigateTo('About')">
-        <el-icon name="info"></el-icon>关于我们
+      <div class="menu-item" @click="navigateTo('Chat')">
+        <el-icon name="message"></el-icon>我的机器人
+      </div>
+      <div class="menu-item" @click="navigateTo('ProductExpore')">
+        <el-icon name="s-goods"></el-icon>探索机器人
       </div>
       <div class="divider"></div>
       <div class="menu-item" @click="navigateTo('PersonalHome')">
@@ -21,28 +28,22 @@
       </div>
       <div class="divider"></div>
       <div class="menu-item" @click="navigateTo('Setting')">
-        <el-icon name="setting"></el-icon>设置
+        <el-icon name="setting"></el-icon>系统设置
       </div>
-      <div class="divider"></div>
-      <div class="menu-item" @click="navigateTo('ProductDetail')">
-        <el-icon name="s-goods"></el-icon>产品介绍
+      <div class="menu-item" @click="navigateTo('About')">
+        <el-icon name="info"></el-icon>关于我们
       </div>
       <div class="divider"></div>
       <div class="menu-item" @click="navigateTo('Test')">
-        <el-icon name="loading"></el-icon>测试
+        <el-icon name="loading"></el-icon>测试页面
       </div>
       <div class="divider"></div>
-      <div class="menu-item" @click="navigateTo('Chat')">
-        <el-icon name="message"></el-icon>与机器人交流吧
-      </div>
     </aside>
 
     <!-- 右侧内容区域 -->
     <el-main>
       <!-- 页头部分 -->
-      <el-header class="header">
-        <img src="@/assets/images/logo.png" alt="ROZAR Logo" class="logo" />
-        <h1 class="company-name">RAZOR-AI</h1>
+      <el-header class="ourHeader">
         <div class="user-info">
           <el-icon name="user"></el-icon>
           <span v-if="!isLoggedIn" @click="openLoginDialog">用户登录</span>
@@ -61,7 +62,7 @@
       :modal="true"
       :close-on-click-modal="false"
     >
-      <login-form @close="loginDialogVisible = false" />
+      <LoginForm @close="loginDialogVisible = false" />
     </el-dialog>
   </div>
 </template>
@@ -77,12 +78,16 @@ export default {
   data() {
     return {
       loginDialogVisible: false,
+      isSidebarHidden: false, // 控制菜单栏是否隐藏
     };
   },
   computed: {
     ...mapGetters(['isLoggedIn', 'user_id']),
   },
   methods: {
+    toggleSidebar() {
+      this.isSidebarHidden = !this.isSidebarHidden;
+    },
     navigateTo(route) {
       if (this.$route.name !== route) {
         this.$router.push({ name: route });
@@ -94,7 +99,9 @@ export default {
   },
 };
 </script>
-
 <style lang="scss" scoped>
 @import '@/assets/styles/layout.scss';
+.el-main {
+  padding: 0px;
+}
 </style>
