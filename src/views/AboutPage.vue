@@ -39,11 +39,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/mixins.scss';
+@import '@/assets/styles/variables.scss';
 .about-page {
   max-width: 100%; /* 填满整个宽度 */
   height: 100%; /* 填满整个高度 */
   margin: 0; /* 无边距 */
-  padding: 20px;
   background-color: #1e1e1e; /* 深色背景 */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
   color: #ffffff; /* 白色文字 */
@@ -87,12 +87,11 @@ export default {
   margin: 0 15px; /* 左右间距 */
   padding: 10px;
   border-radius: 5px; /* 圆角 */
-  @include transition(background-color 0.2s); // 设置背景色过渡效果
   cursor: pointer; // 设置鼠标样式为手型
 }
 
 .team-member:hover {
-  background-color: #333; /* 悬停背景色 */
-  transform: scale(1.02); /* 鼠标悬停时放大 */
+  background-color: $hover-background-color; /* 悬停背景色 */
+  transform: scale(1.05); /* 鼠标悬停时放大 */
 }
 </style>

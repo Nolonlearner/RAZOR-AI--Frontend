@@ -1,7 +1,7 @@
 /* src/assets/styles/mixins.scss */
 // 混合样式 (Mixins)
 //用于添加过渡效果的 mixin。可以传入不同的属性、持续时间和动画曲线。
-@mixin transition($property: all, $duration: 0.3s, $timing: ease-in-out) {
+@mixin transition($property: all, $duration: 0.3s, $timing: ease-out) {
    transition: $property $duration $timing;
 }
 

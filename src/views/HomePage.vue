@@ -94,18 +94,18 @@ export default {
 /* 页头部分样式 */
 
 .search {
-  margin-top: 100px;
-  margin-bottom: 100px;
+  margin-top: 10vh; // 顶部留白
+  margin-bottom: 10vh;
   display: flex;
   justify-content: center;
   align-items: center;
 
   .search-input {
-    margin-right: 10px;
+    margin-right: 2vw;
     max-width: 600px; // 限制搜索框的最大宽度
   }
 }
 .el-row {
-  margin-bottom: 10px;
+  margin-bottom: 1vh;
 }
 </style>

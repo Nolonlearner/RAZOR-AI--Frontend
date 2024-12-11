@@ -40,7 +40,7 @@
     <!-- 右侧内容区域 -->
     <el-main>
       <!-- 页头部分 -->
-      <el-header class="header">
+      <el-header class="ourHeader">
         <img src="@/assets/images/logo.png" alt="ROZAR Logo" class="logo" />
         <h1 class="company-name">RAZOR-AI</h1>
         <div class="user-info">
@@ -61,7 +61,7 @@
       :modal="true"
       :close-on-click-modal="false"
     >
-      <login-form @close="loginDialogVisible = false" />
+      <LoginForm @close="loginDialogVisible = false" />
     </el-dialog>
   </div>
 </template>
@@ -94,7 +94,9 @@ export default {
   },
 };
 </script>
-
 <style lang="scss" scoped>
 @import '@/assets/styles/layout.scss';
+.el-main {
+  padding: 0px;
+}
 </style>
