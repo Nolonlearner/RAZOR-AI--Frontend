@@ -2,13 +2,17 @@
 <template>
   <div class="layout-container">
     <!-- 左侧菜单栏 -->
-    <aside class="sidebar">
+    <aside class="sidebar" :class="{ hidden: isSidebarHidden }">
       <div class="logo-container">
         <img class="logo" src="@/assets/images/logo.png" alt="Logo" />
         <div class="company-name">RAZOR-AI</div>
-        <!-- 控制按钮：控制菜单栏是否隐藏-->
-        <button class="toggle-sidebar-btn" @click="toggleSidebar">
-          <el-icon :name="isSidebarHidden ? 'menu' : 'close'"></el-icon>
+        <!-- 菜单栏收缩按钮 -->
+        <button
+          class="toggle-sidebar-btn"
+          v-if="!isSidebarHidden"
+          @click="toggleSidebar"
+        >
+          <el-icon name="s-fold"></el-icon>
         </button>
       </div>
       <div class="divider"></div>
@@ -44,6 +48,14 @@
     <el-main>
       <!-- 页头部分 -->
       <el-header class="ourHeader">
+        <!-- 在侧边栏隐藏时，显示控制按钮 -->
+        <button
+          v-if="isSidebarHidden"
+          class="toggle-sidebar-btn in-header"
+          @click="toggleSidebar"
+        >
+          <el-icon name="s-unfold"></el-icon>
+        </button>
         <div class="user-info">
           <el-icon name="user"></el-icon>
           <span v-if="!isLoggedIn" @click="openLoginDialog">用户登录</span>
@@ -103,5 +115,9 @@ export default {
 @import '@/assets/styles/layout.scss';
 .el-main {
   padding: 0px;
+}
+.toggle-sidebar-btn {
+  cursor: pointer;
+  font-size: 1rem;
 }
 </style>

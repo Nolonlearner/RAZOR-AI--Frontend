@@ -73,6 +73,13 @@
     }
 }
 
+.sidebar.hidden {
+   transform: translateX(-100%);
+   width: 0; /* 确保宽度为0 */
+   overflow: hidden; /* 防止内容溢出 */
+   pointer-events: none; /* 禁止点击事件 */
+   padding: 0;
+ }
 .sidebar::-webkit-scrollbar {// 隐藏滚动条
    width: 6px; /* 滚动条宽度 */
  }
