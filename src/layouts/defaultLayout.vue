@@ -113,6 +113,9 @@ export default {
         { id: 1, title: '伦敦的天气', robotname: '机器人1' },
         { id: 2, title: '期末试卷分析', robotname: '机器人2' },
         { id: 3, title: '如何和女朋友聊天', robotname: '机器人3' },
+        { id: 4, title: '帮我写一份2亿字的论文', robotname: '机器人4' },
+        { id: 5, title: '如何成为美国总统', robotname: '机器人5' },
+        { id: 6, title: '意大利面怎么拌混凝土', robotname: '机器人6' },
       ], // 聊天历史列表
     };
   },

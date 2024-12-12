@@ -11,7 +11,7 @@
 
 /* 左侧菜单栏 */
 .sidebar {
-   width: 20vw; // 设置宽度
+   width: 23vw; // 设置宽度
    height: 100vh; // 设置高度
    background-color: $primary-color;
    padding: 1rem;
@@ -20,6 +20,7 @@
    display: flex;
    flex-direction: column;
    align-items: center;
+   box-sizing: border-box; // 设置盒模型为边框盒
    border-right: 1px solid #dcdcdc; // 导航栏与内容区域分割线
    @include box-shadow(2px, 0, 10px, rgba(0, 0, 0, 0.2));
 
@@ -32,16 +33,16 @@
       margin-bottom: 1rem; /* 调整间距 */
 
       .logo {
-         width: 25%; /* 控制 Logo 大小 */
+         width: 20%; /* 控制 Logo 大小 */
          height: auto;
       }
 
       .company-name {
          color: $text-color;
-         font-size: 1.5rem;
+         font-size: 2rem;
          font-weight: bold;
-         margin-left: 0.5rem;
          flex-grow: 1;
+         text-align: center;
       }
    }
    .main-section {
@@ -70,14 +71,19 @@
    }
    /*聊天历史 */
    .chat-history {
-      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0; /* 禁止高度被压缩 */
       padding: 1rem;
+      width: 100%;
+      height: 30%;
       background-color: lighten($primary-color, 10%); // 颜色稍浅
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // 提升视觉层次感
       overflow-y: auto;
 
       &::-webkit-scrollbar {
-         width: 10px; // 滚动条宽度
+         width: 8px; // 滚动条宽度
       }
       &::-webkit-scrollbar-thumb {
          background: rgba(0, 0, 0, 0.2); // 滚动条颜色
@@ -95,13 +101,14 @@
          background-color: $background-color; // 背景颜色
          border-radius: 8px;
          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); // 微弱阴影
+         color: $text-color; // 文字颜色
          cursor: pointer; // 鼠标样式
          transition:
             background-color 0.2s ease,
             transform 0.2s ease;
 
          &:hover {
-            background-color: $hover-background-color; // 悬停时背景色
+            background-color: lighten($hover-background-color,30%); // 悬停时背景色
             transform: translateY(-2px); // 微微抬起
          }
 
@@ -129,7 +136,7 @@
       color: $text-color;
       cursor: pointer; // 设置鼠标样式
       text-align: center; // 文字居中
-      font-size: 1.5rem; // 设置文字大小
+      font-size: 1.3rem; // 设置文字大小
       border-bottom: 1px solid $divider-color;
 
       &:hover {
@@ -182,6 +189,7 @@
    top: 0; // 距离顶部0px
    z-index: 1000; // 设置层级
    border-bottom: #dcdcdc 1px solid; // 设置底部边框
+   border-right: #dcdcdc 1px solid; // 设置右侧边框
 
    .header-title {
       //在heeder中居中显示
