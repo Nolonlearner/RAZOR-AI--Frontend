@@ -11,100 +11,204 @@
 
 /* 左侧菜单栏 */
 .sidebar {
-    width: 15vw;// 设置宽度
-    height: 100vh;// 设置高度
-    background-color: $primary-color;
-    padding: 1rem;
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-right: 1px solid #dcdcdc;// 导航栏与内容区域分割线
-    @include box-shadow(2px, 0, 10px, rgba(0, 0, 0, 0.2));
+   width: 23vw; // 设置宽度
+   height: 100vh; // 设置高度
+   background-color: $primary-color;
+   padding: 1rem;
+   overflow-y: auto;
+   overflow-x: hidden;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   box-sizing: border-box; // 设置盒模型为边框盒
+   border-right: 1px solid #dcdcdc; // 导航栏与内容区域分割线
+   @include box-shadow(2px, 0, 10px, rgba(0, 0, 0, 0.2));
 
-    /* Logo 和公司名称区域 */
-    .logo-container {
-       width: 100%;
-       display:flex;
-       align-items: center;
-       justify-content: space-between;
-       margin-bottom: 1rem; /* 调整间距 */
+   /* Logo 和公司名称区域 */
+   .logo-button-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem; /* 调整间距 */
 
-       .logo {
-          width: 25%; /* 控制 Logo 大小 */
-          height: auto;
-       }
+      .logo {
+         width: 20%; /* 控制 Logo 大小 */
+         height: auto;
+      }
 
-       .company-name {
-          color: $text-color;
-          font-size: 1.5rem;
-          font-weight: bold;
-          margin-left: 0.5rem;
-          flex-grow: 1;
-       }
-    }
+      .company-name {
+         color: $text-color;
+         font-size: 2rem;
+         font-weight: bold;
+         flex-grow: 1;
+         text-align: center;
+      }
+   }
+   .main-section {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+   }
+   .main-section-item {
+      width: 100%;
+      padding: 1.3rem;
+      font-size: 1rem;
+      display: flex;
+      color: $text-color;
+      flex-direction: column;
+      align-items: center;
+      background-color: $background-color;
+      border-radius: 20px;
+      margin: 10px 5px;
+      border: 2px solid $divider-color;
+      cursor: pointer;
+      &:hover {
+         background-color: $hover-background-color;
+         color: $hover-text-color;
+      }
+   }
+   /*聊天历史 */
+   .chat-history {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0; /* 禁止高度被压缩 */
+      padding: 1rem;
+      width: 100%;
+      height: 30%;
+      background-color: lighten($primary-color, 10%); // 颜色稍浅
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // 提升视觉层次感
+      overflow-y: auto;
 
-    /* 内部菜单项 */
-    .menu-item {
-       width: 100%;
-       padding: 1.3rem;
-       color: $text-color;
-       cursor: pointer;// 设置鼠标样式
-      text-align: center;// 文字居中
-      font-size: 1.3rem;// 设置文字大小
+      &::-webkit-scrollbar {
+         width: 8px; // 滚动条宽度
+      }
+      &::-webkit-scrollbar-thumb {
+         background: rgba(0, 0, 0, 0.2); // 滚动条颜色
+         border-radius: 8px;
+      }
+      &::-webkit-scrollbar-track {
+         background: rgba(255, 255, 255, 0.1); // 滑轨背景色
+      }
+      .chat-item {
+         display: flex;
+         align-items: center; // 垂直居中
+         justify-content: space-between; // 图标与标题分开
+         padding: 0.8rem 1rem;
+         margin-bottom: 0.5rem;
+         background-color: $background-color; // 背景颜色
+         border-radius: 8px;
+         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); // 微弱阴影
+         color: $text-color; // 文字颜色
+         cursor: pointer; // 鼠标样式
+         transition:
+            background-color 0.2s ease,
+            transform 0.2s ease;
+
+         &:hover {
+            background-color: lighten($hover-background-color,30%); // 悬停时背景色
+            transform: translateY(-2px); // 微微抬起
+         }
+
+         .chat-title {
+            flex-grow: 1;
+            font-size: 1rem;
+            color: $text-color;
+            margin-left: 0.5rem;
+            white-space: nowrap; // 防止文本换行
+            overflow: hidden;
+            text-overflow: ellipsis; // 超出部分省略
+         }
+
+         .chat-icon {
+            font-size: 1.2rem;
+            color: lighten($text-color, 20%);
+         }
+      }
+   }
+
+   /* 内部菜单项 */
+   .menu-item {
+      width: 100%;
+      padding: 1.3rem;
+      color: $text-color;
+      cursor: pointer; // 设置鼠标样式
+      text-align: center; // 文字居中
+      font-size: 1.3rem; // 设置文字大小
       border-bottom: 1px solid $divider-color;
 
-       &:hover {
-          background-color: $hover-background-color;
-          color: $hover-text-color;
-          @include box-shadow(0, 4px, 10px, rgba(0, 0, 0, 0.2));
-       }
-    }
+      &:hover {
+         background-color: $hover-background-color;
+         color: $hover-text-color;
+         @include box-shadow(0, 4px, 10px, rgba(0, 0, 0, 0.2));
+      }
+   }
 
-    /* 分割线 */
-    .divider {
-       width: 100%;
-       height: 1px;
-       background-color: $divider-color;
-       padding-top: 0.5rem;
-       padding-left: 1rem;
-       padding-right: 1rem;
-    }
+   /* 分割线 */
+   .divider {
+      width: 100%;
+      height: 1px;
+      background-color: $divider-color;
+      padding-top: 0.5rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+   }
 }
 
-.sidebar::-webkit-scrollbar {// 隐藏滚动条
+.sidebar.hidden {
+   transform: translateX(-100%);
+   width: 0; /* 确保宽度为0 */
+   overflow: hidden; /* 防止内容溢出 */
+   pointer-events: none; /* 禁止点击事件 */
+   padding: 0;
+}
+.sidebar::-webkit-scrollbar {
+   // 隐藏滚动条
    width: 6px; /* 滚动条宽度 */
- }
+}
 
- .sidebar::-webkit-scrollbar-thumb {// 滚动条样式
+.sidebar::-webkit-scrollbar-thumb {
+   // 滚动条样式
    background: rgba(255, 255, 255, 0.3); /* 滚动条颜色 */
    border-radius: 3px;
- }
- 
- .sidebar::-webkit-scrollbar-track {// 滑轨样式
+}
+
+.sidebar::-webkit-scrollbar-track {
+   // 滑轨样式
    background: transparent; /* 滑轨背景色 */
- }
- 
+}
+
 .ourHeader {
-   display: flex;// 设置为弹性布局
-   align-items: center;// 垂直居中
+   display: flex; // 设置为弹性布局
+   align-items: center; // 垂直居中
+   justify-content: center; // 水平居中
    background-color: $primary-color; // 设置背景色
-   position:sticky;// 设置为粘性定位
-   top: 0;// 距离顶部0px
-   z-index: 1000;// 设置层级
-   border-bottom: #dcdcdc 1px solid;// 设置底部边框
- 
-   .logo {
-     height: 40px;
-     margin-right: 10px;
-     margin-left: 45%;
+   position: sticky; // 设置为粘性定位
+   top: 0; // 距离顶部0px
+   z-index: 1000; // 设置层级
+   border-bottom: #dcdcdc 1px solid; // 设置底部边框
+   border-right: #dcdcdc 1px solid; // 设置右侧边框
+
+   .header-title {
+      //在heeder中居中显示
+      font-size: 1.5rem;
+      font-weight: lighter;
+      color: $text-color;
+      margin: 0;
+      position: absolute; //居中显示
    }
- 
+   .logo {
+      height: 40px;
+      margin-right: 10px;
+      margin-left: 45%;
+   }
+
    .company-name {
-     font-size: 24px;
-     color: $text-color; // 根据需求设置字体颜色
-     font-weight: bold;
+      font-size: 24px;
+      color: $text-color; // 根据需求设置字体颜色
+      font-weight: bold;
    }
    .user-info {
       display: flex;
@@ -112,6 +216,5 @@
       margin-left: auto; /* 将用户信息右对齐 */
       cursor: pointer;
       color: $text-color;
-    }
- }
-
+   }
+}

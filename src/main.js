@@ -15,6 +15,7 @@ import '@/assets/styles/utilities.scss';
 import '@/assets/styles/buttons.scss';
 import '@/assets/styles/layout.scss';
 */
+import '@/assets/styles/global.scss';
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
