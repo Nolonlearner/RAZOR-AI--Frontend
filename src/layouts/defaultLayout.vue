@@ -48,6 +48,9 @@
       <div class="menu-item" @click="navigateTo('PersonalHome')">
         <el-icon name="s-custom"></el-icon>个人主页
       </div>
+      <div class="menu-item" @click="navigateTo('Test')">
+        <el-icon name="chat-line-round"></el-icon>睿择社区
+      </div>
       <div class="menu-item" @click="navigateTo('Setting')">
         <el-icon name="setting"></el-icon>系统设置
       </div>
