@@ -21,7 +21,7 @@
         <div class="main-section-item" @click="navigateTo('Home')">
           <el-icon name="s-home"></el-icon>首页
         </div>
-        <div class="main-section-item" @click="navigateTo('Test')">
+        <div class="main-section-item" @click="navigateTo('SubscribedBots')">
           <el-icon name="s-opportunity"></el-icon>已订阅机器人
         </div>
       </div>
@@ -57,6 +57,9 @@
       <div class="divider"></div>
       <div class="menu-item" @click="navigateTo('Test')">
         <el-icon name="loading"></el-icon>测试页面
+      </div>
+      <div class="menu-item" @click="navigateTo('Test')">
+        <el-icon name="question"></el-icon>帮助中心
       </div>
       <div class="divider"></div>
     </aside>

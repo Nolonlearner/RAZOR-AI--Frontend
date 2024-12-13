@@ -111,7 +111,7 @@ export default {
 @import '@/assets/styles/mixins.scss';
 .settings-page {
   max-width: 100%;
-  height: auto; /* 自适应高度 */
+  height: 100%; /* 自适应高度 */
   padding: 20px;
   background-color: #1e1e1e; /* 深色背景 */
   @include box-shadow(0 4px 20px rgba(0, 0, 0, 0.2)); // 使用 SCSS 混合宏

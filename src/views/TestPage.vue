@@ -37,7 +37,6 @@ export default {
 .test-page {
   position: relative;
   padding: 20px;
-  background-color: #121212; /* 深色背景 */
   color: #ffffff; /* 白色文字 */
   height: 100vh; /* 满屏高度 */
   overflow: hidden; /* 隐藏溢出内容 */
@@ -51,13 +50,13 @@ export default {
   height: 100%;
   background: linear-gradient(
     270deg,
-    #1e90ff,
-    #ff1493,
-    #00bfff,
-    #8a2be2
+    #105615,
+    #527e67,
+    #0fcd97,
+    #e7f1f4
   ); /* 渐变色 */
   background-size: 400% 400%;
-  animation: gradientAnimation 10s ease infinite; /* 动画效果 */
+  animation: gradientAnimation 20s ease infinite; /* 动画效果 */
   z-index: -1; /* 背景层级在后 */
 }
 
