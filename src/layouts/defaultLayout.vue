@@ -41,7 +41,7 @@
       <div class="menu-item" @click="navigateTo('ProductExpore')">
         <el-icon name="goods"></el-icon>探索机器人
       </div>
-      <div class="menu-item" @click="navigateTo('Test')">
+      <div class="menu-item" @click="navigateTo('DeveloperCenter')">
         <el-icon name="coordinate"></el-icon>开发者中心
       </div>
       <div class="divider"></div>
