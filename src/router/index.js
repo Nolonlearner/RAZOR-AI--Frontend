@@ -10,6 +10,8 @@ import PersonalHome from '@/views/PersonalHomePage.vue';
 import Login from '@/views/LoginPage.vue';
 import Test from '@/views/TestPage.vue';
 import Chat from '@/views/ChatPage.vue';
+import SubscribedBots from '@/views/SubscribedBotsPage.vue';
+import DeveloperCenter from '@/views/DeveloperCenterPage.vue';
 //import { component } from 'vue/types/umd';
 
 Vue.use(VueRouter);
@@ -34,6 +36,22 @@ const routes = [
         component: ProductExpore,
         meta: {
           title: 'RazorAI-探索机器人', // 探索机器人页标题
+        },
+      },
+      {
+        path: 'subscribedBots',
+        name: 'SubscribedBots',
+        component: SubscribedBots,
+        meta: {
+          title: 'RazorAI-已订阅的机器人', // 已订阅的机器人页标题
+        },
+      },
+      {
+        path: '/developerCenter',
+        name: 'DeveloperCenter',
+        component: DeveloperCenter,
+        meta: {
+          title: 'RazorAI-开发者中心', // 开发者中心页标题
         },
       },
       {

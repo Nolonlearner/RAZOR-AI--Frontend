@@ -21,7 +21,7 @@
         <div class="main-section-item" @click="navigateTo('Home')">
           <el-icon name="s-home"></el-icon>首页
         </div>
-        <div class="main-section-item" @click="navigateTo('Test')">
+        <div class="main-section-item" @click="navigateTo('SubscribedBots')">
           <el-icon name="s-opportunity"></el-icon>已订阅机器人
         </div>
       </div>
@@ -41,12 +41,15 @@
       <div class="menu-item" @click="navigateTo('ProductExpore')">
         <el-icon name="goods"></el-icon>探索机器人
       </div>
-      <div class="menu-item" @click="navigateTo('Test')">
+      <div class="menu-item" @click="navigateTo('DeveloperCenter')">
         <el-icon name="coordinate"></el-icon>开发者中心
       </div>
       <div class="divider"></div>
       <div class="menu-item" @click="navigateTo('PersonalHome')">
         <el-icon name="s-custom"></el-icon>个人主页
+      </div>
+      <div class="menu-item" @click="navigateTo('Test')">
+        <el-icon name="chat-line-round"></el-icon>睿择社区
       </div>
       <div class="menu-item" @click="navigateTo('Setting')">
         <el-icon name="setting"></el-icon>系统设置
@@ -57,6 +60,9 @@
       <div class="divider"></div>
       <div class="menu-item" @click="navigateTo('Test')">
         <el-icon name="loading"></el-icon>测试页面
+      </div>
+      <div class="menu-item" @click="navigateTo('Test')">
+        <el-icon name="question"></el-icon>帮助中心
       </div>
       <div class="divider"></div>
     </aside>

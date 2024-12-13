@@ -83,14 +83,13 @@
       overflow-y: auto;
 
       &::-webkit-scrollbar {
-         width: 8px; // 滚动条宽度
+         width: 6px; // 滚动条宽度
       }
       &::-webkit-scrollbar-thumb {
-         background: rgba(0, 0, 0, 0.2); // 滚动条颜色
-         border-radius: 8px;
+         background: darken($primary-color,10%); // 滚动条颜色
       }
       &::-webkit-scrollbar-track {
-         background: rgba(255, 255, 255, 0.1); // 滑轨背景色
+         background: lighten($primary-color,30%); // 滑轨背景色
       }
       .chat-item {
          display: flex;
@@ -165,14 +164,12 @@
    padding: 0;
 }
 .sidebar::-webkit-scrollbar {
-   // 隐藏滚动条
-   width: 6px; /* 滚动条宽度 */
+   width: 8px; /* 滚动条宽度 */
 }
 
 .sidebar::-webkit-scrollbar-thumb {
    // 滚动条样式
    background: rgba(255, 255, 255, 0.3); /* 滚动条颜色 */
-   border-radius: 3px;
 }
 
 .sidebar::-webkit-scrollbar-track {
