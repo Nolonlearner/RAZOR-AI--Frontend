@@ -108,7 +108,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/mixins.scss';
+@use '@/assets/styles/mixins.scss' as *;
 .settings-page {
   max-width: 100%;
   height: 100%; /* 自适应高度 */

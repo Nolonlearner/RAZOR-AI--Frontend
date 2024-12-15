@@ -1,6 +1,6 @@
 /* src/assets/styles/forms.scss */
-@import './variables.scss';
-@import './mixins.scss';
+@use './variables.scss';
+@use './mixins.scss';
 
 input[type='text'] {
    padding: 0.5rem;
