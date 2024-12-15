@@ -6,9 +6,9 @@ A managed purchase, maintenance, and update platform for AI products. This is th
 
 ### 前提条件
 
-- [Node.js](https://nodejs.org/) (版本 14.x 或更高)
-- [Yarn](https://yarnpkg.com/) (版本 1.x 或更高)
-- [Vue CLI](https://cli.vuejs.org/) (使用 Vue 2.0)
+- [Node.js](https://nodejs.org/)     (版本20.15.1)
+- [Yarn](https://yarnpkg.com/)       (版本1.22.22)
+- [Vue CLI](https://cli.vuejs.org/)  (版本5.0.8)
 
 ### 安装步骤
 
