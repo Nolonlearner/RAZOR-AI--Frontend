@@ -119,7 +119,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/mixins.scss';
+@use '@/assets/styles/mixins.scss';
 .about-page {
   max-width: 100%; /* 填满整个宽度 */
   height: 100%; /* 填满整个高度 */

@@ -39,8 +39,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/mixins.scss';
-@import '@/assets/styles/variables.scss';
+@use '@/assets/styles/mixins.scss' as *;
+@use '@/assets/styles/variables.scss' as *;
 .about-page {
   max-width: 100%; /* 填满整个宽度 */
   height: 100%; /* 填满整个高度 */

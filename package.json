@@ -32,9 +32,9 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-vue": "^9.27.0",
     "jest": "^27.0.5",
-    "node-sass": "^9.0.0",
     "prettier": "^3.3.3",
-    "sass-loader": "^16.0.1",
+    "sass": "^1.83.0",
+    "sass-loader": "13",
     "vue-template-compiler": "2.7.16"
   },
   "browserslist": [

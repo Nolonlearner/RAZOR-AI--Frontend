@@ -164,7 +164,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '@/assets/styles/layout.scss';
+@use '@/assets/styles/layout.scss';
 .el-main {
   padding: 0px;
 }

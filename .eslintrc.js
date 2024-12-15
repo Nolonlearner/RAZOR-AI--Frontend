@@ -1,3 +1,5 @@
+// src/.eslintrc.js
+// 这是一个ESLint配置文件，用于定义代码规范。ESLint是一个用于识别和报告代码中的模式的工具，它可以帮助我们保持代码风格的一致性。
 module.exports = {
   root: true,
   env: {

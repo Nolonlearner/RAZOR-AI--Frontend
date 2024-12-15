@@ -88,8 +88,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/variables.scss';
-@import '@/assets/styles/homeProductsCards.scss';
+@use '@/assets/styles/variables.scss';
+@use '@/assets/styles/homeProductsCards.scss';
 /* 主页整体布局 */
 /* 页头部分样式 */
 
