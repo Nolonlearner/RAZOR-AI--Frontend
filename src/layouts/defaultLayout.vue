@@ -164,10 +164,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@use '@/assets/styles/layout.scss';
+@use '@/assets/styles/layout.scss' as *;
 .el-main {
   padding: 0px;
 }
+
 .toggle-sidebar-btn {
   cursor: pointer;
   font-size: 1.5rem;

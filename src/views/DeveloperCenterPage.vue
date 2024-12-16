@@ -1,13 +1,25 @@
 <!--src/views/DeveloperCenterPage.vue 这个页面展示开发者中心的信息-->
 <template>
   <div class="developer-center-page">
-    <h1 class="title">开发者中心</h1>
+    <!-- 页面标题 -->
+    <header class="page-header">
+      <h1>开发者中心</h1>
+    </header>
 
     <!-- 开发者统计信息 -->
     <div class="developer-stats">
-      <p>开发机器人数量：{{ robots.length }}</p>
-      <p>累计用户数：{{ totalUsers }}</p>
-      <p>平台排名：{{ rank }}</p>
+      <div class="stat-card">
+        <h2>{{ robots.length }}</h2>
+        <p>开发机器人数量</p>
+      </div>
+      <div class="stat-card">
+        <h2>{{ totalUsers }}</h2>
+        <p>累计用户数</p>
+      </div>
+      <div class="stat-card">
+        <h2>#{{ rank }}</h2>
+        <p>平台排名</p>
+      </div>
     </div>
 
     <!-- 操作功能 -->
@@ -21,23 +33,26 @@
     <!-- 机器人列表 -->
     <div class="robot-list">
       <h2>我的机器人</h2>
-      <div v-for="robot in robots" :key="robot.id" class="robot-card">
-        <div class="robot-header">
-          <img :src="robot.icon" alt="robot icon" class="robot-icon" />
-          <h3 class="robot-name">{{ robot.name }}</h3>
-        </div>
-        <p class="robot-description">{{ robot.description }}</p>
-        <div class="robot-actions">
-          <button @click="viewRobotDetails(robot.id)">查看详情</button>
-          <button @click="testRobot(robot.id)">测试</button>
-          <button @click="debugRobot(robot.id)">调试</button>
-          <button @click="publishRobot(robot.id)">发布</button>
-          <button @click="deleteRobot(robot.id)">删除</button>
+      <div class="robot-grid">
+        <div v-for="robot in robots" :key="robot.id" class="robot-card">
+          <div class="robot-header">
+            <img :src="robot.icon" alt="robot icon" class="robot-icon" />
+            <h3 class="robot-name">{{ robot.name }}</h3>
+          </div>
+          <p class="robot-description">{{ robot.description }}</p>
+          <div class="robot-actions">
+            <button @click="viewRobotDetails(robot.id)">查看详情</button>
+            <button @click="testRobot(robot.id)">测试</button>
+            <button @click="debugRobot(robot.id)">调试</button>
+            <button @click="publishRobot(robot.id)">发布</button>
+            <button @click="deleteRobot(robot.id)">删除</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 export default {
   name: 'DeveloperCenterPage',
@@ -106,87 +121,147 @@ export default {
 };
 </script>
 <style scoped>
+/* 页面整体样式 */
 .developer-center-page {
-  position: relative;
   padding: 20px;
-  color: #000000;
-  height: 100vh; /* 满屏高度 */
-  overflow: hidden; /* 隐藏溢出内容 */
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  background: #f4f5f7; /* 背景色 */
+  min-height: 100vh;
 }
 
-.title {
-  font-size: 2.5em;
+/* 标题 */
+.page-header {
+  text-align: center;
   margin-bottom: 20px;
 }
 
-.developer-stats {
-  margin-bottom: 30px;
-  font-size: 1.2em;
+.page-header h1 {
+  font-size: 2.5em;
+  color: #3c8dbc;
 }
 
+/* 开发者统计信息 */
+.developer-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #6a85b6, #bac8e0);
+  color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 30%;
+}
+
+.stat-card h2 {
+  font-size: 2em;
+  margin: 0;
+}
+
+.stat-card p {
+  font-size: 1.1em;
+  margin-top: 10px;
+}
+
+/* 操作按钮 */
 .actions {
+  text-align: center;
   margin-bottom: 20px;
 }
 
 .action-button {
-  padding: 10px 15px;
-  margin-right: 10px;
-  background-color: #409eff;
-  color: white;
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 1em;
+  background-color: #4caf50;
+  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .action-button:hover {
-  background-color: #66b1ff;
+  background-color: #45a049;
 }
 
+/* 机器人列表 */
 .robot-list {
   margin-top: 20px;
 }
 
+.robot-list h2 {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+}
+
+/* 机器人网格布局 */
+.robot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* 机器人卡片 */
 .robot-card {
-  display: flex;
-  flex-direction: column;
-  background-color: #f9f9f9;
-  padding: 20px;
+  background: #fff;
   border-radius: 10px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.robot-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
 
 .robot-header {
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 .robot-icon {
   width: 50px;
   height: 50px;
-  margin-right: 10px;
+  margin-right: 15px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
 }
 
 .robot-name {
   font-size: 1.5em;
+  color: #333;
 }
 
 .robot-description {
-  margin: 10px 0;
+  font-size: 0.95em;
   color: #666;
+  margin-bottom: 10px;
 }
 
+/* 机器人操作按钮 */
 .robot-actions button {
-  margin: 5px;
   padding: 5px 10px;
-  background-color: #409eff;
+  margin: 5px 0;
+  font-size: 0.9em;
+  background-color: #3c8dbc;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .robot-actions button:hover {
-  background-color: #66b1ff;
+  background-color: #5ba5e0;
 }
 </style>
