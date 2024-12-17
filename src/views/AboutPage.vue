@@ -45,9 +45,8 @@ export default {
   max-width: 100%; /* 填满整个宽度 */
   height: 100%; /* 填满整个高度 */
   margin: 0; /* 无边距 */
-  background-color: #1e1e1e; /* 深色背景 */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
-  color: #ffffff; /* 白色文字 */
+  background-color: $background-color;
+  color: $text-color;
   display: flex;
   flex-direction: column; /* 纵向排列 */
   align-items: center; /* 内容居中 */

@@ -76,6 +76,7 @@ export default {
   font-size: 3em;
   margin-bottom: 20px;
   animation: fadeIn 3s ease; /* 进入动画 */
+  color: #000; /* 黑色文字 */
 }
 
 .description {
