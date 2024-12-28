@@ -49,6 +49,7 @@
               v-for="robot in textRobots.slice(0, 4)"
               :key="robot.id"
               class="robot-card"
+              @click.native="selectRobot(robot)"
             >
               <img :src="robot.icon" alt="icon" class="robot-icon" />
               <div class="robot-info">
@@ -71,6 +72,7 @@
               v-for="robot in imageRobots.slice(0, 4)"
               :key="robot.id"
               class="robot-card"
+              @click.native="selectRobot(robot)"
             >
               <img :src="robot.icon" alt="icon" class="robot-icon" />
               <div class="robot-info">
@@ -93,6 +95,7 @@
               v-for="robot in avRobots.slice(0, 4)"
               :key="robot.id"
               class="robot-card"
+              @click.native="selectRobot(robot)"
             >
               <img :src="robot.icon" alt="icon" class="robot-icon" />
               <div class="robot-info">
@@ -110,7 +113,7 @@
       </div>
     </div>
     <!-- 对话框 -->
-    <el-dialog v-model="dialogVisible" :title="dialogTitle">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" center>
       <el-input
         v-model="searchKeyword"
         placeholder="搜索机器人"
@@ -123,7 +126,7 @@
           v-for="robot in filteredRobots"
           :key="robot.id"
           class="dialog-robot-card"
-          @click="selectRobot(robot)"
+          @click.native="selectRobot(robot)"
         >
           <img :src="robot.icon" alt="icon" class="robot-icon" />
           <div class="robot-info">
@@ -159,7 +162,8 @@ export default {
           id: 1,
           name: '文本助手1',
           icon: '@/assets/icons/text1.png',
-          description: '适合快速文本处理的机器人',
+          description:
+            '适合快速文本处理的机器人输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题',
         },
         {
           id: 2,
@@ -274,14 +278,21 @@ export default {
           : type === 'image'
             ? '图片生成机器人'
             : '音视频机器人';
-      this.$message.info(`打开${this.dialogTitle}对话框`);
       this.filteredRobots = this.getRobotsByType(type);
       this.dialogVisible = true;
+      this.$message.info(
+        `打开${this.dialogTitle}对话框,共有${this.filteredRobots.length}个机器人,${this.dialogVisible}`
+      );
     },
     selectRobot(robot) {
+      if (!robot || !robot.name) {
+        this.$message.error('无法选择机器人，请稍后重试');
+        return;
+      }
       this.$message.success(`您选择了机器人: ${robot.name}`);
       this.dialogVisible = false;
     },
+
     getRobotsByType(type) {
       return type === 'text'
         ? this.textRobots
@@ -361,10 +372,15 @@ export default {
           gap: 0.75rem;
 
           .robot-card {
-            width: 200px;
-            height: 150px;
+            width: 20%;
+            height: 125px;
             display: flex;
+            cursor: pointer;
             padding: 10px; // 内边距
+            &:hover {
+              /* 鼠标悬停时变换颜色 */
+              background-color: $primary-color;
+            }
 
             .robot-icon {
               width: 50px;
