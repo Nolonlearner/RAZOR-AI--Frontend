@@ -25,11 +25,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use '@/assets/styles/mixins.scss' as *;
+@use '@/assets/styles/variables.scss' as *;
+@use 'sass:color'; // 引入颜色函数
 .product-list {
   padding: 20px;
-  background-color: #121212; /* 深色背景 */
-  color: #ffffff; /* 白色文字 */
+  background-color: $background-color; /* 深色背景 */
+  color: $text-color; /* 白色文字 */
   height: 100%;
 }
 
@@ -46,7 +49,10 @@ export default {
 }
 
 .product-card {
-  background-color: #1e1e1e; /* 卡片背景 */
+  background-color: color.adjust(
+    $background-color,
+    $lightness: 5%
+  ); /* 卡片背景 */
   border-radius: 10px; /* 圆角 */
   margin: 15px;
   padding: 15px;
@@ -77,14 +83,5 @@ export default {
 .product-description {
   font-size: 0.9em;
   margin-bottom: 10px;
-}
-
-.link {
-  color: #1e90ff; /* 链接颜色 */
-  text-decoration: none;
-}
-
-.link:hover {
-  text-decoration: underline; /* 悬停时下划线 */
 }
 </style>

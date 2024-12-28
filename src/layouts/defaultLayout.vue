@@ -16,7 +16,7 @@
         </button>
       </div>
 
-      <div class="divider"></div>
+      <!-- 主要功能区域 -->
       <div class="main-section">
         <div class="main-section-item" @click="navigateTo('Home')">
           <el-icon name="s-home"></el-icon>首页
@@ -25,7 +25,6 @@
           <el-icon name="s-opportunity"></el-icon>已订阅机器人
         </div>
       </div>
-      <div class="divider"></div>
       <div class="chat-history">
         <div
           class="chat-item"
@@ -33,38 +32,37 @@
           :key="chat.id"
           @click="navigateToChat(chat.id)"
         >
-          <el-icon name="message"></el-icon>{{ chat.title }}
+          <el-icon name="chat-dot-square" class="chat-icon"></el-icon
+          >{{ chat.title }}
           <span>{{ chat.robotname }}</span>
         </div>
       </div>
-      <div class="divider"></div>
       <div class="menu-item" @click="navigateTo('ProductExpore')">
-        <el-icon name="goods"></el-icon>探索机器人
+        <el-icon name="goods" class="menu-item-icon"></el-icon>探索机器人
       </div>
       <div class="menu-item" @click="navigateTo('DeveloperCenter')">
-        <el-icon name="coordinate"></el-icon>开发者中心
+        <el-icon name="coordinate" class="menu-item-icon"></el-icon>开发者中心
       </div>
-      <div class="divider"></div>
       <div class="menu-item" @click="navigateTo('PersonalHome')">
-        <el-icon name="s-custom"></el-icon>个人主页
+        <el-icon name="s-custom" class="menu-item-icon"></el-icon>个人主页
       </div>
       <div class="menu-item" @click="navigateTo('Test')">
-        <el-icon name="chat-line-round"></el-icon>睿择社区
+        <el-icon name="chat-line-round" class="menu-item-icon"></el-icon
+        >睿择社区
       </div>
       <div class="menu-item" @click="navigateTo('Setting')">
-        <el-icon name="setting"></el-icon>系统设置
+        <el-icon name="setting" class="menu-item-icon"></el-icon>系统设置
       </div>
       <div class="menu-item" @click="navigateTo('About')">
-        <el-icon name="info"></el-icon>关于我们
+        <el-icon name="info" class="menu-item-icon"></el-icon>关于我们
       </div>
-      <div class="divider"></div>
+      <!-- <div class="divider"></div> -->
       <div class="menu-item" @click="navigateTo('Test')">
-        <el-icon name="loading"></el-icon>测试页面
+        <el-icon name="loading" class="menu-item-icon"></el-icon>测试页面
       </div>
       <div class="menu-item" @click="navigateTo('Test')">
-        <el-icon name="question"></el-icon>帮助中心
+        <el-icon name="question" class="menu-item-icon"></el-icon>帮助中心
       </div>
-      <div class="divider"></div>
     </aside>
 
     <!-- 右侧内容区域 -->
@@ -164,10 +162,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@use '@/assets/styles/layout.scss';
+@use '@/assets/styles/layout.scss' as *;
 .el-main {
   padding: 0px;
 }
+
 .toggle-sidebar-btn {
   cursor: pointer;
   font-size: 1.5rem;

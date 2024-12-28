@@ -2,24 +2,42 @@
 //统一管理颜色、字体等基本样式变量
 @use 'sass:color';// 引入颜色函数
 // 颜色变量
-$primary-color: #3c5669; // 主颜色
+
+
+$primary-color: #f3f3f3; // 主颜色
 $secondary-color: #758694; // 副颜色
-$text-color: #FFF8F3; // 字体颜色
+$text-color: #000000; // 字体颜色
 $hover-text-color: color.adjust($text-color, $lightness: 10%);; // 字体悬浮颜色
 $additional-color: #987D9A; // 额外颜色
 $hover-background-color: color.adjust($primary-color, $lightness: 10%);; // 背景悬浮颜色
-$background-color: #3c5669; // 背景颜色
-$border-color: #0b1303;// 边框颜色
-$divider-color: #539396;// 分割线颜色
-$card-background-color: color.adjust($background-color, $lightness: 50%);; // 产品卡片背景悬浮颜色
+$background-color: #f3f3f3; // 背景颜色
+$border-color: #dddddddf;// 边框颜色
+$divider-color: #dddddddf;// 分割线颜色
+$accent-color: #1a73e8; // 强调颜色
+$accent-hover-color: color.adjust($accent-color, $lightness: 10%); // 强调颜色悬浮颜色
+$card-background-color: #ffffff; // 卡片背景颜色
+
+$box-shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1); /* 轻量级阴影 */
+$box-shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.2); /* 中等级别阴影 */
+$box-shadow-heavy: 0 8px 16px rgba(0, 0, 0, 0.3); /* 重量级阴影 */
+
+// 渐变色
+$gradient-primary: linear-gradient(135deg, $secondary-color, $primary-color); // 渐变色1
+$gradient-secondary: linear-gradient(135deg, $additional-color, $secondary-color); // 渐变色2
 
 //字体变量
-$font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-$line-height: 1.5;
-$small-font-size: 0.875rem;
-$base-font-size: 1.0rem;
-$large-font-size: 1.25rem;
+$font-family: 'Poppins', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+$heading-font-size: 1.5rem; // 标题字体大小
+$subheading-font-size: 1.25rem; // 副标题字体大小
+$body-font-size: 1rem; // 正文字体大小
+$base-font-size: 1rem; // 基础字体大小
+$extra-small-font-size: 0.75rem; // 超小号字体
+$small-font-size: 0.875rem; // 小号字体
+$medium-font-size: 1.125rem; // 中号字体
+$large-font-size: 1.5rem; // 大号字体
+$font-weight-light: 300;
 $font-weight-normal: 400;
+$font-weight-medium: 500;
 $font-weight-bold: 700;
 
 //间距
@@ -30,3 +48,6 @@ $large-spacing: 32px;
 //边框
 $border-radius: 4px;
 $border-color: $primary-color;
+
+$menu-icon-size: 2rem;// 菜单图标大小
+$menu-icon-margin: 1rem;// 菜单图标间距
