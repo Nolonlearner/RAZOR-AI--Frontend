@@ -1,97 +1,250 @@
 <!-- filepath: /d:/MyGitHub/razor-ai-frontend/src/views/HomePage.vue -->
 <template>
   <div class="homepage">
-    <!-- 背景动画 -->
-    <div class="background">
-      <div class="glow"></div>
-      <div class="grid-lines"></div>
+    <!-- Logo 和名称 -->
+    <div class="header">
+      <img src="@/assets/images/logo.png" alt="Razor AI" class="logo" />
+      <h1 class="title">Razor AI</h1>
+    </div>
+
+    <!-- 选项卡和输入框 -->
+    <div class="chat-section">
+      <el-tabs v-model="activeTab" class="chat-tabs">
+        <el-tab-pane label="Assistant" name="assistant"></el-tab-pane>
+        <el-tab-pane label="Kimi" name="kimi"></el-tab-pane>
+        <el-tab-pane label="其他机器人" name="others"></el-tab-pane>
+        <el-tab-pane label="更多" name="more"></el-tab-pane>
+      </el-tabs>
+      <el-input
+        v-model="userInput"
+        placeholder="输入您的问题..."
+        class="chat-input"
+        clearable
+      ></el-input>
+    </div>
+
+    <!-- 官方机器人列表 -->
+    <div class="robot-section">
+      <h2 class="section-title">官方机器人</h2>
+      <div class="robot-groups">
+        <div class="robot-group">
+          <h3>文本对话机器人</h3>
+          <div class="robot-cards">
+            <el-card
+              v-for="robot in textRobots"
+              :key="robot.id"
+              class="robot-card"
+            >
+              <img :src="robot.icon" alt="icon" class="robot-icon" />
+              <div class="robot-info">
+                <p class="robot-name">{{ robot.name }}</p>
+                <p class="robot-description">
+                  {{ truncate(robot.description) }}
+                </p>
+              </div>
+            </el-card>
+          </div>
+        </div>
+        <div class="robot-group">
+          <h3>图片生成机器人</h3>
+          <div class="robot-cards">
+            <el-card
+              v-for="robot in imageRobots"
+              :key="robot.id"
+              class="robot-card"
+            >
+              <img :src="robot.icon" alt="icon" class="robot-icon" />
+              <div class="robot-info">
+                <p class="robot-name">{{ robot.name }}</p>
+                <p class="robot-description">
+                  {{ truncate(robot.description) }}
+                </p>
+              </div>
+            </el-card>
+          </div>
+        </div>
+        <div class="robot-group">
+          <h3>音视频机器人</h3>
+          <div class="robot-cards">
+            <el-card
+              v-for="robot in avRobots"
+              :key="robot.id"
+              class="robot-card"
+            >
+              <img :src="robot.icon" alt="icon" class="robot-icon" />
+              <div class="robot-info">
+                <p class="robot-name">{{ robot.name }}</p>
+                <p class="robot-description">
+                  {{ truncate(robot.description) }}
+                </p>
+              </div>
+            </el-card>
+          </div>
+        </div>
+      </div>
+      <el-link class="view-all" @click="viewAllRobots">查看全部</el-link>
     </div>
   </div>
 </template>
 
 <script>
-// mport axios from 'axios';
-// import InfiniteLoading from 'vue-infinite-loading';
-
 export default {
-  components: {
-    // InfiniteLoading,
-  },
   data() {
-    return {};
+    return {
+      activeTab: 'assistant', // 默认选项卡
+      userInput: '', // 用户输入内容
+      textRobots: [
+        {
+          id: 1,
+          name: '文本助手1',
+          icon: '@/assets/icons/text1.png',
+          description: '适合快速文本处理的机器人',
+        },
+        {
+          id: 2,
+          name: '文本助手2',
+          icon: '@/assets/icons/text2.png',
+          description: '可协助生成文案的工具',
+        },
+        {
+          id: 3,
+          name: '文本助手3',
+          icon: '@/assets/icons/text3.png',
+          description: '支持多种文本处理功能',
+        },
+        {
+          id: 4,
+          name: '文本助手4',
+          icon: '@/assets/icons/text4.png',
+          description: '提供文本分析和处理服务',
+        },
+      ],
+      imageRobots: [
+        {
+          id: 1,
+          name: '图像生成1',
+          icon: '@/assets/icons/image1.png',
+          description: '支持多种风格的图片生成',
+        },
+      ],
+      avRobots: [
+        {
+          id: 1,
+          name: '音视频助手',
+          icon: '@/assets/icons/av1.png',
+          description: '快速编辑音视频的智能工具',
+        },
+      ],
+    };
   },
-  mounted() {},
-  methods: {},
+  methods: {
+    truncate(text, length = 20) {
+      return text.length > length ? text.slice(0, length) + '...' : text;
+    },
+    viewAllRobots() {
+      this.$router.push('/all-robots'); // 跳转到“查看全部”页面
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @use '@/assets/styles/variables.scss' as *;
+.homepage {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-// 背景动画
-.background {
-  // 固定背景位置，使其始终位于页面顶部和左侧
-  position: fixed; // fixed通俗的理解就是固定定位，它是相对于浏览器窗口进行定位的，当页面滚动时，元素不会随着滚动条滚动，它会始终保持在一个位置。
-  top: 0;
-  left: 0;
-  // 设置背景的宽度和高度为视口的100%
-  width: 100%;
-  height: 100%;
-  // 设置z-index为-1，确保背景位于页面内容的下方
-  z-index: -1;
-  // 设置背景颜色为深灰色
-  background: #0d0d0d;
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
 
-  .glow {
-    // 绝对定位，相对于.background容器进行定位
-    position: absolute; // absolute通俗的理解就是绝对定位，它是相对于最近的已定位的父级元素进行定位的，如果没有已定位的父级元素，那么它是相对于html元素进行定位的。
-    top: 50%;
-    left: 50%;
-    // 设置发光效果的宽度和高度为100%，覆盖整个.background容器
-    width: 100%;
-    height: 100%;
-    // 使用径向渐变创建发光效果，从半透明的青色到透明
-    // radial-gradient() 函数用于创建一个径向渐变的背景图像。
-    // circle: 创建一个圆形的径向渐变。
-    // rgba(0, 255, 255, 0.3): 青色，透明度为0.3
-    // transparent: 完全透明
-    background: radial-gradient(circle, rgba(0, 255, 255, 0.3), transparent);
-    // 使用transform属性将元素中心移动到.background的中心
-    transform: translate(-50%, -50%);
-    // 应用动画pulse，持续时间为6秒，无限循环
-    animation: pulse 6s infinite;
-  }
-
-  .grid-lines {
-    // 绝对定位，相对于.background容器进行定位
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    // 使用线性渐变创建垂直和水平的网格线
-    background-image: linear-gradient(
-        to right,
-        rgba(255, 255, 255, 0.1) 1px,
-        transparent 1px
-      ),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    // 设置背景图案的大小为20px x 20px
-    background-size: 20px 20px;
-    // 使用mix-blend-mode属性将网格线与背景混合，创建叠加效果
-    mix-blend-mode: overlay;
-  }
-
-  // 定义pulse动画
-  @keyframes pulse {
-    0%,
-    100% {
-      // 在动画开始和结束时，设置透明度为0.5，并且元素大小不变
-      opacity: 0.5;
-      transform: translate(-50%, -50%) scale(1);
+    .logo {
+      width: 100px;
+      height: 100px;
     }
-    50% {
-      // 在动画中间时刻，设置透明度为1，并且元素放大到1.2倍
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1.2);
+
+    .title {
+      font-size: 2rem;
+      color: $primary-color;
+    }
+  }
+
+  .chat-section {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+
+    .chat-tabs {
+      width: 100%;
+    }
+
+    .chat-input {
+      width: 100%;
+      margin-top: 10px;
+    }
+  }
+
+  .robot-section {
+    width: 100%;
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .robot-groups {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .robot-group {
+        .robot-cards {
+          display: flex;
+          gap: 15px;
+          flex-wrap: wrap;
+
+          .robot-card {
+            width: 200px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+
+            .robot-icon {
+              width: 50px;
+              height: 50px;
+            }
+
+            .robot-info {
+              text-align: center;
+
+              .robot-name {
+                font-weight: bold;
+                margin: 5px 0;
+              }
+
+              .robot-description {
+                font-size: 0.875rem;
+                color: $text-color;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .view-all {
+      display: block;
+      text-align: right;
+      margin-top: 10px;
     }
   }
 }
