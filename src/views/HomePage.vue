@@ -6,144 +6,22 @@
       <div class="glow"></div>
       <div class="grid-lines"></div>
     </div>
-
-    <!-- 顶部 Logo 和标题 -->
-    <header class="homepage-header">
-      <div class="logo">
-        <img src="@/assets/images/logo.png" alt="Logo" />
-      </div>
-      <h1 class="app-name">RAZOR-AI</h1>
-    </header>
-
-    <!-- 搜索框和装饰元素 -->
-    <section class="search-section">
-      <div class="search-box">
-        <input
-          type="text"
-          class="search-input"
-          placeholder="ask me anything..."
-          v-model="searchQuery"
-        />
-        <button @click="performSearch" class="search-button">搜索</button>
-      </div>
-      <div class="recent-usage">
-        <h3>最近使用的AI机器人</h3>
-        <ul class="recent-robots-list">
-          <li
-            v-for="(robot, index) in recentRobots"
-            :key="index"
-            class="recent-robot-item"
-          >
-            <img :src="robot.image" :alt="robot.name" />
-            <div class="robot-info">
-              <h4>{{ robot.name }}</h4>
-              <p>{{ robot.description }}</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- 分类展示 -->
-    <section class="categories">
-      <div
-        v-for="(category, index) in categories"
-        :key="index"
-        class="category"
-      >
-        <!-- 分类标题和查看更多按钮 -->
-        <div class="category-header">
-          <h2>{{ category.title }}</h2>
-          <button @click="viewAll(category)">查看更多</button>
-        </div>
-        <!-- 机器人列表 -->
-        <div class="robot-list">
-          <!-- 机器人卡片 -->
-          <div
-            v-for="(robot, idx) in category.robots"
-            :key="idx"
-            class="robot-card"
-          >
-            <img :src="robot.image" :alt="robot.name" />
-            <h3>{{ robot.name }}</h3>
-            <p>{{ robot.description }}</p>
-          </div>
-        </div>
-        <!-- 无限滚动加载 -->
-        <infinite-loading
-          @infinite="loadMoreRobots(category)"
-        ></infinite-loading>
-      </div>
-    </section>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import InfiniteLoading from 'vue-infinite-loading';
+// mport axios from 'axios';
+// import InfiniteLoading from 'vue-infinite-loading';
 
 export default {
   components: {
-    InfiniteLoading,
+    // InfiniteLoading,
   },
   data() {
-    return {
-      searchQuery: '',
-      recentRobots: [],
-      page: 1, // 当前页数
-      perPage: 3, // 每页显示的数量
-    };
+    return {};
   },
-  mounted() {
-    this.fetchRecentRobots();
-    this.fetchCategories();
-  },
-  methods: {
-    async fetchRecentRobots() {
-      try {
-        const response = await axios.get('/api/recent-robots');
-        this.recentRobots = response.data;
-      } catch (error) {
-        console.error('Error fetching recent robots:', error);
-      }
-    },
-    async fetchCategories() {
-      try {
-        const response = await axios.get('/api/categories');
-        this.categories = response.data.map((category) => ({
-          ...category,
-          robots: [],
-          page: 1,
-        }));
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    },
-    async loadMoreRobots(category) {
-      try {
-        const response = await axios.get(
-          `/api/categories/${category.id}/robots`,
-          {
-            params: {
-              page: category.page,
-              perPage: this.perPage,
-            },
-          }
-        );
-        category.robots.push(...response.data);
-        category.page += 1;
-      } catch (error) {
-        console.error('Error loading more robots:', error);
-      }
-    },
-    performSearch() {
-      this.$message.success(`搜索内容: ${this.searchQuery}`);
-    },
-    viewAll(category) {
-      this.$message.success(`查看分类: ${category.title}`);
-      // 这里可以跳转到对应的分类页面
-    },
-  },
+  mounted() {},
+  methods: {},
 };
 </script>
 
@@ -152,153 +30,68 @@ export default {
 
 // 背景动画
 .background {
-  position: fixed;
+  // 固定背景位置，使其始终位于页面顶部和左侧
+  position: fixed; // fixed通俗的理解就是固定定位，它是相对于浏览器窗口进行定位的，当页面滚动时，元素不会随着滚动条滚动，它会始终保持在一个位置。
   top: 0;
   left: 0;
+  // 设置背景的宽度和高度为视口的100%
   width: 100%;
   height: 100%;
+  // 设置z-index为-1，确保背景位于页面内容的下方
   z-index: -1;
+  // 设置背景颜色为深灰色
   background: #0d0d0d;
 
   .glow {
-    position: absolute;
+    // 绝对定位，相对于.background容器进行定位
+    position: absolute; // absolute通俗的理解就是绝对定位，它是相对于最近的已定位的父级元素进行定位的，如果没有已定位的父级元素，那么它是相对于html元素进行定位的。
     top: 50%;
     left: 50%;
+    // 设置发光效果的宽度和高度为100%，覆盖整个.background容器
     width: 100%;
     height: 100%;
+    // 使用径向渐变创建发光效果，从半透明的青色到透明
+    // radial-gradient() 函数用于创建一个径向渐变的背景图像。
+    // circle: 创建一个圆形的径向渐变。
+    // rgba(0, 255, 255, 0.3): 青色，透明度为0.3
+    // transparent: 完全透明
     background: radial-gradient(circle, rgba(0, 255, 255, 0.3), transparent);
+    // 使用transform属性将元素中心移动到.background的中心
     transform: translate(-50%, -50%);
+    // 应用动画pulse，持续时间为6秒，无限循环
     animation: pulse 6s infinite;
   }
 
   .grid-lines {
+    // 绝对定位，相对于.background容器进行定位
     position: absolute;
     width: 100%;
     height: 100%;
+    // 使用线性渐变创建垂直和水平的网格线
     background-image: linear-gradient(
         to right,
         rgba(255, 255, 255, 0.1) 1px,
         transparent 1px
       ),
       linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    // 设置背景图案的大小为20px x 20px
     background-size: 20px 20px;
+    // 使用mix-blend-mode属性将网格线与背景混合，创建叠加效果
     mix-blend-mode: overlay;
   }
 
+  // 定义pulse动画
   @keyframes pulse {
     0%,
     100% {
+      // 在动画开始和结束时，设置透明度为0.5，并且元素大小不变
       opacity: 0.5;
       transform: translate(-50%, -50%) scale(1);
     }
     50% {
+      // 在动画中间时刻，设置透明度为1，并且元素放大到1.2倍
       opacity: 1;
       transform: translate(-50%, -50%) scale(1.2);
-    }
-  }
-}
-
-// 搜索框
-.search-section {
-  margin-top: 40px;
-
-  .search-box {
-    display: flex;
-    justify-content: center;
-    width: 70%;
-
-    .search-input {
-      flex: 1;
-      padding: 15px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #444;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-    }
-
-    .search-button {
-      margin-left: 10px;
-      padding: 15px 20px;
-      background: #00cccc;
-      border: none;
-      color: #fff;
-      border-radius: 8px;
-      cursor: pointer;
-
-      &:hover {
-        background: #00a3a3;
-      }
-    }
-  }
-}
-
-// 分类样式
-.categories {
-  margin-top: 30px;
-  .category-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    h2 {
-      color: #00cccc;
-    }
-  }
-
-  .robot-list {
-    display: flex;
-    gap: 20px;
-
-    .robot-card {
-      width: 150px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 10px;
-      padding: 15px;
-      color: #fff;
-
-      img {
-        width: 100%;
-        border-radius: 5px;
-      }
-    }
-  }
-}
-.recent-usage {
-  margin-top: 30px;
-  h3 {
-    color: #00cccc;
-  }
-
-  .recent-robots-list {
-    display: flex;
-    gap: 20px;
-    margin-top: 20px;
-
-    .recent-robot-item {
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 10px;
-      color: #fff;
-
-      img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin-right: 10px;
-      }
-
-      .robot-info {
-        h4 {
-          margin: 0;
-          color: #00cccc;
-        }
-
-        p {
-          margin: 0;
-        }
-      }
     }
   }
 }
