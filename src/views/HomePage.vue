@@ -183,6 +183,30 @@ export default {
           icon: '@/assets/icons/text4.png',
           description: '提供文本分析和处理服务',
         },
+        {
+          id: 5,
+          name: '文本助手5',
+          icon: '@/assets/icons/text5.png',
+          description: '适合快速生成文案的工具',
+        },
+        {
+          id: 6,
+          name: '文本助手6',
+          icon: '@/assets/icons/text6.png',
+          description: '支持多种文本处理功能',
+        },
+        {
+          id: 7,
+          name: '文本助手7',
+          icon: '@/assets/icons/text7.png',
+          description: '提供文本分析和处理服务',
+        },
+        {
+          id: 8,
+          name: '文本助手8',
+          icon: '@/assets/icons/text8.png',
+          description: '适合快速生成文案的工具',
+        },
       ],
       imageRobots: [
         {
@@ -330,7 +354,7 @@ export default {
   }
 
   .recent-robots {
-    width: 50%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -343,6 +367,7 @@ export default {
     .chat-input {
       width: 100%;
       margin-top: 10px;
+      margin-bottom: 0px;
     }
   }
 
@@ -350,8 +375,9 @@ export default {
     width: 100%;
 
     .section-title {
-      font-size: 2rem;
-      margin-bottom: 20px;
+      font-size: 1.75rem;
+      margin-top: 0;
+      margin-bottom: 10px;
       text-align: center; // 文本居中
     }
 
@@ -433,6 +459,12 @@ export default {
     .dialog-robot-card {
       display: flex;
       align-items: center;
+      cursor: pointer;
+
+      &:hover {
+        /* 鼠标悬停时变换颜色 */
+        background-color: $primary-color;
+      }
 
       .robot-icon {
         width: 50px;
