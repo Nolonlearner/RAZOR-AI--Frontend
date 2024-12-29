@@ -1,148 +1,168 @@
 <template>
-  <div class="personal-home">
+  <div class="profile-page">
     <h1 class="title">个人主页</h1>
-    <p class="intro">欢迎回来，{{ userName }}！</p>
+    <p class="description">
+      欢迎来到您的个人主页，您可以在此修改个人信息和查看好友。
+    </p>
 
     <div class="profile-container">
-      <div class="profile-left">
-        <div class="avatar-container">
-          <img :src="userAvatar" alt="用户头像" class="avatar" />
+      <div class="profile-header">
+        <div class="avatar-section">
+          <img :src="avatar" alt="用户头像" class="avatar" />
+          <el-button @click="editAvatar" size="mini">修改头像</el-button>
         </div>
-        <div class="info-section">
-          <h2>个人信息</h2>
-          <div class="info-item">
-            <span class="label">用户名:</span>
-            <span class="value">{{ userName }}</span>
-          </div>
-          <div class="info-item">
-            <span class="label">邮箱:</span>
-            <span class="value">{{ userEmail }}</span>
-          </div>
-          <div class="info-item">
-            <span class="label">当前等级:</span>
-            <span class="value">{{ userLevel }}</span>
-            <el-button size="mini" @click="navigateToEditInfo">编辑</el-button>
-          </div>
-        </div>
-        <div class="bio-section">
-          <h2>个人介绍</h2>
-          <p class="bio">{{ userBio }}</p>
-          <el-button size="mini" @click="navigateToEditBio"
-            >编辑个人介绍</el-button
-          >
+        <div class="user-info">
+          <h2>{{ username }}</h2>
+          <p>邮箱：{{ email }}</p>
+          <p>个人简介：{{ bio }}</p>
         </div>
       </div>
 
-      <div class="profile-right">
-        <div class="preferences-section">
-          <h2>用户喜好</h2>
-          <ul>
-            <li
-              v-for="(preference, index) in userPreferences"
-              :key="index"
-              class="preference-item"
-            >
-              {{ preference }}
+      <div class="info-container">
+        <!-- 感兴趣的模块 -->
+        <div class="info-group">
+          <h3>感兴趣的模块</h3>
+          <ul class="interest-list">
+            <li v-for="module in interestModules" :key="module">
+              {{ module }}
             </li>
           </ul>
-          <el-button size="mini" @click="editPreferences">编辑喜好</el-button>
+          <el-button @click="editInterest" size="mini">编辑兴趣模块</el-button>
         </div>
 
-        <div class="products-section">
-          <h2>最近常用的 AI 产品</h2>
-          <ul>
-            <li
-              v-for="product in aiProducts"
-              :key="product.id"
-              class="product-item"
-            >
-              <strong>{{ product.name }}</strong
-              >: {{ product.description }}
-            </li>
+        <!-- 我的好友 -->
+        <div class="info-group">
+          <h3>我的好友</h3>
+          <ul class="friend-list">
+            <li v-for="friend in friends" :key="friend">{{ friend }}</li>
           </ul>
+          <el-button @click="addFriend" size="mini">添加好友</el-button>
         </div>
 
-        <div class="followed-users-section">
-          <h2>关注的用户</h2>
-          <ul>
-            <li
-              v-for="user in followedUsers"
-              :key="user.id"
-              class="followed-user-item"
-            >
-              {{ user.name }}
-            </li>
+        <!-- 我喜欢的机器人 -->
+        <div class="info-group">
+          <h3>我喜欢的机器人</h3>
+          <ul class="robot-list">
+            <li v-for="robot in favoriteRobots" :key="robot">{{ robot }}</li>
           </ul>
         </div>
 
-        <div class="community-section">
-          <h2>参加AI社区</h2>
-          <el-button size="mini" @click="joinCommunity">加入社区</el-button>
-        </div>
-
-        <div class="change-password-section">
-          <h2>修改密码</h2>
-          <el-button type="primary" @click="navigateToChangePassword"
-            >修改密码</el-button
-          >
+        <!-- 我常用的编辑工具 -->
+        <div class="info-group">
+          <h3>我常用的编辑工具</h3>
+          <ul class="tool-list">
+            <li v-for="tool in favoriteTools" :key="tool">{{ tool }}</li>
+          </ul>
         </div>
       </div>
+    </div>
+
+    <div class="button-group">
+      <el-button type="primary" @click="saveProfile">保存个人信息</el-button>
+      <el-button @click="confirmLogout" size="mini" type="danger"
+        >登出</el-button
+      >
     </div>
   </div>
 </template>
 
 <script>
+import { MessageBox } from 'element-ui';
+import { mapActions } from 'vuex';
 export default {
-  name: 'PersonalHome',
+  name: 'UserProfile',
   data() {
     return {
-      userAvatar: 'https://via.placeholder.com/100',
-      userName: '用户名称',
-      userEmail: 'user@example.com',
-      userLevel: '初级',
-      userPreferences: ['喜好A', '喜好B', '喜好C'],
-      userBio: '这是用户的个人介绍。',
-      aiProducts: [
-        { id: 1, name: 'AI 产品 A', description: '这是AI产品A的描述。' },
-        { id: 2, name: 'AI 产品 B', description: '这是AI产品B的描述。' },
-      ],
-      followedUsers: [
-        { id: 1, name: '关注用户A' },
-        { id: 2, name: '关注用户B' },
-      ],
+      avatar: 'https://via.placeholder.com/150',
+      username: '唐胜标',
+      email: '666@example.com',
+      bio: '喜欢编程和旅游。',
+      interestModules: ['编程', '旅游', '健身'],
+      friends: ['何雯宏', '许昕格', '王加添'],
+      favoriteRobots: ['R2-D2', 'C-3PO', 'Optimus Prime'],
+      favoriteTools: ['VS Code', 'Sublime Text', 'WebStorm'],
     };
   },
   methods: {
-    navigateToChangePassword() {
-      this.$message.info('修改密码功能待实现');
+    editAvatar() {
+      this.$message.info('修改头像功能待实现');
     },
-    navigateToEditInfo() {
-      this.$message.info('编辑个人信息功能待实现');
+    editInterest() {
+      this.$message.info('编辑兴趣模块功能待实现');
     },
-    editPreferences() {
-      this.$message.info('编辑喜好功能待实现');
+    addFriend() {
+      this.$message.info('添加好友功能待实现');
     },
-    navigateToEditBio() {
-      this.$message.info('编辑个人介绍功能待实现');
+    saveProfile() {
+      console.log('个人信息保存:', {
+        username: this.username,
+        email: this.email,
+        bio: this.bio,
+        interestModules: this.interestModules,
+        friends: this.friends,
+        favoriteRobots: this.favoriteRobots,
+        favoriteTools: this.favoriteTools,
+      });
+      this.$message.success('个人信息已保存！');
     },
-    joinCommunity() {
-      this.$message.info('加入AI社区功能待实现');
+    confirmLogout() {
+      // 弹出确认对话框
+      MessageBox.confirm('您确定要登出吗？', '确认登出', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          // 用户点击“确定”后执行登出操作
+          this.outSubmit();
+        })
+        .catch(() => {
+          // 用户点击“取消”时不做任何操作
+          console.log('取消登出');
+        });
+    },
+    ...mapActions('user', ['logout']), // 映射 user 模块中的 logout 方法
+    async outSubmit() {
+      this.isLoading = true; // 显示加载状态
+      try {
+        // 调用 Vuex 中的 logout 动作
+        const result = await this.logout();
+        console.log(result);
+        // 清除本地存储的用户信息（如 token）
+        this.$message.success('登出成功！'); // 提示登出成功
+        // 跳转到登录页面
+        this.$router.push('/'); // 如果你在使用 vue-router
+      } catch (error) {
+        console.error(error); // 打印错误信息
+        this.$message.error(error.message || '登出失败');
+      } finally {
+        // 无论成功或失败都会执行
+        this.isLoading = false; // 结束加载状态
+      }
     },
   },
 };
 </script>
-
 <style lang="scss" scoped>
-@import '@/assets/styles/mixins.scss';
-.personal-home {
-  max-width: 1200px; /* 增加画布宽度 */
-  height: auto; /* 自适应高度 */
+@use '@/assets/styles/mixins.scss' as *;
+.html-body {
+  height: 100%; /* 设置 html 和 body 高度为 100% */
+  margin: 0; /* 去除默认边距 */
+  padding: 0; /* 去除默认内边距 */
+  overflow-x: hidden; /* 防止横向滚动 */
+}
+
+.profile-page {
+  height: 100vh; /* 使用视口高度 */
+  max-width: 100%;
   padding: 20px;
-  background-color: #1e1e1e;
-  color: #ffffff;
+  background-color: #2e2e2e; /* 深色背景 */
+  color: #ffffff; /* 白色文字 */
   display: flex;
   flex-direction: column;
-  margin: auto; /* 居中 */
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y: auto; /* 防止内容溢出时出现滚动条 */
 }
 
 .title {
@@ -151,75 +171,88 @@ export default {
   margin-bottom: 10px;
 }
 
-.intro {
+.description {
   text-align: center;
-  color: #aaa;
+  margin-bottom: 20px;
+  color: #aaa; /* 灰色文字 */
 }
 
 .profile-container {
   display: flex;
-  justify-content: space-between;
-  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
-.profile-left,
-.profile-right {
-  width: 48%;
-  padding: 15px;
-  background-color: #2a2a2a;
-  border-radius: 8px;
-  margin: 20px; /* 间隔 */
-  @include transition(transform 0.3s); // 使用 SCSS 混合宏
-  @include box-shadow(0 4px 20px rgba(0, 0, 0, 0.2)); // 使用 SCSS 混合宏
-}
-
-.avatar-container {
+.profile-header {
   display: flex;
-  justify-content: center;
-  margin-bottom: 15px;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.avatar-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
 }
 
-.info-section,
-.bio-section,
-.preferences-section,
-.products-section,
-.followed-users-section,
-.community-section,
-.change-password-section {
-  margin-bottom: 15px; /* 板块间隔 */
-  opacity: 0; /* 初始透明度 */
-  @include fadeIn(0.5s); // 设置动画持续时间为 0.5 秒
-}
-
-.info-item,
-.preference-item,
-.followed-user-item,
-.product-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #444;
-}
-
-.info-item:last-child,
-.preference-item:last-child,
-.followed-user-item:last-child,
-.product-item:last-child {
-  border-bottom: none;
-}
-
-.label {
+.user-info h2 {
+  font-size: 1.5em;
   font-weight: bold;
 }
 
-.bio {
-  padding: 10px 0;
+.user-info p {
+  font-size: 1.1em;
+  color: #aaa;
+  margin-top: 5px;
+}
+
+.info-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.info-group {
+  width: 45%; /* 每个信息组的宽度 */
+  margin: 0 10px;
+  padding: 15px;
+  background-color: #3a3a3a;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.info-group h3 {
+  font-size: 1.3em;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.interest-list,
+.friend-list,
+.robot-list,
+.tool-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.interest-list li,
+.friend-list li,
+.robot-list li,
+.tool-list li {
+  color: #aaa;
+  font-size: 1.1em;
+  margin-bottom: 5px;
 }
 
 .button-group {
