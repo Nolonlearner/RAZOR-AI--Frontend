@@ -20,6 +20,8 @@
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit">注册</el-button>
+    </el-form-item>
+    <el-form-item>
       <el-button @click="goBack">返回</el-button>
     </el-form-item>
   </el-form>
@@ -137,38 +139,121 @@ export default {
 
 <style scoped>
 /* 页面容器样式 */
+/* 页面容器样式 */
 .el-form {
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
-  padding: 30px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  background: linear-gradient(45deg, #6a11cb, #2575fc); /* 科幻渐变背景 */
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  font-family: 'Roboto', sans-serif;
 }
 
 /* 输入框样式 */
 .el-form-item {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .el-input {
   width: 100%;
+  border-radius: 25px;
+  padding: 10px 15px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.el-input:hover,
+.el-input:focus {
+  border-color: #00d1b2; /* 动态效果 */
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* 按钮样式 */
 .el-button {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 20px;
+  padding: 15px;
+  font-size: 18px;
+  border-radius: 50px;
+  background: linear-gradient(45deg, #00d1b2, #00bcd4);
+  color: white;
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* 让返回按钮有点间距 */
+.el-button:hover {
+  background: linear-gradient(45deg, #00bcd4, #00d1b2);
+  transform: translateY(-3px); /* 鼠标悬浮时抬升效果 */
+}
+
+.el-button:active {
+  transform: translateY(2px); /* 点击时下压效果 */
+}
+
 .el-button + .el-button {
   margin-left: 10px;
 }
 
 /* 注册表单标签 */
 .el-form-item label {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.el-button.is-primary {
+  background-color: #00bcd4;
+  border: none;
+}
+
+.el-button.is-default {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+/* 页面整体背景 */
+body {
+  background: url('https://cdn.pixabay.com/photo/2018/11/08/05/57/sky-3807359_960_720.jpg')
+    no-repeat center center fixed;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* 美化弹窗 */
+.el-msgbox__header {
+  background-color: #00d1b2;
+  color: #fff;
+  border-radius: 10px 10px 0 0;
+}
+
+.el-msgbox__btns {
+  display: flex;
+  justify-content: center;
+}
+
+.el-msgbox__btns .el-button {
+  background: #00d1b2;
+  color: white;
+  font-weight: bold;
+  border-radius: 50px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease;
+}
+
+.el-msgbox__btns .el-button:hover {
+  background: #00bcd4;
+}
+
+.el-msgbox__btns .el-button:active {
+  transform: translateY(2px); /* 点击时下压效果 */
 }
 </style>
