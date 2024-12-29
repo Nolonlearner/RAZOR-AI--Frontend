@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: 'Register',
   data() {
@@ -49,6 +50,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions('user', ['register']), // 映射 user 模块中的 register 方法
     async onSubmit() {
       this.$refs.registerForm.validate(async (valid) => {
         if (valid) {
@@ -59,13 +61,13 @@ export default {
               user_name: this.registerForm.user_name,
               user_password: this.registerForm.user_password,
             });
+            console.log('register result:', result);
             if (result.success) {
               this.$message.success(result.message); // 提示注册成功
               console.log('register result:', result);
               this.resetForm(); // 重置表单
               // 自动登陆，并且跳转到首页
-
-              this.$router.push({ path: '/' });
+              this.$router.push({ name: 'Home' });
             } else {
               this.$message.error(
                 result.message || '登录注册，请检查用户名和密码格式'
