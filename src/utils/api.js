@@ -11,13 +11,18 @@ const api = axios.create({
 // 请求拦截器
 api.interceptors.request.use(
   (config) => {
-    const token = Storage.get('token'); // 从本地存储中获取 token
-
-    // 判断是否需要跳过 Authorization 头
-    if (!config.skipAuth && token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // 自动为 POST 请求设置 Content-Type
+    if (config.method === 'post' && !config.headers.get('Content-Type')) {
+      config.headers.set('Content-Type', 'application/json');
     }
 
+    // 判断是否需要跳过 Authorization 头
+    if (config.headers.get('skipAuth') !== 'true') {
+      const token = Storage.get('token'); // 从本地存储中获取 token
+      config.headers.set('Authorization', `Bearer ${token}`);
+    }
+    // 移除自定义标志以免发送到服务器
+    config.headers.delete('skipAuth');
     return config;
   },
   (error) => {
@@ -40,10 +45,15 @@ api.interceptors.response.use(
   }
 );
 
-// API 请求函数
+// API 请求方法
 export const login = (payload) =>
-  api.post('/user/login', payload, { skipAuth: true }); // 登录接口不需要携带 token
+  api.post('/user/login', payload, {
+    headers: { skipAuth: true }, // 跳过 Authorization 头
+  });
+
 export const register = (payload) =>
-  api.post('/user/register', payload, { skipAuth: true }); // 注册接口不需要携带 token
-export const fetchUserData = () =>
-  api.get('/user/data'); // 需要携带 token 的接口
+  api.post('/user/register', payload, {
+    headers: { skipAuth: true }, // 跳过 Authorization 头
+  });
+
+export const fetchUserData = () => api.get('/user/data'); // 自动携带 token
