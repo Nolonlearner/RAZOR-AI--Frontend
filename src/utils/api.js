@@ -8,23 +8,6 @@ const api = axios.create({
   timeout: 1000,
 });
 
-// 请求拦截器
-api.interceptors.request.use(
-  (config) => {
-    const token = Storage.get('token'); // 从本地存储中获取 token
-
-    // 判断是否需要跳过 Authorization 头
-    if (!config.skipAuth && token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error); // 请求错误直接返回
-  }
-);
-
 // 响应拦截器
 api.interceptors.response.use(
   (response) => response, // 正常响应直接返回
@@ -40,10 +23,7 @@ api.interceptors.response.use(
   }
 );
 
-// API 请求函数
-export const login = (payload) =>
-  api.post('/user/login', payload, { skipAuth: true }); // 登录接口不需要携带 token
-export const register = (payload) =>
-  api.post('/user/register', payload, { skipAuth: true }); // 注册接口不需要携带 token
-export const fetchUserData = () =>
-  api.get('/user/data'); // 需要携带 token 的接口
+// API 请求方法
+export const login = (payload) => api.post('/user/login', payload);
+
+export const register = (payload) => api.post('/user/register', payload);
