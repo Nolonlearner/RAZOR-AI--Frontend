@@ -55,22 +55,8 @@ RAZOR-AI-frontend           # 项目根目录
 ├── src                     # 源代码目录，存放所有前端代码
 │   ├── App.vue             # 根组件文件，是整个应用的入口组件
 │   ├── assets              # 资源文件夹，存放图片、样式和其他静态资源
-│   │   ├── images          # 图片文件夹
-│   │   │   ├── aiproducts  # AI 产品相关图片
-│   │   │   │   ├── Kimi.png        # AI 产品 Kimi 的图片
-│   │   │   │   ├── TreeMind.png    # AI 产品 TreeMind 的图片
-│   │   │   │   └── Xunfei.png      # AI 产品 Xunfei 的图片
-│   │   │   └── logo.png    # 项目 Logo 图片
-│   │   ├── products        # 产品相关的资源文件夹
-│   │   │   └── aiProducts.js  # AI 产品的数据文件
+│   │   ├── images          # 图片文件夹  
 │   │   └── styles          # 样式文件夹，存放 SCSS 文件
-│   │       ├── buttons.scss          # 按钮样式文件
-│   │       ├── forms.scss            # 表单样式文件
-│   │       ├── homeProductsCards.scss # 主页产品卡片样式
-│   │       ├── layout.scss           # 页面布局样式文件
-│   │       ├── mixins.scss           # SCSS Mixins 文件，包含可复用的样式片段
-│   │       ├── utilities.scss        # 通用样式工具类文件
-│   │       └── variables.scss        # 颜色和其他全局样式变量定义文件
 │   ├── components           # 公共组件文件夹，存放项目中可复用的 Vue 组件
 │   ├── layouts              # 布局组件文件夹，定义不同页面的布局结构
 │   │   └── defaultLayout.vue  # 默认布局组件，应用于大多数页面
@@ -78,23 +64,11 @@ RAZOR-AI-frontend           # 项目根目录
 │   ├── router               # 路由配置文件夹，定义应用中的页面路径和导航规则
 │   │   └── index.js         # 路由入口文件，配置应用的路由规则
 │   ├── store                # Vuex 状态管理文件夹，集中管理应用的全局状态
-│   │   └── index.js         # Vuex 入口文件，定义状态树和状态管理逻辑
 │   ├── utils                # 工具函数文件夹，存放常用的 JavaScript 工具函数
 │   │   └── api.js           # API 请求封装文件，用于统一管理和调用后端接口
 │   └── views                # 视图文件夹，存放各个页面的 Vue 组件
-│       ├── AboutPage.vue       # 关于我们页面组件
-│       ├── HomePage.vue        # 首页组件
-│       ├── ChatPage.vue        # AI交流界面
-│       ├── LoginPage.vue       # 登录页面组件
-│       ├── PersonalHomePage.vue # 个人主页组件
-│       ├── ProductDetail.vue   # 产品详情页面组件
-│       ├── RegisterPage.vue    # 注册页面组件
-│       ├── TestPage.vue        # 测试页面组件
-│       └── UserSettingPage.vue # 用户设置页面组件
 ├── tests                    # 测试文件夹，存放单元测试和集成测试相关代码
 │   └── unit                 # 单元测试文件夹
-│       └── HomePage.spec.js # 首页的单元测试文件
-├── tree.txt                 # 生成的目录树文件，记录项目的目录结构
 ├── vue.config.js            # Vue CLI 配置文件，用于自定义 Webpack 配置
 └── yarn.lock                # Yarn 锁定文件，确保每次安装的依赖版本一致
 
