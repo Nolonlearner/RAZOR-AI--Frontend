@@ -64,7 +64,7 @@ const actions = {
       const response = await apiRegister(payload);
       console.log('response:', response);
       const { user_id, message } = response.data;
-      commit('REGISTER', {});// 进行一个空的commit，否则payload不会被提交
+      commit('REGISTER', {}); // 进行一个空的commit，否则payload不会被提交
       return { success: true, message, user_id }; // 返回成功信息给RegisterPage
     } catch (error) {
       console.log('Error occurred in user.js:', error);
