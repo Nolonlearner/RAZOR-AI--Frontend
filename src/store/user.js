@@ -1,5 +1,6 @@
 // src/store/user.js
 import { login as apiLogin } from '../utils/api'; // 引入 API 请求
+import { register as apiRegister } from '../utils/api'; // 引入 API 请求
 import Storage from '../utils/storage'; // 引入 Storage 工具类
 const state = {
   token: Storage.get('token'),
@@ -38,10 +39,25 @@ const actions = {
   async login({ commit }, payload) {
     try {
       const response = await apiLogin(payload); // 调用登录接口 response是来自api.js的login函数的返回值
-      console.log('Response in user.js:', response);
       const { token, message, username } = response.data; // 从响应中解构出 token 和 user_id 和userName
       commit('SET_USER_INFO', { token, userId: payload.user_id, username }); // 保存 token 和 userId 和userName 到 store
       return { success: true, message }; // 返回成功信息给LoginForm组件
+    } catch (error) {
+      console.log('Error occurred in user.js:', error);
+      return { success: false, message: error.message };
+    }
+  },
+
+  async logout({ commit }) {
+    commit('LOGOUT');
+    return { success: true, message: '成功退出登录' }; // 返回成功信息给Logout组件
+  },
+
+  async register(payload) {
+    try {
+      const response = await apiRegister(payload);
+      const { user_id, message } = response.data;
+      return { success: true, message, user_id }; // 返回成功信息给RegisterPage
     } catch (error) {
       console.log('Error occurred in user.js:', error);
       return { success: false, message: error.message };
