@@ -43,7 +43,9 @@
       <div class="robot-groups">
         <!-- 文本机器人 -->
         <div class="robot-group">
-          <h3 class="robot-group-intro">文本对话机器人</h3>
+          <h3 class="robot-group-intro">
+            <el-icon name="document"></el-icon>文本对话机器人
+          </h3>
           <div class="robot-cards">
             <el-card
               v-for="robot in textRobots.slice(0, 4)"
@@ -66,7 +68,9 @@
         </div>
         <!-- 图像机器人 -->
         <div class="robot-group">
-          <h3 class="robot-group-intro">图片生成机器人</h3>
+          <h3 class="robot-group-intro">
+            <el-icon name="picture-outline"></el-icon>图片生成机器人
+          </h3>
           <div class="robot-cards">
             <el-card
               v-for="robot in imageRobots.slice(0, 4)"
@@ -89,7 +93,9 @@
         </div>
         <!-- 音视频机器人 -->
         <div class="robot-group">
-          <h3 class="robot-group-intro">音视频机器人</h3>
+          <h3 class="robot-group-intro">
+            <el-icon name="video-camera" />音视频机器人
+          </h3>
           <div class="robot-cards">
             <el-card
               v-for="robot in avRobots.slice(0, 4)"

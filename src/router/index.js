@@ -3,11 +3,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Layout from '@/layouts/defaultLayout.vue';
 import Home from '@/views/HomePage.vue';
-import ProductExpore from '@/views/ProductExpore.vue';
 import About from '@/views/AboutPage.vue';
 import Setting from '@/views/UserSettingPage.vue';
 import PersonalHome from '@/views/PersonalHomePage.vue';
-import Login from '@/views/LoginPage.vue';
 import Test from '@/views/TestPage.vue';
 import Chat from '@/views/ChatPage.vue';
 import SubscribedBots from '@/views/SubscribedBotsPage.vue';
@@ -28,14 +26,6 @@ const routes = [
         component: Home,
         meta: {
           title: 'RazorAI-首页', // 首页标题
-        },
-      },
-      {
-        path: '/explore',
-        name: 'ProductExpore',
-        component: ProductExpore,
-        meta: {
-          title: 'RazorAI-探索机器人', // 探索机器人页标题
         },
       },
       {
@@ -84,14 +74,6 @@ const routes = [
         component: Test,
         meta: {
           title: 'RazorAI-测试页面', // 测试页面标题
-        },
-      },
-      {
-        path: '/login',
-        name: 'Login',
-        component: Login,
-        meta: {
-          title: 'RazorAI-登录', // 登录页面标题
         },
       },
       {

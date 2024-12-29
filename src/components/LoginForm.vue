@@ -7,14 +7,14 @@
     @keyup.enter.native="onSubmit"
     v-loading="isLoading"
   >
-    <el-form-item prop="username">
+    <el-form-item label="用户ID" prop="userid">
       <el-input
-        v-model="loginForm.username"
-        placeholder="用户名"
+        v-model="loginForm.userid"
+        placeholder="用户ID"
         prefix-icon="el-icon-user"
       ></el-input>
     </el-form-item>
-    <el-form-item prop="password">
+    <el-form-item label="密码" prop="password">
       <el-input
         v-model="loginForm.password"
         type="password"
@@ -23,7 +23,7 @@
       ></el-input>
     </el-form-item>
     <el-form-item>
-      <el-checkbox v-model="loginForm.rememberMe">记住我ya</el-checkbox>
+      <el-checkbox v-model="loginForm.rememberMe">记住我</el-checkbox>
     </el-form-item>
     <el-form-item>
       <el-button
@@ -46,13 +46,13 @@ export default {
   data() {
     return {
       loginForm: {
-        username: '',
+        userid: '',
         password: '',
         rememberMe: false,
       },
       loginRules: {
-        username: [
-          { required: true, message: '请输入您的用户名', trigger: 'blur' },
+        userid: [
+          { required: true, message: '请输入您的用户ID', trigger: 'blur' },
         ],
         password: [
           { required: true, message: '请输入您的密码', trigger: 'blur' },
@@ -62,30 +62,35 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['error', 'isLoggedIn', 'user_id']),
+    ...mapGetters('user', ['isLoggedIn', 'user_id']), // 指定 user 命名空间
   },
   methods: {
-    ...mapActions(['login']),
+    ...mapActions('user', ['login']), // 映射 user 模块中的 login 方法
     async onSubmit() {
       this.$refs.loginForm.validate(async (valid) => {
         if (valid) {
-          this.isLoading = true;
+          this.isLoading = true; // 开始加载状态
           try {
-            await this.login({
-              username: this.loginForm.username,
-              password: this.loginForm.password,
+            // 调用Vuex中user模块的login方法
+            const result = await this.login({
+              user_id: this.loginForm.userid,
+              user_password: this.loginForm.password,
             });
-
-            if (this.isLoggedIn) {
-              this.$message.success('登录成功！');
-              this.closeDialog();
+            console.log('isLoggedIn in LoginForm:', this.isLoggedIn);
+            if (result.success) {
+              this.$message.success(result.message || '登录成功！'); // 提示登录成功
+              this.closeDialog(); // 关闭对话框
             } else {
-              this.$message.error(this.error);
+              this.$message.error(
+                result.message || '登录失败，请检查用户名和密码'
+              ); // 提示登录失败
             }
           } catch (error) {
-            this.$message.error('网络错误');
+            console.error(error); // 打印错误信息
+            this.$message.error(error.message || '登录失败，打开控制台检查');
           } finally {
-            this.isLoading = false;
+            // 无论成功或失败都会执行
+            this.isLoading = false; // 结束加载状态
           }
         } else {
           this.$message.error('请正确填写表单');
@@ -97,7 +102,7 @@ export default {
       this.resetForm(); // 重置表单
     },
     resetForm() {
-      this.loginForm.username = '';
+      this.loginForm.userid = '';
       this.loginForm.password = '';
       this.loginForm.rememberMe = false;
     },

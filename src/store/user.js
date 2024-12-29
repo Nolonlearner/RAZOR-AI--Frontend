@@ -1,96 +1,62 @@
 // src/store/user.js
-import axios from 'axios';
-
+import { login as apiLogin } from '../utils/api'; // 引入 API 请求
+import Storage from '../utils/storage'; // 引入 Storage 工具类
 const state = {
-  isLoggedIn: false, // 是否登录
-  user_id: null, // 登录用户的用户名
-  error: null, // 登录错误信息
+  token: Storage.get('token'),
+  userId: Storage.get('user_id'),
+  userName: Storage.get('userName'),
+  isLoggedIn: !!Storage.get('token'),
 };
 
 const mutations = {
-  LOGIN(state, user_id) {
-    state.isLoggedIn = true;
-    state.user_id = user_id;
-    state.error = null; // 清空错误信息
-    console.log('state:', state);
+  SET_USER_INFO(state, { token, userId, username }) {
+    state.token = token;
+    state.userId = userId;
+    state.userName = username;
+    state.isLoggedIn = !!token;
+
+    // 设置过期时间为 1 天（单位：毫秒）
+    const TTL = 1 * 24 * 60 * 60 * 1000;
+    Storage.set('token', token, TTL);
+    Storage.set('user_id', userId, TTL);
+    Storage.set('userName', username, TTL);
   },
   LOGOUT(state) {
+    state.token = null;
+    state.userId = null;
+    state.userName = null;
     state.isLoggedIn = false;
-    state.user_id = null;
-    state.error = null; // 清空错误信息
-  },
-  SET_ERROR(state, error) {
-    state.error = error; // 设置错误信息
+
+    Storage.remove('token');
+    Storage.remove('user_id');
+    Storage.remove('userName');
   },
 };
 
 const actions = {
   // 登录逻辑
-  async login({ commit }, { username, password }) {
-    const geterrorMsgbyStatus = (status) => {
-      switch (status) {
-        case 401:
-          return '用户名或密码错误';
-        case 403:
-          return '账户已被禁用';
-        case 500:
-          return '服务器内部错误';
-        case 502:
-          return '测试';
-        default:
-          return '未知错误';
-      }
-    };
-
+  async login({ commit }, payload) {
     try {
-      const response = await axios.post(
-        'http://101.37.88.111:5000/user/login',
-        {
-          user_name: username, // 用户名
-          user_password: password, // 密码
-        }
-      );
-
-      console.log('Response:', response);
-      if (response.status === 200) {
-        commit('LOGIN', response.data.user_id); // 成功后设置登录状态
-      } else {
-        const errorMsg = geterrorMsgbyStatus(response.status);
-        commit('SET_ERROR', errorMsg || '登录失败');
-      }
+      const response = await apiLogin(payload); // 调用登录接口 response是来自api.js的login函数的返回值
+      console.log('Response in user.js:', response);
+      const { token, message, username } = response.data; // 从响应中解构出 token 和 user_id 和userName
+      commit('SET_USER_INFO', { token, userId: payload.user_id, username }); // 保存 token 和 userId 和userName 到 store
+      return { success: true, message }; // 返回成功信息给LoginForm组件
     } catch (error) {
-      console.log('Error occurred:', error);
-      if (error.response) {
-        console.log('Response data:', error.response.data);
-        const errorMsg = geterrorMsgbyStatus(error.response.status);
-        commit('SET_ERROR', errorMsg);
-      } else {
-        commit('SET_ERROR', '网络错误');
-      }
-    }
-  },
-
-  // 登出逻辑
-  async logout({ commit }) {
-    try {
-      await axios.post('http://101.37.88.111:5000/user/logout');
-      commit('LOGOUT');
-    } catch (error) {
-      const errorMsg = error.response
-        ? error.response.data.message || '登出失败'
-        : '网络错误';
-      commit('SET_ERROR', errorMsg);
+      console.log('Error occurred in user.js:', error);
+      return { success: false, message: error.message };
     }
   },
 };
 
 const getters = {
   isLoggedIn: (state) => state.isLoggedIn,
-  error: (state) => state.error, // 获取错误信息
   user_id: (state) => state.user_id,
+  userName: (state) => state.userName,
 };
 
 export default {
+  namespaced: true, // 启动命名空间
   state,
   mutations,
   actions,

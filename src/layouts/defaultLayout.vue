@@ -82,7 +82,7 @@
           <el-icon name="user"></el-icon>
           <span v-if="!isLoggedIn" @click="openLoginDialog">用户登录</span>
           <span v-else @click="navigateTo('PersonalHome')"
-            >你好，{{ user_id }}</span
+            >你好，{{ userName }}</span
           >
         </div>
       </el-header>
@@ -95,6 +95,8 @@
       title="用户登录"
       :modal="true"
       :close-on-click-modal="false"
+      center
+      width="30%"
     >
       <LoginForm @close="loginDialogVisible = false" />
     </el-dialog>
@@ -102,8 +104,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import LoginForm from '@/components/LoginForm.vue'; // 引入登录表单组件
+import { mapGetters } from 'vuex'; // 导入 mapGetters
 
 export default {
   components: {
@@ -124,7 +126,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['isLoggedIn', 'user_id']),
+    ...mapGetters('user', ['isLoggedIn', 'userId', 'userName']), // 映射 getters
     headerTitle() {
       // 从当前路由的 meta 信息中获取标题
       return this.$route.meta.title || '默认标题';
