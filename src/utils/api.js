@@ -1,6 +1,5 @@
 // src/utils/api.js
 //api.js 文件用于封装 API 请求，方便在项目中进行统一管理和调用。
-// src/utils/api.js
 import axios from 'axios';
 
 const api = axios.create({
@@ -55,5 +54,8 @@ export const register = (payload) =>
   api.post('/user/register', payload, {
     headers: { skipAuth: true }, // 跳过 Authorization 头
   });
+
+export const fetchAllAgentsData = () =>
+  api.get('/market', { headers: { skipAuth: true } }); // 跳过 Authorization 头
 
 export const fetchUserData = () => api.get('/user/data'); // 自动携带 token

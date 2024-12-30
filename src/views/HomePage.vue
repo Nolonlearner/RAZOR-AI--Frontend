@@ -40,7 +40,7 @@
     <!-- 官方机器人列表 -->
     <div class="robot-section">
       <h2 class="section-title">官方机器人</h2>
-      <div class="robot-groups">
+      <div class="robot-groups" v-if="loading">
         <!-- 文本机器人 -->
         <div class="robot-group">
           <h3 class="robot-group-intro">
@@ -98,7 +98,7 @@
           </h3>
           <div class="robot-cards">
             <el-card
-              v-for="robot in avRobots.slice(0, 4)"
+              v-for="robot in videoRobots.slice(0, 4)"
               :key="robot.id"
               class="robot-card"
               @click.native="selectRobot(robot)"
@@ -146,6 +146,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   data() {
     return {
@@ -163,117 +164,39 @@ export default {
       ], // 最近使用的机器人
       selectedRobot: null, // 当前选中的机器人
       userInput: '', // 用户输入内容
-      textRobots: [
-        {
-          id: 1,
-          name: '文本助手1',
-          icon: '@/assets/icons/text1.png',
-          description:
-            '适合快速文本处理的机器人输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题',
-        },
-        {
-          id: 2,
-          name: '文本助手2',
-          icon: '@/assets/icons/text2.png',
-          description: '可协助生成文案的工具',
-        },
-        {
-          id: 3,
-          name: '文本助手3',
-          icon: '@/assets/icons/text3.png',
-          description: '支持多种文本处理功能',
-        },
-        {
-          id: 4,
-          name: '文本助手4',
-          icon: '@/assets/icons/text4.png',
-          description: '提供文本分析和处理服务',
-        },
-        {
-          id: 5,
-          name: '文本助手5',
-          icon: '@/assets/icons/text5.png',
-          description: '适合快速生成文案的工具',
-        },
-        {
-          id: 6,
-          name: '文本助手6',
-          icon: '@/assets/icons/text6.png',
-          description: '支持多种文本处理功能',
-        },
-        {
-          id: 7,
-          name: '文本助手7',
-          icon: '@/assets/icons/text7.png',
-          description: '提供文本分析和处理服务',
-        },
-        {
-          id: 8,
-          name: '文本助手8',
-          icon: '@/assets/icons/text8.png',
-          description: '适合快速生成文案的工具',
-        },
-      ],
-      imageRobots: [
-        {
-          id: 1,
-          name: '图像生成1',
-          icon: '@/assets/icons/image1.png',
-          description: '支持多种风格的图片生成',
-        },
-        {
-          id: 2,
-          name: '图像生成2',
-          icon: '@/assets/icons/image2.png',
-          description: '提供多种图像处理功能',
-        },
-        {
-          id: 3,
-          name: '图像生成3',
-          icon: '@/assets/icons/image3.png',
-          description: '适合快速生成图片的工具',
-        },
-        {
-          id: 4,
-          name: '图像生成4',
-          icon: '@/assets/icons/image4.png',
-          description: '支持多种图像生成功能',
-        },
-      ],
-      avRobots: [
-        {
-          id: 1,
-          name: '音视频助手',
-          icon: '@/assets/icons/av1.png',
-          description: '快速编辑音视频的智能工具',
-        },
-        {
-          id: 2,
-          name: '音视频助手2',
-          icon: '@/assets/icons/av2.png',
-          description: '提供多种音视频处理功能',
-        },
-        {
-          id: 3,
-          name: '音视频助手3',
-          icon: '@/assets/icons/av3.png',
-          description: '支持多种音视频编辑功能',
-        },
-        {
-          id: 4,
-          name: '音视频助手4',
-          icon: '@/assets/icons/av4.png',
-          description: '适合快速编辑音视频的工具',
-        },
-      ],
       dialogVisible: false, // 对话框是否可见
       dialogType: '', // 对话框类型
       dialogTitle: '', // 对话框标题
       searchKeyword: '', // 搜索关键词
       filteredRobots: [], // 过滤后的机器人列表
+      loading: true, // 加载状态
+      textRobots: [], // 文本对话机器人
+      imageRobots: [], // 图像生成机器人
+      videoRobots: [], // 音视频机器人
     };
   },
+  created() {
+    this.getAllAgentsData(); // 获取所有机器人数据
+  },
   methods: {
+    ...mapActions('agent', ['fetchAllAgentsData']), // 映射 agent 模块中的 fetchAllAgentsData 方法
+    async getAllAgentsData() {
+      this.loading = false; // 开始加载
+      try {
+        const response = await this.fetchAllAgentsData();
+        console.log('response from getAllAgentsData:', response);
+
+        // 从 store 中获取机器人数据
+        this.textRobots = this.$store.state.agent.textAgents;
+        this.imageRobots = this.$store.state.agent.imageAgents;
+        this.videoRobots = this.$store.state.agent.videoAgents;
+        console.log('textRobots:', this.textRobots);
+      } catch (error) {
+        console.error('error in fetchAllAgentsData:', error);
+      } finally {
+        this.loading = true; // 结束加载
+      }
+    },
     truncate(text, length = 20) {
       return text.length > length ? text.slice(0, length) + '...' : text;
     },
