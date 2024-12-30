@@ -96,10 +96,7 @@ const actions = {
         throw new Error(`API 响应异常，状态码: ${response.status}`);
       }
     } catch (error) {
-      console.error(
-        'Error addadadasdadadaoccurred in fetchAgentDetail:',
-        error
-      );
+      console.error('Error occurred in fetchAgentDetail:', error);
       return { success: false, message: error.message };
     }
   },
@@ -108,7 +105,6 @@ const actions = {
   async fetchUserSubscriptions({ commit }, userId) {
     try {
       const response = await apifetchUserSubscriptions(userId); // 调用 API 请求
-      console.log('responsexxxx:', response);
       if (response.status === 200) {
         const agents = response.data;
         commit('SET_HAVE_SUBSCRIBED', agents); // 更新状态
@@ -117,10 +113,7 @@ const actions = {
         throw new Error(`API 响应异常，状态码: ${response.status}`);
       }
     } catch (error) {
-      console.error(
-        'Error occurredxxxxxxxxxxxxx in fetchUserSubscriptions:',
-        error
-      );
+      console.error('Error occurred in fetchUserSubscriptions:', error);
       return { success: false, message: error.message };
     }
   },

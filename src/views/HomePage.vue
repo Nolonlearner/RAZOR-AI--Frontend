@@ -167,18 +167,6 @@ import { mapActions, mapState } from 'vuex';
 export default {
   data() {
     return {
-      subscribedRobots: [
-        { id: 1, name: '0813' },
-        { id: 2, name: 'kimi' },
-        { id: 3, name: 'GPT-4o' },
-        { id: 4, name: '期末去死！' },
-        { id: 5, name: '赌氢凤' },
-        { id: 6, name: 'komorebi' },
-        { id: 7, name: 'Nolon' },
-        { id: 8, name: '-1LL' },
-        { id: 9, name: '猫猫' },
-        { id: 10, name: '狗狗' },
-      ], // 最近使用的机器人
       selectedRobot: null, // 当前选中的机器人
       userInput: '', // 用户输入内容
       dialogVisible: false, // 对话框是否可见
