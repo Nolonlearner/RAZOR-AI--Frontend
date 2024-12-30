@@ -7,18 +7,18 @@
       <h1 class="title">Razor AI</h1>
     </div>
 
-    <!-- 最近使用的机器人选项卡和输入框 -->
-    <div class="recent-robots">
+    <!-- 已经订阅的机器人选项卡和输入框 -->
+    <div class="subscribed-robots">
       <el-tabs
         v-model="selectedRobot"
-        class="recent-tabs"
+        class="subscribed-tabs"
         @tab-click="handleRobotSelect"
       >
         <el-tab-pane
-          v-for="robot in recentRobots"
-          :key="robot.id"
-          :label="robot.name"
-          :name="robot.name"
+          v-for="robot in haveSubscribed"
+          :key="robot.agent_id"
+          :label="robot.agent_name"
+          :name="robot.agent_name"
         >
         </el-tab-pane>
       </el-tabs>
@@ -162,11 +162,12 @@
 </template>
 
 <script>
+import user from '@/store/user';
 import { mapActions, mapState } from 'vuex';
 export default {
   data() {
     return {
-      recentRobots: [
+      subscribedRobots: [
         { id: 1, name: '0813' },
         { id: 2, name: 'kimi' },
         { id: 3, name: 'GPT-4o' },
@@ -193,13 +194,19 @@ export default {
       textRobots: (state) => state.textAgents,
       imageRobots: (state) => state.imageAgents,
       videoRobots: (state) => state.videoAgents,
+      haveSubscribed: (state) => state.haveSubscribed,
     }),
   },
   created() {
     this.getAllAgentsData(); // 获取所有机器人数据
+    this.getUserSubscriptions(); // 获取用户订阅列表
   },
   methods: {
-    ...mapActions('agent', ['fetchAllAgentsData']), // 映射 agent 模块中的 fetchAllAgentsData 方法
+    ...mapActions('agent', [
+      'fetchAllAgentsData',
+      'fetchAgentDetail',
+      'fetchUserSubscriptions',
+    ]),
     async getAllAgentsData() {
       this.loading = false; // 开始加载
       try {
@@ -209,6 +216,25 @@ export default {
         console.error('error in fetchAllAgentsData:', error);
       } finally {
         this.loading = true; // 结束加载
+      }
+    },
+    async getAgentDetail(agentId) {
+      try {
+        const response = await this.fetchAgentDetail(agentId);
+        console.log('response from getAgentDetail:', response);
+        return response;
+      } catch (error) {
+        console.error('error in fetchAgentDetail:', error);
+      }
+    },
+    async getUserSubscriptions() {
+      try {
+        const user_id = user.state.userId;
+        console.log('user_id:', user_id);
+        const response = await this.fetchUserSubscriptions(user_id);
+        console.log('response from getUserSubscriptions:', response);
+      } catch (error) {
+        console.error('error in getUserSubscriptions:', error);
       }
     },
     truncate(text, length = 20) {
@@ -255,13 +281,22 @@ export default {
         `打开${this.dialogTitle}对话框,共有${this.filteredRobots.length}个机器人,${this.dialogVisible}`
       );
     },
-    selectRobot(robot) {
+    async selectRobot(robot) {
       if (!robot || !robot.name) {
         this.$message.error('无法选择机器人，请稍后重试');
         return;
       }
-      this.$message.success(`您选择了机器人: ${robot.name}`);
-      this.dialogVisible = false;
+      try {
+        const response = await this.getAgentDetail(robot.id);
+        if (response.success) {
+          this.$message.success(`已选择机器人: ${robot.name}`);
+          this.dialogVisible = false;
+        } else {
+          this.$message.error('选择机器人失败，请稍后重试');
+        }
+      } catch (error) {
+        console.error('error in selectRobot:', error);
+      }
     },
 
     getRobotsByType(type) {
@@ -300,14 +335,14 @@ export default {
     }
   }
 
-  .recent-robots {
+  .subscribed-robots {
     width: 60%;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 30px;
 
-    .recent-tabs {
+    .subscribed-tabs {
       width: 100%;
     }
 
