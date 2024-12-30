@@ -53,8 +53,12 @@
               class="robot-card"
               @click.native="selectRobot(robot)"
             >
-              <img :src="robot.icon" alt="icon" class="robot-icon" />
               <div class="robot-info">
+                <img
+                  :src="require('@/assets/images/Agents/textAgent.png')"
+                  alt="icon"
+                  class="robot-icon"
+                />
                 <p class="robot-name">{{ robot.name }}</p>
                 <p class="robot-description">
                   {{ truncate(robot.description) }}
@@ -78,8 +82,12 @@
               class="robot-card"
               @click.native="selectRobot(robot)"
             >
-              <img :src="robot.icon" alt="icon" class="robot-icon" />
               <div class="robot-info">
+                <img
+                  :src="require('@/assets/images/Agents/imageAgent.png')"
+                  alt="icon"
+                  class="robot-icon"
+                />
                 <p class="robot-name">{{ robot.name }}</p>
                 <p class="robot-description">
                   {{ truncate(robot.description) }}
@@ -103,8 +111,12 @@
               class="robot-card"
               @click.native="selectRobot(robot)"
             >
-              <img :src="robot.icon" alt="icon" class="robot-icon" />
               <div class="robot-info">
+                <img
+                  :src="require('@/assets/images/Agents/videoAgent.png')"
+                  alt="icon"
+                  class="robot-icon"
+                />
                 <p class="robot-name">{{ robot.name }}</p>
                 <p class="robot-description">
                   {{ truncate(robot.description) }}
@@ -134,8 +146,12 @@
           class="dialog-robot-card"
           @click.native="selectRobot(robot)"
         >
-          <img :src="robot.icon" alt="icon" class="robot-icon" />
           <div class="robot-info">
+            <img
+              :src="require('@/assets/images/Agents/baseAgent.png')"
+              alt="icon"
+              class="robot-icon"
+            />
             <p class="robot-name">{{ robot.name }}</p>
             <p class="robot-description">{{ truncate(robot.description) }}</p>
           </div>
@@ -146,7 +162,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 export default {
   data() {
     return {
@@ -170,10 +186,14 @@ export default {
       searchKeyword: '', // 搜索关键词
       filteredRobots: [], // 过滤后的机器人列表
       loading: true, // 加载状态
-      textRobots: [], // 文本对话机器人
-      imageRobots: [], // 图像生成机器人
-      videoRobots: [], // 音视频机器人
     };
+  },
+  computed: {
+    ...mapState('agent', {
+      textRobots: (state) => state.textAgents,
+      imageRobots: (state) => state.imageAgents,
+      videoRobots: (state) => state.videoAgents,
+    }),
   },
   created() {
     this.getAllAgentsData(); // 获取所有机器人数据
@@ -185,12 +205,6 @@ export default {
       try {
         const response = await this.fetchAllAgentsData();
         console.log('response from getAllAgentsData:', response);
-
-        // 从 store 中获取机器人数据
-        this.textRobots = this.$store.state.agent.textAgents;
-        this.imageRobots = this.$store.state.agent.imageAgents;
-        this.videoRobots = this.$store.state.agent.videoAgents;
-        console.log('textRobots:', this.textRobots);
       } catch (error) {
         console.error('error in fetchAllAgentsData:', error);
       } finally {
@@ -198,6 +212,9 @@ export default {
       }
     },
     truncate(text, length = 20) {
+      if (text === null || text === undefined) {
+        return '';
+      }
       return text.length > length ? text.slice(0, length) + '...' : text;
     },
     sendMessage() {
@@ -232,6 +249,7 @@ export default {
             ? '图片生成机器人'
             : '音视频机器人';
       this.filteredRobots = this.getRobotsByType(type);
+      console.log('filteredRobots:', this.filteredRobots);
       this.dialogVisible = true;
       this.$message.info(
         `打开${this.dialogTitle}对话框,共有${this.filteredRobots.length}个机器人,${this.dialogVisible}`
@@ -248,10 +266,10 @@ export default {
 
     getRobotsByType(type) {
       return type === 'text'
-        ? this.textRobots
+        ? this.$store.state.agent.textAgents
         : type === 'image'
-          ? this.imageRobots
-          : this.avRobots;
+          ? this.$store.state.agent.imageAgents
+          : this.$store.state.agent.videoAgents;
     },
   },
 };
@@ -327,11 +345,13 @@ export default {
           gap: 0.75rem;
 
           .robot-card {
-            width: 20%;
-            height: 125px;
+            width: 15vw; // 卡片宽度
+            height: 150px;
             display: flex;
+            justify-content: center; // 内容居中
+            padding: 10px;
             cursor: pointer;
-            padding: 10px; // 内边距
+            padding: 5px; // 内边距
             &:hover {
               /* 鼠标悬停时变换颜色 */
               background-color: $primary-color;
@@ -347,7 +367,7 @@ export default {
 
               .robot-name {
                 font-weight: bold;
-                margin: 5px 0;
+                margin: 3px 0;
               }
 
               .robot-description {
