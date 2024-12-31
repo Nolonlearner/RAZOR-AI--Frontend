@@ -91,7 +91,11 @@ export default {
       }
     },
     viewDetails(agentId) {
-      this.$router.push({ name: 'RobotDetails', params: { agentId } });
+      if (!agentId) {
+        this.$message.error('无效的机器人信息');
+        return;
+      }
+      this.$router.push({ name: 'RobotDetail', params: { id: agentId } });
     },
     getRemainingDays(endtime) {
       const endDate = new Date(endtime);
@@ -150,7 +154,8 @@ export default {
 }
 
 .robot-card {
-  background-color: lighten($background-color, 5%);
+  margin-top: 2%;
+  background-color: lighten($background-color, 2%);
   padding: 20px;
   border-radius: 12px;
   position: relative; /* 为绝对定位的标签提供参考 */
@@ -160,7 +165,8 @@ export default {
 }
 
 .robot-card:hover {
-  background-color: darken($background-color, 5%);
+  background-color: darken($background-color, 30%);
+  transform: translateY(-5px);
 }
 
 .robot-info-container {
