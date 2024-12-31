@@ -14,11 +14,18 @@
 
     <div class="robot-list">
       <div
-        v-for="robot in haveSubscribedRobots"
+        v-for="robot in filteredRobots"
         :key="robot.agent_id"
         class="robot-card"
       >
-        <h2 class="robot-name">{{ robot.agent_name }}</h2>
+        <div class="robot-info-container">
+          <h2 class="robot-name">{{ robot.agent_name }}</h2>
+          <img
+            :src="require('@/assets/images/Agents/subsAgent.png')"
+            alt="机器人图片"
+            class="robot-image"
+          />
+        </div>
         <p class="robot-info">开始时间: {{ robot.startime }}</p>
         <p class="robot-info">结束时间: {{ robot.endtime }}</p>
         <button class="unsubscribe-button" @click="unsubscribe(robot.agent_id)">
@@ -32,6 +39,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import user from '@/store/user';
+
 export default {
   name: 'SubscribedBotsPage',
   data() {
@@ -43,6 +51,14 @@ export default {
     ...mapState('agent', {
       haveSubscribedRobots: (state) => state.haveSubscribed,
     }),
+    filteredRobots() {
+      if (!this.searchQuery) {
+        return this.haveSubscribedRobots;
+      }
+      return this.haveSubscribedRobots.filter((robot) =>
+        robot.agent_name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
   },
   methods: {
     ...mapActions('agent', ['fetchUserSubscriptions']),
@@ -82,7 +98,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(270deg, #f4f3f3, #4d4d4d, #3a3a3a, #2a2a2a);
+  background: linear-gradient(270deg, #1a1a1a, #4d4d4d, #3a3a3a, #2a2a2a);
   background-size: 400% 400%;
   animation: gradientAnimation 20s ease infinite;
   z-index: -1; /* 背景层级在后 */
@@ -142,10 +158,23 @@ export default {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
 }
 
+.robot-info-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 .robot-name {
   font-size: 1.8em;
   margin-bottom: 10px;
   color: #ffdd57;
+}
+
+.robot-image {
+  width: 50px; /* 设置适中的宽度 */
+  height: 50px; /* 设置高度与名字相同 */
+  border-radius: 50%; /* 圆形图片 */
+  margin-left: 10px; /* 图片与名字之间的间距 */
 }
 
 .robot-info {
