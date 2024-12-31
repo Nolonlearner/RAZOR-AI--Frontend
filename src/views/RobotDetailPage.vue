@@ -156,13 +156,8 @@ export default {
     async fetchRobotDetail(agentId) {
       try {
         const response = await apifetchAgentDetail(agentId);
-        console.log('机器人详情:', response);
         this.robot = response.data;
         this.loading = false; // 加载完成
-        console.log(
-          'this.isSubscriptionDialogVisible:',
-          this.isSubscriptionDialogVisible
-        );
       } catch (error) {
         console.error('获取机器人详情失败:', error);
         this.$message.error('无法加载机器人详情');
@@ -171,11 +166,6 @@ export default {
     async subscribeRobot(Duration) {
       try {
         const currentTime = this.formatDateTime(new Date()); // 格式化当前时间
-        console.log('订阅机器人:', this.robot.id);
-        console.log('用户 ID:', this.$store.state.user.userId);
-        console.log('当前时间:', currentTime);
-        console.log('订阅时长:', Duration);
-
         // 构造 payload
         const payload = {
           user_id: this.$store.state.user.userId,
@@ -197,7 +187,6 @@ export default {
             '订阅成功后的用户订阅列表:',
             this.$store.state.agent.haveSubscribed
           );
-          // location.reload(); // 强制刷新页面
         } else {
           this.$message.error('订阅失败，请稍后重试。');
         }

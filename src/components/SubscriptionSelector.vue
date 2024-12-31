@@ -3,17 +3,34 @@
     <!-- 选择订阅时长 -->
     <div class="duration-selection">
       <el-form :model="form" :rules="rules" ref="formRef" label-width="80px">
+        <!-- 选择订阅时长 -->
         <el-form-item label="订阅时长" prop="duration">
-          <el-radio-group v-model="form.duration">
+          <el-radio-group v-model="form.duration" @change="updatePoints">
             <el-radio :label="7">1 个周</el-radio>
             <el-radio :label="30">1 个月</el-radio>
             <el-radio :label="180">6 个月</el-radio>
             <el-radio :label="365">12 个月</el-radio>
+            <el-radio :label="0">自定义</el-radio>
           </el-radio-group>
         </el-form-item>
 
+        <!-- 自定义输入天数 -->
+        <el-form-item
+          v-if="form.duration === 0"
+          label="自定义"
+          prop="customDays"
+        >
+          <el-input
+            v-model="form.customDays"
+            placeholder="请输入天数"
+            type="number"
+            @input="updatePoints"
+          />
+        </el-form-item>
+
+        <!-- 计算积分 -->
         <el-form-item label="积分消耗" prop="points">
-          <el-input v-model="form.points" placeholder="请输入消耗的积分" />
+          <el-input :value="form.points" placeholder="自动计算积分" disabled />
         </el-form-item>
       </el-form>
     </div>
@@ -48,6 +65,7 @@ export default {
       form: {
         duration: null, // 订阅时长
         points: null, // 所需积分
+        customDays: null, // 自定义天数
       },
       rules: {
         duration: [
@@ -57,6 +75,17 @@ export default {
     };
   },
   methods: {
+    // 更新积分
+    updatePoints() {
+      // 如果是自定义天数
+      if (this.form.duration === 0 && this.form.customDays) {
+        this.form.points = this.form.customDays * 1.5; // 每天1.5积分
+      } else if (this.form.duration) {
+        // 默认选择的时长，自动计算积分
+        this.form.points = this.form.duration * 1.5; // 每天1.5积分
+      }
+    },
+
     // 确认订阅操作
     async handleConfirm() {
       // 表单验证
@@ -65,7 +94,6 @@ export default {
           try {
             // 调用父组件的确认方法
             await this.onConfirm(this.form.duration, this.form.points);
-            this.$message.success('订阅成功！');
             this.handleClose();
           } catch (error) {
             console.error('订阅失败：', error);
@@ -74,6 +102,7 @@ export default {
         }
       });
     },
+
     // 关闭弹窗
     handleClose() {
       this.onClose();
