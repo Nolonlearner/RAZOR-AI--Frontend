@@ -66,20 +66,22 @@
 <script>
 import { fetchAgentDetail as apifetchAgentDetail } from '../utils/api'; // 引入 API 请求
 import { subscribeAgent as apisubscribeAgent } from '../utils/api';
+import agent from '@/store/agent';
 export default {
   data() {
     return {
       robot: {}, // 机器人详情数据
       robotType: {
-        1: '文本机器人',
+        1: '文本对话机器人',
         2: '图片生成机器人',
-        3: '音视频处理机器人',
+        3: '音视频机器人',
       },
       loading: true, // 是否正在加载数据
     };
   },
   created() {
     const agentId = this.$route.params.id;
+    console.log('agent.state', agent.state);
     if (!agentId) {
       this.$message.error('无法获取机器人信息');
       this.$router.push('/');

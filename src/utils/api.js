@@ -11,19 +11,12 @@ const api = axios.create({
 // 请求拦截器
 api.interceptors.request.use(
   (config) => {
-    // 打印请求的详细信息
-    // console.log(`Request Method: ${config.method.toUpperCase()}`);
-    // console.log(`Request URL: ${config.url}`);
-    // console.log('Request Headers:', config.headers);
-    // 自动为 POST 请求设置 Content-Type
     if (config.method === 'post' && !config.headers.get('Content-Type')) {
       config.headers.set('Content-Type', 'application/json');
     }
-
     const skipAuth = config.headers.get('skipAuth');
     if (!skipAuth) {
       const token = MyStorage.get('token');
-      console.log('token here!!!!eee!!!', token);
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
       } else {
@@ -32,10 +25,6 @@ api.interceptors.request.use(
     }
     // 移除自定义标志以免发送到服务器
     config.headers.delete('skipAuth');
-    // 打印请求的详细信息
-    // console.log(`Request Method: ${config.method.toUpperCase()}`);
-    // console.log(`Request URL: ${config.url}`);
-    // console.log('Request Headers:', config.headers);
     return config;
   },
   (error) => {

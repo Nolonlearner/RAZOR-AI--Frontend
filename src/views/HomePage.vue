@@ -15,7 +15,7 @@
         @tab-click="handleRobotSelect"
       >
         <el-tab-pane
-          v-for="robot in haveSubscribed"
+          v-for="robot in filteredSubscribedRobots"
           :key="robot.agent_id"
           :label="robot.agent_name"
           :name="robot.agent_name"
@@ -190,6 +190,9 @@ export default {
       videoRobots: (state) => state.videoAgents,
       haveSubscribed: (state) => state.haveSubscribed,
     }),
+    filteredSubscribedRobots() {
+      return this.haveSubscribed.filter((robot) => robot.status);
+    },
   },
   created() {
     this.getAllAgentsData(); // 获取所有机器人数据
@@ -203,15 +206,23 @@ export default {
     ]),
     async getAllAgentsData() {
       this.loading = true; // 开始加载
-      try {
-        const response = await this.fetchAllAgentsData();
-        console.log('response from getAllAgentsData:', response);
-        console.log('loading1:', this.loading);
-      } catch (error) {
-        console.error('error in fetchAllAgentsData:', error);
-      } finally {
+      // 如果当前Vuex textAgents、imageAgents、videoAgents数据为空，则才进行获取
+      if (
+        this.$store.state.agent.textRobots === null &&
+        this.$store.state.agent.imageRobots === null &&
+        this.$store.state.agent.videoRobots === null
+      ) {
+        try {
+          const response = await this.fetchAllAgentsData();
+          console.log('response from getAllAgentsData:', response);
+        } catch (error) {
+          console.error('error in fetchAllAgentsData:', error);
+        } finally {
+          this.loading = false; // 结束加载
+        }
+      } else {
+        console.log('已有机器人数据，无需再次获取:', this.$store.state.agent);
         this.loading = false; // 结束加载
-        console.log('loading221:', this.loading);
       }
     },
     async getAgentDetail(agentId) {
