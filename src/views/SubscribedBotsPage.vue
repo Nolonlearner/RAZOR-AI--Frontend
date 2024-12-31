@@ -1,6 +1,5 @@
 <template>
   <div class="subscribed-page">
-    <div class="animated-background"></div>
     <h1 class="title">已订阅的机器人</h1>
 
     <div class="search-container">
@@ -18,6 +17,10 @@
         :key="robot.agent_id"
         class="robot-card"
       >
+        <!-- 条件渲染过期标签 -->
+        <div v-if="!robot.status" class="expired-tag">
+          <el-icon name="warning"></el-icon>已过期
+        </div>
         <div class="robot-info-container">
           <h2 class="robot-name">{{ robot.agent_name }}</h2>
           <img
@@ -26,10 +29,21 @@
             class="robot-image"
           />
         </div>
-        <p class="robot-info">开始时间: {{ robot.startime }}</p>
-        <p class="robot-info">结束时间: {{ robot.endtime }}</p>
+        <div class="robot-details">
+          <p class="robot-info">开始时间: {{ robot.startime }}</p>
+          <p class="robot-info">结束时间: {{ robot.endtime }}</p>
+          <p class="robot-info">
+            <el-icon name="s-data"></el-icon>
+            剩余天数: {{ getRemainingDays(robot.endtime) }} 天
+          </p>
+        </div>
         <button class="unsubscribe-button" @click="unsubscribe(robot.agent_id)">
+          <el-icon name="delete"></el-icon>
           取消订阅
+        </button>
+        <button class="details-button" @click="viewDetails(robot.agent_id)">
+          <el-icon name="info"></el-icon>
+          查看详情
         </button>
       </div>
     </div>
@@ -76,6 +90,16 @@ export default {
         console.error('error in getUserSubscriptions:', error);
       }
     },
+    viewDetails(agentId) {
+      this.$router.push({ name: 'RobotDetails', params: { agentId } });
+    },
+    getRemainingDays(endtime) {
+      const endDate = new Date(endtime);
+      const today = new Date();
+      const timeDiff = endDate - today;
+      const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // 转换为天数
+      return daysRemaining >= 0 ? daysRemaining : 0; // 如果小于0，则返回0
+    },
   },
   created() {
     this.getUserSubscriptions(); // 获取用户订阅列表
@@ -83,37 +107,17 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use '@/assets/styles/mixins.scss' as *;
+@use '@/assets/styles/variables.scss' as *;
 .subscribed-page {
   position: relative;
   padding: 20px;
-  color: #ffffff; /* 白色文字 */
-  height: 100vh; /* 满屏高度 */
+  background-color: $background-color;
+  color: $text-color;
+  max-width: 100%; /* 填满整个宽度 */
+  height: 100%; /* 填满整个高度 */
   overflow: hidden; /* 隐藏溢出内容 */
-}
-
-.animated-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(270deg, #1a1a1a, #4d4d4d, #3a3a3a, #2a2a2a);
-  background-size: 400% 400%;
-  animation: gradientAnimation 20s ease infinite;
-  z-index: -1; /* 背景层级在后 */
-}
-
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
 }
 
 .title {
@@ -141,21 +145,22 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
+  max-height: 80vh; /* 设置最大高度 */
+  overflow-y: auto; /* 允许垂直滚动 */
 }
 
 .robot-card {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  background-color: lighten($background-color, 5%);
   padding: 20px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  position: relative; /* 为绝对定位的标签提供参考 */
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
 }
 
 .robot-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+  background-color: darken($background-color, 5%);
 }
 
 .robot-info-container {
@@ -180,7 +185,11 @@ export default {
 .robot-info {
   font-size: 1em;
   margin-bottom: 10px;
-  color: #ddd;
+  color: $text-color;
+}
+
+.robot-details {
+  margin-top: 10px;
 }
 
 .unsubscribe-button {
@@ -196,6 +205,33 @@ export default {
 
 .unsubscribe-button:hover {
   background-color: #ff7875;
+}
+
+.details-button {
+  padding: 10px 15px;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: 10px;
+}
+
+.details-button:hover {
+  background-color: #66bb6a;
+}
+
+.expired-tag {
+  position: absolute; /* 绝对定位 */
+  top: 10px; /* 距离卡片顶部10px */
+  right: 10px; /* 距离卡片右侧10px */
+  background-color: #ff4d4f; /* 背景颜色 */
+  color: white; /* 字体颜色 */
+  padding: 5px 10px; /* 内边距 */
+  border-radius: 5px; /* 圆角 */
+  font-size: 0.9em; /* 字体大小 */
 }
 
 @keyframes fadeIn {

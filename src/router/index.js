@@ -11,6 +11,7 @@ import Chat from '@/views/ChatPage.vue';
 import SubscribedBots from '@/views/SubscribedBotsPage.vue';
 import DeveloperCenter from '@/views/DeveloperCenterPage.vue';
 import Rgister from '@/views/RegisterPage.vue';
+import RobotDetail from '@/views/RobotDetailPage.vue';
 //import { component } from 'vue/types/umd';
 
 Vue.use(VueRouter);
@@ -91,6 +92,14 @@ const routes = [
         component: Rgister,
         meta: {
           title: 'RazorAI-注册',
+        },
+      },
+      {
+        path: '/robot/:id',
+        name: 'RobotDetail',
+        component: RobotDetail,
+        meta: {
+          title: 'RazorAI-机器人详情',
         },
       },
     ],

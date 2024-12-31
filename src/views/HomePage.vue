@@ -40,7 +40,12 @@
     <!-- 官方机器人列表 -->
     <div class="robot-section">
       <h2 class="section-title">官方机器人</h2>
-      <div class="robot-groups" v-if="loading">
+      <div
+        class="robot-groups"
+        v-loading="loading"
+        element-loading-text="拼命加载中"
+        element-loading-spinner="el-icon-loading"
+      >
         <!-- 文本机器人 -->
         <div class="robot-group">
           <h3 class="robot-group-intro">
@@ -197,14 +202,16 @@ export default {
       'fetchUserSubscriptions',
     ]),
     async getAllAgentsData() {
-      this.loading = false; // 开始加载
+      this.loading = true; // 开始加载
       try {
         const response = await this.fetchAllAgentsData();
         console.log('response from getAllAgentsData:', response);
+        console.log('loading1:', this.loading);
       } catch (error) {
         console.error('error in fetchAllAgentsData:', error);
       } finally {
-        this.loading = true; // 结束加载
+        this.loading = false; // 结束加载
+        console.log('loading221:', this.loading);
       }
     },
     async getAgentDetail(agentId) {
@@ -284,6 +291,7 @@ export default {
         if (response.success) {
           this.$message.success(`已选择机器人: ${robot.name}`);
           this.dialogVisible = false;
+          this.goToRobotDetail(robot);
         } else {
           this.$message.error('选择机器人失败，请稍后重试');
         }
@@ -291,7 +299,13 @@ export default {
         console.error('error in selectRobot:', error);
       }
     },
-
+    goToRobotDetail(robot) {
+      if (!robot || !robot.id) {
+        this.$message.error('无效的机器人信息');
+        return;
+      }
+      this.$router.push({ name: 'RobotDetail', params: { id: robot.id } });
+    },
     getRobotsByType(type) {
       return type === 'text'
         ? this.$store.state.agent.textAgents

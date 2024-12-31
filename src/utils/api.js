@@ -86,3 +86,8 @@ export const fetchAllChats = (user_id) =>
   api.post('/agent/user/chat/all', user_id, {
     headers: { skipAuth: false },
   });
+
+export const subscribeAgent = (payload) =>
+  api.post('/market/user/agent/subscribe', payload, {
+    headers: { skipAuth: false },
+  });
