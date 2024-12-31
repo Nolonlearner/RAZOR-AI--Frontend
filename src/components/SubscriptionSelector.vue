@@ -1,33 +1,41 @@
 <template>
-  <el-dialog :visible.sync="dialogVisible" title="选择订阅时间">
-    <div>
-      <el-select v-model="selectedDuration" placeholder="选择订阅天数">
-        <el-option
-          v-for="option in durationOptions"
-          :key="option.value"
-          :label="option.label"
-          :value="option.value"
-        />
-      </el-select>
-      <p>所需积分: {{ calculatedPoints }}</p>
+  <div class="subscription-selector">
+    <!-- 选择订阅时长 -->
+    <div class="duration-selection">
+      <el-form :model="form" :rules="rules" ref="formRef" label-width="80px">
+        <el-form-item label="订阅时长" prop="duration">
+          <el-radio-group v-model="form.duration">
+            <el-radio :label="7">1 个周</el-radio>
+            <el-radio :label="30">1 个月</el-radio>
+            <el-radio :label="180">6 个月</el-radio>
+            <el-radio :label="365">12 个月</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="积分消耗" prop="points">
+          <el-input v-model="form.points" placeholder="请输入消耗的积分" />
+        </el-form-item>
+      </el-form>
     </div>
-    <div slot="footer">
-      <el-button @click="close">取消</el-button>
-      <el-button type="primary" @click="confirmSubscription">确认</el-button>
+
+    <!-- 按钮区域 -->
+    <div class="action-buttons">
+      <el-button type="primary" @click="handleConfirm">确认</el-button>
+      <el-button @click="handleClose">取消</el-button>
     </div>
-  </el-dialog>
+  </div>
 </template>
 
 <script>
 export default {
+  name: 'SubscriptionSelector',
   props: {
-    modelValue: {
-      type: [String, Number, Boolean],
-      required: false,
-      default: false,
-    },
     robotId: {
       type: Number,
+      required: true,
+    },
+    onClose: {
+      type: Function,
       required: true,
     },
     onConfirm: {
@@ -37,40 +45,55 @@ export default {
   },
   data() {
     return {
-      selectedDuration: null,
-      dialogVisible: this.modelValue, // 使用本地变量
-      durationOptions: [
-        { label: '30天', value: 30 },
-        { label: '90天', value: 90 },
-        { label: '180天', value: 180 },
-      ],
+      form: {
+        duration: null, // 订阅时长
+        points: null, // 所需积分
+      },
+      rules: {
+        duration: [
+          { required: true, message: '请选择订阅时长', trigger: 'change' },
+        ],
+      },
     };
   },
-  watch: {
-    modelValue(newValue) {
-      this.dialogVisible = newValue; // 监听父组件传来的 visible 变化
-    },
-  },
-  computed: {
-    calculatedPoints() {
-      return this.selectedDuration ? (this.selectedDuration / 30) * 10 : 0; // 假设每30天10积分
-    },
-  },
   methods: {
-    close() {
-      this.$emit('update:modelValue', false); // 通知父组件关闭弹窗
+    // 确认订阅操作
+    async handleConfirm() {
+      // 表单验证
+      this.$refs.formRef.validate(async (valid) => {
+        if (valid) {
+          try {
+            // 调用父组件的确认方法
+            await this.onConfirm(this.form.duration, this.form.points);
+            this.$message.success('订阅成功！');
+            this.handleClose();
+          } catch (error) {
+            console.error('订阅失败：', error);
+            this.$message.error('订阅失败，请稍后重试！');
+          }
+        }
+      });
     },
-    confirmSubscription() {
-      if (this.selectedDuration) {
-        this.onConfirm(this.selectedDuration, this.calculatedPoints);
-        this.close();
-      } else {
-        this.$message.warning('请选择订阅天数');
-      }
+    // 关闭弹窗
+    handleClose() {
+      this.onClose();
     },
-  },
-  created() {
-    console.log('props.modelValue:', this.modelValue);
   },
 };
 </script>
+
+<style scoped>
+.form-footer {
+  display: flex;
+  justify-content: space-between; /* 在左右两边对齐 */
+  align-items: center; /* 垂直居中对齐 */
+}
+.duration-selection {
+  margin-bottom: 20px;
+}
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+</style>

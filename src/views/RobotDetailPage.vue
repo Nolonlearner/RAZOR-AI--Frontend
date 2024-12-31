@@ -82,7 +82,11 @@
       center
       width="30%"
     >
-      <subscription-selector @close="isSubscriptionDialogVisible = false" />
+      <subscription-selector
+        :robotId="robot.id"
+        :onConfirm="handleSubscriptionConfirm"
+        :onClose="() => (isSubscriptionDialogVisible = false)"
+      />
     </el-dialog>
   </div>
 </template>
