@@ -221,6 +221,10 @@ export default {
         const user_id = user.state.userId;
         console.log('user_id:', user_id);
         const response = await this.fetchUserSubscriptions(user_id);
+        console.log(
+          'subscribed agents:',
+          this.$store.state.agent.haveSubscribed
+        );
         console.log('response from getUserSubscriptions:', response);
       } catch (error) {
         console.error('error in getUserSubscriptions:', error);
