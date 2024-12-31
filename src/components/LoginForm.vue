@@ -97,6 +97,7 @@ export default {
           } finally {
             // 无论成功或失败都会执行
             this.isLoading = false; // 结束加载状态
+            location.reload(); // 强制刷新页面
           }
         } else {
           this.$message.error('请正确填写表单');

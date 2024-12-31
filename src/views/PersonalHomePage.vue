@@ -134,6 +134,7 @@ export default {
         // 跳转到登录页面
         if (this.$route.name !== 'Home') {
           this.$router.push({ name: 'Home' });
+          location.reload(); // 强制刷新页面
         }
       } catch (error) {
         console.error(error); // 打印错误信息

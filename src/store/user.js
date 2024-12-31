@@ -44,7 +44,6 @@ const actions = {
       const response = await apiLogin(payload); // 调用登录接口 response是来自api.js的login函数的返回值
       const { token, message, username } = response.data; // 从响应中解构出 token 和 user_id 和userName
       commit('SET_USER_INFO', { token, userId: payload.user_id, username }); // 保存 token 和 userId 和userName 到 store
-      location.reload(); // 强制刷新页面
       return { success: true, message }; // 返回成功信息给LoginForm组件
     } catch (error) {
       console.log('Error occurred in user.js:', error);
@@ -56,7 +55,6 @@ const actions = {
   async logout({ commit }) {
     commit('LOGOUT');
     localStorage.clear(); // 清除所有缓存
-    location.reload(); // 强制刷新页面
     return { success: true, message: '成功退出登录' }; // 返回成功信息给Logout组件
   },
 
