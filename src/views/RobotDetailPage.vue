@@ -13,10 +13,16 @@
       <div class="robot-header-content">
         <h1 class="robot-name">{{ robot.name }}</h1>
         <p class="robot-type">
-          类型：{{ robotType[robot.type] || '未知类型' }}
+          <el-icon name="s-goods"></el-icon>机器人 类型：{{
+            robotType[robot.type] || '未知类型'
+          }}
         </p>
-        <p class="robot-description">{{ robot.description }}</p>
-        <p class="robot-creator">创建者 ID: {{ robot.creator_id }}</p>
+        <p class="robot-description">
+          <el-icon name="edit-outline"></el-icon>简介: {{ robot.description }}
+        </p>
+        <p class="robot-creator">
+          <el-icon name="user-solid"></el-icon>创建者 ID: {{ robot.creator_id }}
+        </p>
       </div>
     </div>
 
@@ -25,9 +31,9 @@
       <el-button
         type="primary"
         class="subscribe-button"
-        @click="subscribeRobot"
+        @click="handleSubscription"
       >
-        订阅 {{ robot.name }}
+        {{ subscriptionButtonText }}
       </el-button>
     </div>
 
@@ -60,6 +66,24 @@
         <p>作者信息正在完善中，未来会显示作者的简介及其他作品。</p>
       </div>
     </div>
+    <!-- 选择订阅时间的弹窗
+    <subscription-selector
+      v-if="robot.id"
+      v-model="isSubscriptionDialogVisible"
+      :robotId="robot.id"
+      :onConfirm="handleSubscriptionConfirm"
+    ></subscription-selector> -->
+
+    <el-dialog
+      :visible.sync="isSubscriptionDialogVisible"
+      name="订阅机器人"
+      :modal="true"
+      :close-on-click-modal="false"
+      center
+      width="30%"
+    >
+      <subscription-selector @close="isSubscriptionDialogVisible = false" />
+    </el-dialog>
   </div>
 </template>
 
@@ -67,7 +91,11 @@
 import { fetchAgentDetail as apifetchAgentDetail } from '../utils/api'; // 引入 API 请求
 import { subscribeAgent as apisubscribeAgent } from '../utils/api';
 import agent from '@/store/agent';
+import SubscriptionSelector from '@/components/SubscriptionSelector.vue'; // 引入新组件
 export default {
+  components: {
+    SubscriptionSelector,
+  },
   data() {
     return {
       robot: {}, // 机器人详情数据
@@ -77,6 +105,7 @@ export default {
         3: '音视频机器人',
       },
       loading: true, // 是否正在加载数据
+      isSubscriptionDialogVisible: false, // 控制弹窗显示
     };
   },
   created() {
@@ -89,6 +118,16 @@ export default {
       this.fetchRobotDetail(agentId);
     }
   },
+  computed: {
+    subscriptionButtonText() {
+      const subscribedRobot = this.$store.state.agent.haveSubscribed.find(
+        (r) => r.agent_id === this.robot.id
+      );
+      return subscribedRobot && subscribedRobot.status
+        ? '已订阅，查看对话历史'
+        : '未订阅，点击订阅';
+    },
+  },
   methods: {
     formatDateTime(date) {
       const year = date.getFullYear();
@@ -99,42 +138,81 @@ export default {
       const seconds = String(date.getSeconds()).padStart(2, '0');
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     },
+    openSubscriptionDialog() {
+      this.isSubscriptionDialogVisible = true; // 打开弹窗
+    },
+    async handleSubscriptionConfirm(duration, points) {
+      console.log('订阅时长:', duration);
+      console.log('所需积分:', points);
+      // 这里可以添加积分检查逻辑
+
+      // 调用订阅方法
+      await this.subscribeRobot(duration);
+    },
     async fetchRobotDetail(agentId) {
       try {
         const response = await apifetchAgentDetail(agentId);
         console.log('机器人详情:', response);
         this.robot = response.data;
         this.loading = false; // 加载完成
+        console.log(
+          'this.isSubscriptionDialogVisible:',
+          this.isSubscriptionDialogVisible
+        );
       } catch (error) {
         console.error('获取机器人详情失败:', error);
         this.$message.error('无法加载机器人详情');
       }
     },
-    async subscribeRobot() {
+    async subscribeRobot(Duration) {
       try {
         const currentTime = this.formatDateTime(new Date()); // 格式化当前时间
         console.log('订阅机器人:', this.robot.id);
         console.log('用户 ID:', this.$store.state.user.userId);
         console.log('当前时间:', currentTime);
-        console.log('订阅时长:', 4);
+        console.log('订阅时长:', Duration);
 
         // 构造 payload
         const payload = {
           user_id: this.$store.state.user.userId,
           agent_id: this.robot.id,
           startime: currentTime, // 使用格式化后的时间
-          duration: 4,
+          duration: Duration,
         };
         console.log('请求 payload:', payload);
         const response = await apisubscribeAgent(payload);
         if (response.status === 200) {
           this.$message.success('订阅成功！');
+          // 订阅成功后，重新获取用户订阅列表
+          this.$store.dispatch(
+            'agent/fetchUserSubscriptions',
+            this.$store.state.user.userId
+          );
+          console.log('订阅成功!!!:', response);
+          console.log(
+            '订阅成功后的用户订阅列表:',
+            this.$store.state.agent.haveSubscribed
+          );
+          // location.reload(); // 强制刷新页面
         } else {
           this.$message.error('订阅失败，请稍后重试。');
         }
       } catch (error) {
         console.error('订阅失败:', error);
         this.$message.error('无法订阅机器人，请稍后重试。');
+      }
+    },
+    handleSubscription() {
+      const subscribedRobot = this.$store.state.agent.haveSubscribed.find(
+        (r) => r.agent_id === this.robot.id
+      );
+
+      if (subscribedRobot && subscribedRobot.status) {
+        // 已订阅，跳转到查看对话历史页面
+        this.$router.push(`/conversation-history/${this.robot.id}`);
+      } else {
+        // 未订阅，打开订阅弹窗
+        this.openSubscriptionDialog();
       }
     },
   },

@@ -160,14 +160,6 @@ export default {
       this.$router.push({ name: 'ChatDetail', params: { id: chatId } });
     },
   },
-  watch: {
-    userId(newVal) {
-      console.log('userId changed:', newVal);
-    },
-    isLoggedIn(newVal) {
-      console.log('isLoggedIn changed:', newVal);
-    },
-  },
 };
 </script>
 <style lang="scss" scoped>
