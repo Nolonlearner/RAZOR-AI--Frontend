@@ -7,18 +7,18 @@
       <h1 class="title">Razor AI</h1>
     </div>
 
-    <!-- 最近使用的机器人选项卡和输入框 -->
-    <div class="recent-robots">
+    <!-- 已经订阅的机器人选项卡和输入框 -->
+    <div class="subscribed-robots">
       <el-tabs
         v-model="selectedRobot"
-        class="recent-tabs"
+        class="subscribed-tabs"
         @tab-click="handleRobotSelect"
       >
         <el-tab-pane
-          v-for="robot in recentRobots"
-          :key="robot.id"
-          :label="robot.name"
-          :name="robot.name"
+          v-for="robot in filteredSubscribedRobots"
+          :key="robot.agent_id"
+          :label="robot.agent_name"
+          :name="robot.agent_name"
         >
         </el-tab-pane>
       </el-tabs>
@@ -40,7 +40,12 @@
     <!-- 官方机器人列表 -->
     <div class="robot-section">
       <h2 class="section-title">官方机器人</h2>
-      <div class="robot-groups">
+      <div
+        class="robot-groups"
+        v-loading="loading"
+        element-loading-text="拼命加载中"
+        element-loading-spinner="el-icon-loading"
+      >
         <!-- 文本机器人 -->
         <div class="robot-group">
           <h3 class="robot-group-intro">
@@ -53,8 +58,12 @@
               class="robot-card"
               @click.native="selectRobot(robot)"
             >
-              <img :src="robot.icon" alt="icon" class="robot-icon" />
               <div class="robot-info">
+                <img
+                  :src="require('@/assets/images/Agents/textAgent.png')"
+                  alt="icon"
+                  class="robot-icon"
+                />
                 <p class="robot-name">{{ robot.name }}</p>
                 <p class="robot-description">
                   {{ truncate(robot.description) }}
@@ -78,8 +87,12 @@
               class="robot-card"
               @click.native="selectRobot(robot)"
             >
-              <img :src="robot.icon" alt="icon" class="robot-icon" />
               <div class="robot-info">
+                <img
+                  :src="require('@/assets/images/Agents/imageAgent.png')"
+                  alt="icon"
+                  class="robot-icon"
+                />
                 <p class="robot-name">{{ robot.name }}</p>
                 <p class="robot-description">
                   {{ truncate(robot.description) }}
@@ -98,13 +111,17 @@
           </h3>
           <div class="robot-cards">
             <el-card
-              v-for="robot in avRobots.slice(0, 4)"
+              v-for="robot in videoRobots.slice(0, 4)"
               :key="robot.id"
               class="robot-card"
               @click.native="selectRobot(robot)"
             >
-              <img :src="robot.icon" alt="icon" class="robot-icon" />
               <div class="robot-info">
+                <img
+                  :src="require('@/assets/images/Agents/videoAgent.png')"
+                  alt="icon"
+                  class="robot-icon"
+                />
                 <p class="robot-name">{{ robot.name }}</p>
                 <p class="robot-description">
                   {{ truncate(robot.description) }}
@@ -134,8 +151,12 @@
           class="dialog-robot-card"
           @click.native="selectRobot(robot)"
         >
-          <img :src="robot.icon" alt="icon" class="robot-icon" />
           <div class="robot-info">
+            <img
+              :src="require('@/assets/images/Agents/baseAgent.png')"
+              alt="icon"
+              class="robot-icon"
+            />
             <p class="robot-name">{{ robot.name }}</p>
             <p class="robot-description">{{ truncate(robot.description) }}</p>
           </div>
@@ -146,135 +167,91 @@
 </template>
 
 <script>
+import user from '@/store/user';
+import { mapActions, mapState } from 'vuex';
 export default {
   data() {
     return {
-      recentRobots: [
-        { id: 1, name: '0813' },
-        { id: 2, name: 'kimi' },
-        { id: 3, name: 'GPT-4o' },
-        { id: 4, name: '期末去死！' },
-        { id: 5, name: '赌氢凤' },
-        { id: 6, name: 'komorebi' },
-        { id: 7, name: 'Nolon' },
-        { id: 8, name: '-1LL' },
-        { id: 9, name: '猫猫' },
-        { id: 10, name: '狗狗' },
-      ], // 最近使用的机器人
       selectedRobot: null, // 当前选中的机器人
       userInput: '', // 用户输入内容
-      textRobots: [
-        {
-          id: 1,
-          name: '文本助手1',
-          icon: '@/assets/icons/text1.png',
-          description:
-            '适合快速文本处理的机器人输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题输入您的问题',
-        },
-        {
-          id: 2,
-          name: '文本助手2',
-          icon: '@/assets/icons/text2.png',
-          description: '可协助生成文案的工具',
-        },
-        {
-          id: 3,
-          name: '文本助手3',
-          icon: '@/assets/icons/text3.png',
-          description: '支持多种文本处理功能',
-        },
-        {
-          id: 4,
-          name: '文本助手4',
-          icon: '@/assets/icons/text4.png',
-          description: '提供文本分析和处理服务',
-        },
-        {
-          id: 5,
-          name: '文本助手5',
-          icon: '@/assets/icons/text5.png',
-          description: '适合快速生成文案的工具',
-        },
-        {
-          id: 6,
-          name: '文本助手6',
-          icon: '@/assets/icons/text6.png',
-          description: '支持多种文本处理功能',
-        },
-        {
-          id: 7,
-          name: '文本助手7',
-          icon: '@/assets/icons/text7.png',
-          description: '提供文本分析和处理服务',
-        },
-        {
-          id: 8,
-          name: '文本助手8',
-          icon: '@/assets/icons/text8.png',
-          description: '适合快速生成文案的工具',
-        },
-      ],
-      imageRobots: [
-        {
-          id: 1,
-          name: '图像生成1',
-          icon: '@/assets/icons/image1.png',
-          description: '支持多种风格的图片生成',
-        },
-        {
-          id: 2,
-          name: '图像生成2',
-          icon: '@/assets/icons/image2.png',
-          description: '提供多种图像处理功能',
-        },
-        {
-          id: 3,
-          name: '图像生成3',
-          icon: '@/assets/icons/image3.png',
-          description: '适合快速生成图片的工具',
-        },
-        {
-          id: 4,
-          name: '图像生成4',
-          icon: '@/assets/icons/image4.png',
-          description: '支持多种图像生成功能',
-        },
-      ],
-      avRobots: [
-        {
-          id: 1,
-          name: '音视频助手',
-          icon: '@/assets/icons/av1.png',
-          description: '快速编辑音视频的智能工具',
-        },
-        {
-          id: 2,
-          name: '音视频助手2',
-          icon: '@/assets/icons/av2.png',
-          description: '提供多种音视频处理功能',
-        },
-        {
-          id: 3,
-          name: '音视频助手3',
-          icon: '@/assets/icons/av3.png',
-          description: '支持多种音视频编辑功能',
-        },
-        {
-          id: 4,
-          name: '音视频助手4',
-          icon: '@/assets/icons/av4.png',
-          description: '适合快速编辑音视频的工具',
-        },
-      ],
       dialogVisible: false, // 对话框是否可见
       dialogType: '', // 对话框类型
       dialogTitle: '', // 对话框标题
       searchKeyword: '', // 搜索关键词
       filteredRobots: [], // 过滤后的机器人列表
+      loading: true, // 加载状态
     };
   },
+  computed: {
+    ...mapState('user', ['isLoggedIn', 'userName', 'userId', 'token']), // 绑定 Vuex 状态，当信息改变时，自动更新
+    ...mapState('agent', {
+      textRobots: (state) => state.textAgents,
+      imageRobots: (state) => state.imageAgents,
+      videoRobots: (state) => state.videoAgents,
+      haveSubscribed: (state) => state.haveSubscribed,
+    }),
+    filteredSubscribedRobots() {
+      return this.haveSubscribed.filter((robot) => robot.status);
+    },
+  },
+  created() {
+    this.getAllAgentsData(); // 获取所有机器人数据
+    this.getUserSubscriptions(); // 获取用户订阅列表
+  },
   methods: {
+    ...mapActions('agent', [
+      'fetchAllAgentsData',
+      'fetchAgentDetail',
+      'fetchUserSubscriptions',
+    ]),
+    async getAllAgentsData() {
+      this.loading = true; // 开始加载
+      // 如果当前Vuex textAgents、imageAgents、videoAgents数据为空，则才进行获取
+      if (
+        this.$store.state.agent.textRobots === null &&
+        this.$store.state.agent.imageRobots === null &&
+        this.$store.state.agent.videoRobots === null
+      ) {
+        try {
+          const response = await this.fetchAllAgentsData();
+          console.log('response from getAllAgentsData:', response);
+        } catch (error) {
+          console.error('error in fetchAllAgentsData:', error);
+        } finally {
+          this.loading = false; // 结束加载
+        }
+      } else {
+        console.log('已有机器人数据，无需再次获取:', this.$store.state.agent);
+        this.loading = false; // 结束加载
+      }
+    },
+    async getAgentDetail(agentId) {
+      try {
+        const response = await this.fetchAgentDetail(agentId);
+        console.log('response from getAgentDetail:', response);
+        return response;
+      } catch (error) {
+        console.error('error in fetchAgentDetail:', error);
+      }
+    },
+    async getUserSubscriptions() {
+      try {
+        const user_id = user.state.userId;
+        console.log('user_id:', user_id);
+        const response = await this.fetchUserSubscriptions(user_id);
+        console.log(
+          'subscribed agents:',
+          this.$store.state.agent.haveSubscribed
+        );
+        console.log('response from getUserSubscriptions:', response);
+      } catch (error) {
+        console.error('error in getUserSubscriptions:', error);
+      }
+    },
     truncate(text, length = 20) {
+      if (text === null || text === undefined) {
+        return '';
+      }
       return text.length > length ? text.slice(0, length) + '...' : text;
     },
     sendMessage() {
@@ -309,26 +286,43 @@ export default {
             ? '图片生成机器人'
             : '音视频机器人';
       this.filteredRobots = this.getRobotsByType(type);
+      console.log('filteredRobots:', this.filteredRobots);
       this.dialogVisible = true;
       this.$message.info(
         `打开${this.dialogTitle}对话框,共有${this.filteredRobots.length}个机器人,${this.dialogVisible}`
       );
     },
-    selectRobot(robot) {
+    async selectRobot(robot) {
       if (!robot || !robot.name) {
         this.$message.error('无法选择机器人，请稍后重试');
         return;
       }
-      this.$message.success(`您选择了机器人: ${robot.name}`);
-      this.dialogVisible = false;
+      try {
+        const response = await this.getAgentDetail(robot.id);
+        if (response.success) {
+          this.$message.success(`已选择机器人: ${robot.name}`);
+          this.dialogVisible = false;
+          this.goToRobotDetail(robot);
+        } else {
+          this.$message.error('选择机器人失败，请稍后重试');
+        }
+      } catch (error) {
+        console.error('error in selectRobot:', error);
+      }
     },
-
+    goToRobotDetail(robot) {
+      if (!robot || !robot.id) {
+        this.$message.error('无效的机器人信息');
+        return;
+      }
+      this.$router.push({ name: 'RobotDetail', params: { id: robot.id } });
+    },
     getRobotsByType(type) {
       return type === 'text'
-        ? this.textRobots
+        ? this.$store.state.agent.textAgents
         : type === 'image'
-          ? this.imageRobots
-          : this.avRobots;
+          ? this.$store.state.agent.imageAgents
+          : this.$store.state.agent.videoAgents;
     },
   },
 };
@@ -359,14 +353,14 @@ export default {
     }
   }
 
-  .recent-robots {
+  .subscribed-robots {
     width: 60%;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 30px;
 
-    .recent-tabs {
+    .subscribed-tabs {
       width: 100%;
     }
 
@@ -404,11 +398,13 @@ export default {
           gap: 0.75rem;
 
           .robot-card {
-            width: 20%;
-            height: 125px;
+            width: 15vw; // 卡片宽度
+            height: 150px;
             display: flex;
+            justify-content: center; // 内容居中
+            padding: 10px;
             cursor: pointer;
-            padding: 10px; // 内边距
+            padding: 5px; // 内边距
             &:hover {
               /* 鼠标悬停时变换颜色 */
               background-color: $primary-color;
@@ -424,7 +420,7 @@ export default {
 
               .robot-name {
                 font-weight: bold;
-                margin: 5px 0;
+                margin: 3px 0;
               }
 
               .robot-description {

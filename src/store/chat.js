@@ -8,8 +8,7 @@
  *获取某个会话的历史消息 (/agent/user/chat/<int:chat_id>)
  */
 
-import axios from 'axios';
-
+import { fetchAllChats as apifetchAllChats } from '../utils/api';
 const state = {
   chats: [],
   currentChat: null,
@@ -23,25 +22,34 @@ const mutations = {
     state.currentChat = chat;
   },
 };
+const getters = {
+  chats: (state) => state.chats,
+  currentChat: (state) => state.currentChat,
+};
 
 const actions = {
-  async fetchChats({ commit }, userId) {
-    const response = await axios.post('/agent/user/chat/all', {
-      user_id: userId,
-    });
-    commit('SET_CHATS', response.data);
+  async fetchChats({ commit }, payload) {
+    try {
+      const response = await apifetchAllChats(payload);
+      console.log('response in chat.js:', response);
+      commit('SET_CHATS', response.data);
+      return { success: true, message: '获取会话列表成功' };
+    } catch (error) {
+      console.log('Error occurred in chat.js:', error);
+      return { success: false, message: error.message };
+    }
   },
-  async createChat({ commit }, chatData) {
-    const response = await axios.post('/agent/user/chat/creation', chatData);
-    commit('SET_CURRENT_CHAT', response.data);
-  },
+  // async createChat({ commit }, chatData) {
+  //   const response = await axios.post('/agent/user/chat/creation', chatData);
+  //   commit('SET_CURRENT_CHAT', response.data);
+  // },
   //   async sendMessage({ commit }, { chatId, message }) {
   //     await axios.post(`/agent/user/chat/${chatId}`, { question: message });
   //   },
-  async fetchChatHistory({ commit }, chatId) {
-    const response = await axios.get(`/agent/user/chat/${chatId}`);
-    commit('SET_CURRENT_CHAT', response.data);
-  },
+  // async fetchChatHistory({ commit }, chatId) {
+  //   const response = await axios.get(`/agent/user/chat/${chatId}`);
+  //   commit('SET_CURRENT_CHAT', response.data);
+  // },
 };
 
 export default {
@@ -49,4 +57,5 @@ export default {
   state,
   mutations,
   actions,
+  getters,
 };

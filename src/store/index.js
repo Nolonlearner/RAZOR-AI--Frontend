@@ -14,4 +14,11 @@ export default new Vuex.Store({
     agent, // 注册 agent 模块
     chat, // 注册 chat 模块
   },
+  // actions: {
+  //   logout({ commit }) {
+  //     commit('user/SET_LOGOUT');
+  //     commit('agent/RESET');
+  //     commit('chat/RESET');
+  //   }
+  // }
 });

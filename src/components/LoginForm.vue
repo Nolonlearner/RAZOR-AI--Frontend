@@ -23,7 +23,13 @@
       ></el-input>
     </el-form-item>
     <el-form-item>
-      <el-checkbox v-model="loginForm.rememberMe">记住我</el-checkbox>
+      <div class="form-footer">
+        <el-checkbox v-model="loginForm.rememberMe">记住我</el-checkbox>
+        <div class="register-prompt">
+          <span>没有账户？</span>
+          <el-button type="text" @click="handleRegister">点击注册</el-button>
+        </div>
+      </div>
     </el-form-item>
     <el-form-item>
       <el-button
@@ -33,7 +39,7 @@
         :loading="isLoading"
         >登录</el-button
       >
-      <el-button @click="closeDialog">取消</el-button>
+      <el-button class="login-button" @click="closeDialog">取消</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -91,6 +97,7 @@ export default {
           } finally {
             // 无论成功或失败都会执行
             this.isLoading = false; // 结束加载状态
+            location.reload(); // 强制刷新页面
           }
         } else {
           this.$message.error('请正确填写表单');
@@ -106,12 +113,41 @@ export default {
       this.loginForm.password = '';
       this.loginForm.rememberMe = false;
     },
+    navigateTo(route) {
+      if (this.$route.name !== route) {
+        this.$router.push({ name: route });
+      }
+    },
+    handleRegister() {
+      this.closeDialog(); // 关闭对话框
+      this.navigateTo('Register'); // 跳转到注册页面
+    },
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@use '@/assets/styles/mixins.scss' as *;
+@use '@/assets/styles/variables.scss' as *;
 .login-button {
   margin-right: 10px;
+  color: $text-color; /* 文字颜色 */
+  background-color: $primary-color; /* 主色调背景 */
+  border-color: $text-color; /* 边框颜色 */
+  &:hover {
+    color: $text-color; /* 文字颜色 */
+    background-color: $hover-text-color; /* 主色调背景 */
+    border-color: $text-color; /* 边框颜色 */
+  }
+}
+.form-footer {
+  display: flex;
+  justify-content: space-between; /* 在左右两边对齐 */
+  align-items: center; /* 垂直居中对齐 */
+}
+
+.register-prompt {
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
 }
 </style>

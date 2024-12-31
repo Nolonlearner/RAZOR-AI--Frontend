@@ -28,13 +28,13 @@
       <div class="chat-history">
         <div
           class="chat-item"
-          v-for="chat in chatList"
+          v-for="chat in chatlists"
           :key="chat.id"
           @click="navigateToChat(chat.id)"
         >
           <el-icon name="chat-dot-square" class="chat-icon"></el-icon
-          >{{ chat.title }}
-          <span>{{ chat.robotname }}</span>
+          >{{ chat.name }}
+          <span>{{ chat.agent_name }}</span>
         </div>
       </div>
       <div class="menu-item" @click="navigateTo('ProductExpore')">
@@ -77,7 +77,7 @@
         >
           <el-icon name="s-unfold"></el-icon>
         </button>
-        <h2 class="header-title">{{ headerTitle }}</h2>
+        <h2 class="header-name">{{ headername }}</h2>
         <div class="user-info">
           <el-icon name="user"></el-icon>
           <span v-if="!isLoggedIn" @click="openLoginDialog">用户登录</span>
@@ -92,7 +92,7 @@
     <!-- 登录对话框 -->
     <el-dialog
       :visible.sync="loginDialogVisible"
-      title="用户登录"
+      name="用户登录"
       :modal="true"
       :close-on-click-modal="false"
       center
@@ -105,8 +105,8 @@
 
 <script>
 import LoginForm from '@/components/LoginForm.vue'; // 引入登录表单组件
-import { mapGetters } from 'vuex'; // 导入 mapGetters
-
+import { mapGetters, mapState, mapActions } from 'vuex'; // 引入 mapGetters, mapActions
+import user from '@/store/user';
 export default {
   components: {
     LoginForm,
@@ -115,24 +115,35 @@ export default {
     return {
       loginDialogVisible: false,
       isSidebarHidden: false, // 控制菜单栏是否隐藏
-      chatList: [
-        { id: 1, title: '伦敦的天气', robotname: '机器人1' },
-        { id: 2, title: '期末试卷分析', robotname: '机器人2' },
-        { id: 3, title: '如何和女朋友聊天', robotname: '机器人3' },
-        { id: 4, title: '帮我写一份2亿字的论文', robotname: '机器人4' },
-        { id: 5, title: '如何成为美国总统', robotname: '机器人5' },
-        { id: 6, title: '意大利面怎么拌混凝土', robotname: '机器人6' },
-      ], // 聊天历史列表
     };
+  },
+  created() {
+    this.getAllChats();
   },
   computed: {
     ...mapGetters('user', ['isLoggedIn', 'userId', 'userName']), // 映射 getters
-    headerTitle() {
+    ...mapState('chat', {
+      chatlists: (state) => state.chats,
+    }),
+    ...mapState('user', ['isLoggedIn', 'userName', 'userId', 'token']), // 绑定 Vuex 状态，当信息改变时，自动更新
+    headername() {
       // 从当前路由的 meta 信息中获取标题
+      console.log('当前路由：', this.$route);
       return this.$route.meta.title || '默认标题';
     },
   },
   methods: {
+    ...mapActions('chat', ['fetchChats']), // 映射 actions, 用于获取聊天列表
+    async getAllChats() {
+      try {
+        const response = await this.fetchChats({
+          user_id: user.state.userId,
+        });
+        console.log('获取聊天列表成功：', response);
+      } catch (error) {
+        console.error('获取聊天列表失败：', error);
+      }
+    },
     toggleSidebar() {
       this.isSidebarHidden = !this.isSidebarHidden;
     },
@@ -144,22 +155,10 @@ export default {
     openLoginDialog() {
       this.loginDialogVisible = true;
     },
-    // 获取聊天历史列表
-    async fetchChatList() {
-      try {
-        const response = await this.$axios.get('/api/chats');
-        this.chatList = response.data; // 假设后端返回 [{ id: 1, title: "聊天 1" }, ...]
-      } catch (error) {
-        console.error('获取聊天列表失败：', error);
-      }
-    },
     // 跳转到聊天详情页
     navigateToChat(chatId) {
       this.$router.push({ name: 'ChatDetail', params: { id: chatId } });
     },
-  },
-  mounted() {
-    // this.fetchChatList(); // 页面加载时获取聊天列表
   },
 };
 </script>
