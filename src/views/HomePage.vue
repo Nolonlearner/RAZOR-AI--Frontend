@@ -178,6 +178,7 @@ export default {
     };
   },
   computed: {
+    ...mapState('user', ['isLoggedIn', 'userName', 'userId', 'token']), // 绑定 Vuex 状态，当信息改变时，自动更新
     ...mapState('agent', {
       textRobots: (state) => state.textAgents,
       imageRobots: (state) => state.imageAgents,

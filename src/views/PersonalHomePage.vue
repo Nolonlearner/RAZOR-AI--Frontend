@@ -132,7 +132,9 @@ export default {
         // 清除本地存储的用户信息（如 token）
         this.$message.success('登出成功！'); // 提示登出成功
         // 跳转到登录页面
-        this.$router.push('/'); // 如果你在使用 vue-router
+        if (this.$route.name !== 'Home') {
+          this.$router.push({ name: 'Home' });
+        }
       } catch (error) {
         console.error(error); // 打印错误信息
         this.$message.error(error.message || '登出失败');

@@ -125,9 +125,11 @@ export default {
     ...mapState('chat', {
       chatlists: (state) => state.chats,
     }),
+    ...mapState('user', ['isLoggedIn', 'userName', 'userId', 'token']), // 绑定 Vuex 状态，当信息改变时，自动更新
     headername() {
       // 从当前路由的 meta 信息中获取标题
-      return this.$route.meta.name || '默认标题';
+      console.log('当前路由：', this.$route);
+      return this.$route.meta.title || '默认标题';
     },
   },
   methods: {
@@ -156,6 +158,14 @@ export default {
     // 跳转到聊天详情页
     navigateToChat(chatId) {
       this.$router.push({ name: 'ChatDetail', params: { id: chatId } });
+    },
+  },
+  watch: {
+    userId(newVal) {
+      console.log('userId changed:', newVal);
+    },
+    isLoggedIn(newVal) {
+      console.log('isLoggedIn changed:', newVal);
     },
   },
 };
