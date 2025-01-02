@@ -10,16 +10,16 @@
           v-for="(msg, index) in messages"
           :key="index"
           :class="{
-            'user-message': msg.type === 'user',
-            'bot-message': msg.type === 'bot',
+            'user-message': msg.role === 'user',
+            'bot-message': msg.role === 'assistant',
           }"
         >
           <img
-            :src="msg.type === 'user' ? userAvatar : botAvatar"
+            :src="msg.role === 'user' ? userAvatar : botAvatar"
             alt="avatar"
             class="avatar"
           />
-          <div class="text">{{ msg.text }}</div>
+          <div class="text">{{ msg.content }}</div>
         </div>
       </div>
       <div class="input-container">
@@ -45,9 +45,19 @@ export default {
     return {
       newMessage: '',
       selectedOption: '', // 添加选中的选项
-      messages: [],
-      userAvatar: 'path_to_user_avatar',
-      botAvatar: 'path_to_bot_avatar',
+      messages: [
+        { content: '我叫宋金宇', role: 'user' },
+        { content: '2+2等于几', role: 'user' },
+        { content: '2 加 2 等于 4。', role: 'assistant' },
+        { content: '你刚刚说的什么', role: 'user' },
+        {
+          content:
+            '我说的“2 加 2 等于 4”。这是一个简单的数学运算。如果你有其他问题或者需要帮助，请随时告诉我。',
+          role: 'assistant',
+        },
+      ],
+      userAvatar: require('@/assets/images/Avatar/User.png'),
+      botAvatar: require('@/assets/images/Avatar/Assistant.png'),
     };
   },
   methods: {
@@ -66,7 +76,7 @@ export default {
     },
     async sendMessage() {
       if (this.newMessage.trim() !== '') {
-        this.messages.push({ text: this.newMessage, type: 'user' });
+        this.messages.push({ content: this.newMessage, role: 'user' });
         const userMessage = this.newMessage;
         const optionMessage = this.selectedOption; // 获取选中的选项
         this.newMessage = '';
@@ -76,12 +86,15 @@ export default {
             message: userMessage,
             selectedOption: optionMessage, // 发送选项到后端
           });
-          this.messages.push({ text: response.data.reply, type: 'bot' });
-        } catch (error) {
-          console.error('Error fetching bot reply:', error);
           this.messages.push({
-            text: '无法接收后端传来的数据。',
-            type: 'bot',
+            content: response.data.reply,
+            role: 'assistant',
+          });
+        } catch (error) {
+          console.error('Error fetching assistant reply:', error);
+          this.messages.push({
+            content: '无法接收后端传来的数据。',
+            role: 'assistant',
           });
           this.scrollToBottom();
         }
@@ -103,15 +116,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/styles/mixins.scss';
+@use '@/assets/styles/mixins.scss' as *;
+@use '@/assets/styles/variables.scss' as *;
 .about-page {
   max-width: 100%; /* 填满整个宽度 */
   height: 100%; /* 填满整个高度 */
   margin: 0; /* 无边距 */
   padding: 20px;
-  background-color: #1e1e1e; /* 深色背景 */
+  background-color: $background-color;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
-  color: #ffffff; /* 白色文字 */
+  color: $text-color; /* 白色文字 */
   display: flex;
   flex-direction: column; /* 纵向排列 */
   align-items: center; /* 内容居中 */
@@ -152,8 +166,8 @@ export default {
 }
 
 .user-message {
-  color: white;
-  background-color: #3e3f41;
+  color: $text-color;
+  background-color: darken($accent-color, 10%); /* 深色 */
   margin: 5px 0;
   padding: 8px 12px;
   border-radius: 12px;
@@ -163,8 +177,8 @@ export default {
 }
 
 .bot-message {
-  color: black;
-  background-color: #e0e0e0;
+  color: $text-color;
+  background-color: $accent-color; /* 主色 */
   margin: 5px 0;
   padding: 8px 12px;
   border-radius: 12px;
@@ -205,15 +219,5 @@ button {
 
 button:hover {
   background-color: #0056b3; /* 悬停效果 */
-}
-
-.option-button {
-  margin-right: 10px; /* 与输入框之间的间距 */
-  background-color: #007bff; /* 按钮颜色 */
-  color: white; /* 按钮字体颜色 */
-  border: none; /* 去掉边框 */
-  padding: 10px; /* 按钮内边距 */
-  border-radius: 4px; /* 圆角 */
-  cursor: pointer; /* 鼠标悬停效果 */
 }
 </style>
