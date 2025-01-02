@@ -48,7 +48,7 @@
 <script>
 import axios from 'axios';
 export default {
-  name: 'Chat',
+  name: 'ChatRobot',
   data() {
     return {
       newMessage: '',

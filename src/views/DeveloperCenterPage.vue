@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     createNewRobot() {
-      this.$router.push('/create-new-robot'); // 跳转到新机器人配置页面
+      this.$router.push({ name: 'CreateBots' }); // 跳转到新机器人配置页面
     },
     viewTemplates() {
       this.$router.push('/templates'); // 跳转到快速发布模板页面
