@@ -23,7 +23,6 @@
         </div>
       </div>
       <div class="input-container">
-        <button class="option-button" @click="toggleOptions">语言模型</button>
         <input
           type="text"
           v-model="newMessage"
@@ -33,13 +32,6 @@
           ref="inputField"
         />
         <button class="button" @click="sendMessage">发送</button>
-      </div>
-      <div v-if="showOptions" class="options-menu">
-        <ul>
-          <li @click="selectOption('kimi')">kimi</li>
-          <li @click="selectOption('chatgpt')">chatgpt</li>
-          <li @click="selectOption('文心一言')">文心一言</li>
-        </ul>
       </div>
     </div>
   </div>
@@ -56,17 +48,12 @@ export default {
       messages: [],
       userAvatar: 'path_to_user_avatar',
       botAvatar: 'path_to_bot_avatar',
-      showOptions: false,
     };
   },
   methods: {
-    toggleOptions() {
-      this.showOptions = !this.showOptions;
-    },
     selectOption(option) {
       this.selectedOption = option; // 保存选中的选项
       this.newMessage = option; // 选项填入输入框
-      this.showOptions = false;
     },
     scrollToBottom() {
       const chatLog = this.$refs.chatlog;
@@ -84,9 +71,6 @@ export default {
         const optionMessage = this.selectedOption; // 获取选中的选项
         this.newMessage = '';
         this.selectedOption = ''; // 发送后清空选项
-
-        // 调用后端 API 获取机器人的回复
-        //这里一共发送userMessage和optionMessage两个字段
         try {
           const response = await axios.post('YOUR_BACKEND_API_URL', {
             message: userMessage,
@@ -231,31 +215,5 @@ button:hover {
   padding: 10px; /* 按钮内边距 */
   border-radius: 4px; /* 圆角 */
   cursor: pointer; /* 鼠标悬停效果 */
-}
-
-.options-menu {
-  position: absolute; /* 绝对定位 */
-  background-color: #2c2c2c; /* 设置为深色背景 */
-  border: 1px solid #444; /* 边框 */
-  border-radius: 4px; /* 圆角 */
-  bottom: 50px;
-  left: 0; /* 对齐左侧 */
-  z-index: 10; /* 确保菜单在其他元素之上 */
-}
-
-.options-menu ul {
-  list-style: none; /* 去掉列表样式 */
-  padding: 0; /* 去掉内边距 */
-  margin: 0; /* 去掉外边距 */
-}
-
-.options-menu li {
-  padding: 10px; /* 每个选项的内边距 */
-  cursor: pointer; /* 鼠标悬停效果 */
-  color: white; /* 选项文字颜色 */
-}
-
-.options-menu li:hover {
-  background-color: #444; /* 悬停效果 */
 }
 </style>
