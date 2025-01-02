@@ -267,9 +267,14 @@ export default {
     filterRobots() {
       const keyword = this.searchKeyword.toLowerCase();
       this.filteredRobots = this.getRobotsByType(this.dialogType).filter(
-        (robot) =>
-          robot.name.toLowerCase().includes(keyword) ||
-          robot.description.toLowerCase().includes(keyword)
+        (robot) => {
+          const nameMatch =
+            robot.name && robot.name.toLowerCase().includes(keyword);
+          const descriptionMatch =
+            robot.description &&
+            robot.description.toLowerCase().includes(keyword);
+          return nameMatch || descriptionMatch;
+        }
       );
     },
     handleRobotSelect(tab) {
