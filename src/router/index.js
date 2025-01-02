@@ -146,7 +146,7 @@ router.beforeEach((to, from, next) => {
   } else {
     document.title = 'RazorAI'; // 这里可以设置一个默认的标题
   }
-  next();
+  next(); // 继续导航
 });
 
 export default router;

@@ -80,3 +80,8 @@ export const subscribeAgent = (payload) =>
   api.post('/market/user/agent/subscribe', payload, {
     headers: { skipAuth: false },
   });
+
+export const createAI = (payload) =>
+  api.post('/agent/user/creation', payload, {
+    headers: { skipAuth: false },
+  });
