@@ -7,11 +7,15 @@ import About from '@/views/AboutPage.vue';
 import Setting from '@/views/UserSettingPage.vue';
 import PersonalHome from '@/views/PersonalHomePage.vue';
 import Test from '@/views/TestPage.vue';
-import Chat from '@/views/ChatPage.vue';
+import ChatRobot from '@/views/ChatRobotPage.vue';
 import SubscribedBots from '@/views/SubscribedBotsPage.vue';
 import DeveloperCenter from '@/views/DeveloperCenterPage.vue';
 import Rgister from '@/views/RegisterPage.vue';
 import RobotDetail from '@/views/RobotDetailPage.vue';
+import Explorer from '@/views/ExplorerPage.vue';
+import CreateBots from '@/views/CreateBotsPage.vue';
+import HelperCenter from '@/views/HelperCenterPage.vue';
+import ConversationHistory from '@/views/ConversationHistory.vue';
 //import { component } from 'vue/types/umd';
 
 Vue.use(VueRouter);
@@ -47,6 +51,14 @@ const routes = [
         },
       },
       {
+        path: '/createRobot',
+        name: 'CreateBots',
+        component: CreateBots,
+        meta: {
+          title: 'RazorAI-创建机器人', // 创建机器人页标题
+        },
+      },
+      {
         path: '/about',
         name: 'About',
         component: About,
@@ -79,9 +91,9 @@ const routes = [
         },
       },
       {
-        path: '/chat',
-        name: 'Chat',
-        component: Chat,
+        path: '/chatRobot/:id',
+        name: 'ChatRobot',
+        component: ChatRobot,
         meta: {
           title: 'RazorAI-聊天',
         },
@@ -102,6 +114,30 @@ const routes = [
           title: 'RazorAI-机器人详情',
         },
       },
+      {
+        path: '/explorer',
+        name: 'Explorer',
+        component: Explorer,
+        meta: {
+          title: 'RazorAI-探索',
+        },
+      },
+      {
+        path: '/helperCenter',
+        name: 'HelperCenter',
+        component: HelperCenter,
+        meta: {
+          title: 'RazorAI-帮助中心',
+        },
+      },
+      {
+        path: '/conversationHistory/:id',
+        name: 'ConversationHistory',
+        component: ConversationHistory,
+        meta: {
+          title: 'RazorAI-对话历史',
+        },
+      },
     ],
   },
 ];
@@ -119,7 +155,7 @@ router.beforeEach((to, from, next) => {
   } else {
     document.title = 'RazorAI'; // 这里可以设置一个默认的标题
   }
-  next();
+  next(); // 继续导航
 });
 
 export default router;

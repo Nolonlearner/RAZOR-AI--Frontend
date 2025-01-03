@@ -71,6 +71,14 @@ export const fetchUserSubscriptions = async (userId) => {
   return response;
 };
 
+export const fetchChatDetailedHistory = async (chat_id) => {
+  console.log('chat_id in api.js:', chat_id);
+  const response = await api.get(`/agent/user/chat/${chat_id.chat_id}`, {
+    headers: { skipAuth: false },
+  });
+  return response;
+};
+
 export const fetchAllChats = (user_id) =>
   api.post('/agent/user/chat/all', user_id, {
     headers: { skipAuth: false },
@@ -78,5 +86,39 @@ export const fetchAllChats = (user_id) =>
 
 export const subscribeAgent = (payload) =>
   api.post('/market/user/agent/subscribe', payload, {
+    headers: { skipAuth: false },
+  });
+
+export const createAI = (payload) =>
+  api.post('/agent/user/creation', payload, {
+    headers: { skipAuth: false },
+  });
+
+export const createChat = (payload) =>
+  api.post('/agent/user/chat/creation', payload, {
+    headers: { skipAuth: false },
+  });
+
+export const sendMessage = (payload) =>
+  api.post(
+    `/agent/user/chat/${payload.chat_id}`,
+    { question: payload.content },
+    {
+      headers: { skipAuth: false },
+    }
+  );
+
+export const saveChatHistory = (chatId) =>
+  api.post(`/agent/chat/save/${chatId.chat_id}`, {
+    headers: { skipAuth: true },
+  });
+
+export const closeChat = (chatId) =>
+  api.delete(`/agent/user/chat/${chatId.chat_id}`, {
+    headers: { skipAuth: false },
+  });
+
+export const deleteChat = (chatId) =>
+  api.delete(`/agent/user/chat/delete/${chatId}`, {
     headers: { skipAuth: false },
   });

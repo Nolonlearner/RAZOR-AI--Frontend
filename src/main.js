@@ -43,6 +43,19 @@ async function initApp() {
       await store.dispatch('agent/fetchAllAgentsData');
       console.log('初始化所有AI 机器人信息成功');
     }
+    if (store.state.chat.chats.length === 0 || store.state.user.userId) {
+      const userId = store.state.user.userId;
+      if (userId) {
+        // 把userId转化为json格式
+        const jsonUserId = {
+          user_id: userId,
+        };
+        await store.dispatch('chat/fetchChats', jsonUserId);
+        console.log('初始化所有chat信息成功', store.state.chat.chats);
+      } else {
+        console.warn('用户 ID 不存在，无法初始化');
+      }
+    }
   } catch (error) {
     console.error('初始化应用程序失败:', error);
   }

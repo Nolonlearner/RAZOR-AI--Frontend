@@ -37,7 +37,7 @@
           <span>{{ chat.agent_name }}</span>
         </div>
       </div>
-      <div class="menu-item" @click="navigateTo('ProductExpore')">
+      <div class="menu-item" @click="navigateTo('Explorer')">
         <el-icon name="goods" class="menu-item-icon"></el-icon>探索机器人
       </div>
       <div class="menu-item" @click="navigateTo('DeveloperCenter')">
@@ -60,7 +60,7 @@
       <div class="menu-item" @click="navigateTo('Test')">
         <el-icon name="loading" class="menu-item-icon"></el-icon>测试页面
       </div>
-      <div class="menu-item" @click="navigateTo('Test')">
+      <div class="menu-item" @click="navigateTo('HelperCenter')">
         <el-icon name="question" class="menu-item-icon"></el-icon>帮助中心
       </div>
     </aside>
@@ -128,7 +128,7 @@ export default {
     ...mapState('user', ['isLoggedIn', 'userName', 'userId', 'token']), // 绑定 Vuex 状态，当信息改变时，自动更新
     headername() {
       // 从当前路由的 meta 信息中获取标题
-      console.log('当前路由：', this.$route);
+      // console.log('当前路由：', this.$route);
       return this.$route.meta.title || '默认标题';
     },
   },
@@ -157,7 +157,11 @@ export default {
     },
     // 跳转到聊天详情页
     navigateToChat(chatId) {
-      this.$router.push({ name: 'ChatDetail', params: { id: chatId } });
+      // 如果当前页面的id和chatId相同，则不跳转
+      if (this.$route.params.id === chatId) {
+        return;
+      }
+      this.$router.push({ name: 'ChatRobot', params: { id: chatId } });
     },
   },
 };

@@ -153,7 +153,7 @@
         >
           <div class="robot-info">
             <img
-              :src="require('@/assets/images/Agents/baseAgent.png')"
+              :src="getRobotImage(robot.type)"
               alt="icon"
               class="robot-icon"
             />
@@ -204,24 +204,36 @@ export default {
       'fetchAgentDetail',
       'fetchUserSubscriptions',
     ]),
+    // async getAllAgentsData() {
+    //   this.loading = true; // 开始加载
+    //   // 如果当前Vuex textAgents、imageAgents、videoAgents数据为空，则才进行获取
+    //   if (
+    //     this.$store.state.agent.textRobots === null &&
+    //     this.$store.state.agent.imageRobots === null &&
+    //     this.$store.state.agent.videoRobots === null
+    //   ) {
+    //     try {
+    //       const response = await this.fetchAllAgentsData();
+    //       console.log('response from getAllAgentsData:', response);
+    //     } catch (error) {
+    //       console.error('error in fetchAllAgentsData:', error);
+    //     } finally {
+    //       this.loading = false; // 结束加载
+    //     }
+    //   } else {
+    //     console.log('已有机器人数据，无需再次获取:', this.$store.state.agent);
+    //     this.loading = false; // 结束加载
+    //   }
+    // },
     async getAllAgentsData() {
       this.loading = true; // 开始加载
       // 如果当前Vuex textAgents、imageAgents、videoAgents数据为空，则才进行获取
-      if (
-        this.$store.state.agent.textRobots === null &&
-        this.$store.state.agent.imageRobots === null &&
-        this.$store.state.agent.videoRobots === null
-      ) {
-        try {
-          const response = await this.fetchAllAgentsData();
-          console.log('response from getAllAgentsData:', response);
-        } catch (error) {
-          console.error('error in fetchAllAgentsData:', error);
-        } finally {
-          this.loading = false; // 结束加载
-        }
-      } else {
-        console.log('已有机器人数据，无需再次获取:', this.$store.state.agent);
+      try {
+        const response = await this.fetchAllAgentsData();
+        console.log('response from getAllAgentsData:', response);
+      } catch (error) {
+        console.error('error in fetchAllAgentsData:', error);
+      } finally {
         this.loading = false; // 结束加载
       }
     },
@@ -267,9 +279,14 @@ export default {
     filterRobots() {
       const keyword = this.searchKeyword.toLowerCase();
       this.filteredRobots = this.getRobotsByType(this.dialogType).filter(
-        (robot) =>
-          robot.name.toLowerCase().includes(keyword) ||
-          robot.description.toLowerCase().includes(keyword)
+        (robot) => {
+          const nameMatch =
+            robot.name && robot.name.toLowerCase().includes(keyword);
+          const descriptionMatch =
+            robot.description &&
+            robot.description.toLowerCase().includes(keyword);
+          return nameMatch || descriptionMatch;
+        }
       );
     },
     handleRobotSelect(tab) {
@@ -323,6 +340,18 @@ export default {
         : type === 'image'
           ? this.$store.state.agent.imageAgents
           : this.$store.state.agent.videoAgents;
+    },
+    getRobotImage(type) {
+      switch (type) {
+        case 1:
+          return require('@/assets/images/Agents/textAgent.png'); // 文本机器人的图像路径
+        case 2:
+          return require('@/assets/images/Agents/imageAgent.png'); // 图像机器人的图像路径
+        case 3:
+          return require('@/assets/images/Agents/videoAgent.png'); // 音视频机器人的图像路径
+        default:
+          return require('@/assets/images/Agents/baseAgent.png'); // 默认图像
+      }
     },
   },
 };
