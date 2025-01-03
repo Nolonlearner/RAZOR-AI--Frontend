@@ -17,16 +17,35 @@
           v-for="(msg, index) in messages"
           :key="index"
           :class="{
-            'user-message': msg.role === 'user',
-            'bot-message': msg.role === 'assistant',
+            'message-wrapper': true,
+            'user-message-wrapper': msg.role === 'user',
+            'bot-message-wrapper': msg.role === 'assistant',
           }"
         >
+          <!-- 机器人消息头像 -->
           <img
-            :src="msg.role === 'user' ? userAvatar : botAvatar"
+            v-if="msg.role === 'assistant'"
+            :src="botAvatar"
             alt="avatar"
             class="avatar"
           />
-          <div class="text">{{ msg.content }}</div>
+          <!-- 消息气泡框 -->
+          <div
+            :class="{
+              'message-bubble': true,
+              'user-message': msg.role === 'user',
+              'bot-message': msg.role === 'assistant',
+            }"
+          >
+            {{ msg.content }}
+          </div>
+          <!-- 用户消息头像 -->
+          <img
+            v-if="msg.role === 'user'"
+            :src="userAvatar"
+            alt="avatar"
+            class="avatar"
+          />
         </div>
       </div>
       <div class="input-container">
@@ -46,7 +65,6 @@
 
 <script>
 import { fetchChatDetailedHistory as apifetchChatDetailedHistory } from '../utils/api';
-// import { deleteChat as apideleteChat } from '../utils/api'; // 删除对话
 import { closeChat as apicloseChat } from '../utils/api'; // 关闭对话
 import { saveChatHistory as apisaveChatHistory } from '../utils/api'; // 保存对话
 import { sendMessage as apisendMessage } from '../utils/api'; // 发送消息
@@ -213,6 +231,10 @@ export default {
           }
         } catch (error) {
           console.error('发送消息失败:', error);
+          this.messages.push({
+            content: '对不起，当前机器人宕机啦。',
+            role: 'assistant',
+          });
         }
         this.newMessage = '';
         this.$nextTick(() => {
@@ -244,38 +266,42 @@ export default {
   height: auto;
   margin: 0;
   padding: 20px;
-  background-color: $background-color;
+  background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
   color: $text-color;
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: 'Roboto', sans-serif;
 }
 
 .title {
-  font-size: 3em;
+  font-size: 3rem;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .chat-info {
-  background-color: rgba(255, 255, 255, 0.907);
-  border-radius: 10px;
-  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 20px;
   margin-bottom: 20px;
   width: 50%;
   max-width: 900px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .chat-info-header {
-  font-size: 1.5em;
+  font-size: 1.8rem;
   margin-bottom: 10px;
   color: $accent-color;
   text-align: center;
 }
 
 .chat-info-content {
-  font-size: 1.2em;
-  color: $text-color;
+  font-size: 1.2rem;
+  color: #333;
   text-align: center;
 }
 
@@ -283,13 +309,14 @@ export default {
   position: relative;
   flex: 1;
   margin-top: 20px;
-  padding: 10px;
+  padding: 15px;
   width: 100%;
   max-width: 1000px;
-  border-radius: 10px;
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
-  background-color: #2c2c2c;
+  background-color: #333;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
 }
 
 .chat-log {
@@ -297,60 +324,138 @@ export default {
   flex-direction: column;
   padding: 10px;
   flex: 1;
-  background-color: transparent;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #444 transparent;
+}
+
+.chat-log::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-log::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 4px;
+}
+
+/* 消息容器样式 */
+.message-wrapper {
+  display: flex;
+  align-items: flex-start;
+  margin: 10px 0;
+}
+
+.user-message-wrapper {
+  justify-content: flex-end;
+}
+
+.bot-message-wrapper {
+  justify-content: flex-start;
+}
+
+/* 头像样式 */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 0 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 消息气泡框样式 */
+.message-bubble {
+  max-width: 60%;
+  padding: 12px 16px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  word-wrap: break-word;
+  font-size: 1rem;
+}
+
+.user-message .message-bubble {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+}
+
+.bot-message .message-bubble {
+  background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+  color: #333;
 }
 
 .user-message,
 .bot-message {
-  color: $text-color;
-  margin: 5px 0;
-  padding: 8px 12px;
-  border-radius: 12px;
-  max-width: 50%;
+  margin: 10px 0;
+  padding: 12px 16px;
+  border-radius: 20px;
+  max-width: 60%;
   word-wrap: break-word;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .user-message {
-  background-color: darken($accent-color, 10%);
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
   align-self: flex-end;
 }
 
 .bot-message {
-  background-color: $accent-color;
+  background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+  color: #333;
   align-self: flex-start;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .input-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #2c2c2c;
-  padding: 10px;
-  z-index: 10;
+  background-color: #444;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 10px;
 }
 
 input[type='text'] {
-  padding: 10px;
+  padding: 12px;
   border: none;
-  border-radius: 4px;
-  margin-right: 10px;
+  border-radius: 8px;
   flex: 1;
-  min-width: 150px;
-  background-color: #444;
+  min-width: 200px;
+  background-color: #555;
   color: white;
-  transition: width 0.2s;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+input[type='text']:focus {
+  outline: none;
+  background-color: #666;
 }
 
 button {
-  padding: 10px;
+  padding: 12px 20px;
   border: none;
-  background-color: #007bff;
+  background: linear-gradient(135deg, #007bff, #0056b3);
   color: white;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 1rem;
+  margin-left: 10px;
+  transition: all 0.3s;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background: linear-gradient(135deg, #0056b3, #003d7a);
+}
+
+button:active {
+  transform: scale(0.95);
 }
 </style>

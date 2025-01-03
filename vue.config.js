@@ -9,6 +9,7 @@ module.exports = defineConfig({
       '/api': {
         // 代理的路径规则
         target: 'http://47.99.66.142:5000', // 代理的目标服务器地址
+        //target: 'http://localhost:5000', // 代理的目标服务器地址
         changeOrigin: true, // 是否改变请求头中的来源
         pathRewrite: {
           '^/api': '', // 重写路径，将/api开头的请求路径去掉/api部分
@@ -25,7 +26,7 @@ module.exports = defineConfig({
       entry: 'src/main.js', // 入口文件
       template: 'public/index.html', // 模板文件
       filename: 'index.html', // 输出文件名
-      title: 'ROZAR-AI', // 义网页标题
+      title: 'RAZOR-AI', // 义网页标题
     },
   },
 });

@@ -37,32 +37,35 @@
           <span>{{ chat.agent_name }}</span>
         </div>
       </div>
-      <div class="menu-item" @click="navigateTo('Explorer')">
+      <!-- <div class="menu-item" @click="navigateTo('Explorer')">
         <el-icon name="goods" class="menu-item-icon"></el-icon>探索机器人
-      </div>
-      <div class="menu-item" @click="navigateTo('DeveloperCenter')">
+      </div> -->
+      <!-- <div class="menu-item" @click="navigateTo('DeveloperCenter')">
         <el-icon name="coordinate" class="menu-item-icon"></el-icon>开发者中心
+      </div> -->
+      <div class="menu-item" @click="navigateTo('CreateBots')">
+        <el-icon name="coordinate" class="menu-item-icon"></el-icon>创造机器人
       </div>
       <div class="menu-item" @click="navigateTo('PersonalHome')">
         <el-icon name="s-custom" class="menu-item-icon"></el-icon>个人主页
       </div>
-      <div class="menu-item" @click="navigateTo('Test')">
+      <!-- <div class="menu-item" @click="navigateTo('Test')">
         <el-icon name="chat-line-round" class="menu-item-icon"></el-icon
         >睿择社区
-      </div>
-      <div class="menu-item" @click="navigateTo('Setting')">
+      </div> -->
+      <!-- <div class="menu-item" @click="navigateTo('Setting')">
         <el-icon name="setting" class="menu-item-icon"></el-icon>系统设置
-      </div>
-      <div class="menu-item" @click="navigateTo('About')">
+      </div> -->
+      <!-- <div class="menu-item" @click="navigateTo('About')">
         <el-icon name="info" class="menu-item-icon"></el-icon>关于我们
-      </div>
+      </div> -->
       <!-- <div class="divider"></div> -->
       <div class="menu-item" @click="navigateTo('Test')">
         <el-icon name="loading" class="menu-item-icon"></el-icon>测试页面
       </div>
-      <div class="menu-item" @click="navigateTo('HelperCenter')">
+      <!-- <div class="menu-item" @click="navigateTo('HelperCenter')">
         <el-icon name="question" class="menu-item-icon"></el-icon>帮助中心
-      </div>
+      </div> -->
     </aside>
 
     <!-- 右侧内容区域 -->
@@ -128,7 +131,8 @@ export default {
     ...mapState('user', ['isLoggedIn', 'userName', 'userId', 'token']), // 绑定 Vuex 状态，当信息改变时，自动更新
     headername() {
       // 从当前路由的 meta 信息中获取标题
-      // console.log('当前路由：', this.$route);
+      console.log('当前路由：', this.$route);
+      this.$message('当前路由：' + this.$route.path);
       return this.$route.meta.title || '默认标题';
     },
   },

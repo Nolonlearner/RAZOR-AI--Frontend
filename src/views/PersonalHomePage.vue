@@ -70,12 +70,13 @@
 <script>
 import { MessageBox } from 'element-ui';
 import { mapActions } from 'vuex';
+import user from '@/store/user';
 export default {
   name: 'UserProfile',
   data() {
     return {
       avatar: 'https://via.placeholder.com/150',
-      username: '唐胜标',
+      username: '',
       email: '666@example.com',
       bio: '喜欢编程和旅游。',
       interestModules: ['编程', '旅游', '健身'],
@@ -83,6 +84,10 @@ export default {
       favoriteRobots: ['R2-D2', 'C-3PO', 'Optimus Prime'],
       favoriteTools: ['VS Code', 'Sublime Text', 'WebStorm'],
     };
+  },
+  created() {
+    this.username = user.state.userName;
+    console.log('user:', user);
   },
   methods: {
     editAvatar() {
@@ -149,24 +154,24 @@ export default {
 </script>
 <style lang="scss" scoped>
 @use '@/assets/styles/mixins.scss' as *;
+@use '@/assets/styles/variables.scss' as *;
 .html-body {
   height: 100%; /* 设置 html 和 body 高度为 100% */
   margin: 0; /* 去除默认边距 */
   padding: 0; /* 去除默认内边距 */
-  overflow-x: hidden; /* 防止横向滚动 */
+  overflow: hidden;
 }
 
 .profile-page {
-  height: 100vh; /* 使用视口高度 */
+  height: auto; /* 使用视口高度 */
   max-width: 100%;
   padding: 20px;
-  background-color: #2e2e2e; /* 深色背景 */
-  color: #ffffff; /* 白色文字 */
+  background-color: $background-color; /* 深色背景 */
+  color: $text-color; /* 白色文字 */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  overflow-y: auto; /* 防止内容溢出时出现滚动条 */
 }
 
 .title {

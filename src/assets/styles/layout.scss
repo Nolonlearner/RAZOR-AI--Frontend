@@ -93,7 +93,8 @@
       flex-shrink: 0; /* 禁止高度被压缩 */
       padding: 1rem;
       width: 100%;
-      height: 30%;
+      height: auto;
+      max-height: 30%;
       background-color: color.adjust(
          vars.$primary-color,
          $lightness: 10%
