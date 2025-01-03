@@ -48,7 +48,7 @@
 import { fetchChatDetailedHistory as apifetchChatDetailedHistory } from '../utils/api';
 // import { deleteChat as apideleteChat } from '../utils/api'; // 删除对话
 import { closeChat as apicloseChat } from '../utils/api'; // 关闭对话
-// import { saveChatHistory as apisaveChatHistory } from '../utils/api'; // 保存对话
+import { saveChatHistory as apisaveChatHistory } from '../utils/api'; // 保存对话
 import { sendMessage as apisendMessage } from '../utils/api'; // 发送消息
 import { createChat as apicreateChat } from '../utils/api'; // 创建对话
 import { mapActions } from 'vuex';
@@ -68,13 +68,20 @@ export default {
   mounted() {
     this.chatId = this.$route.params.id;
     this.getChatHistory();
-    console.log('mounted每次都会执行哦');
+    // console.log('mounted每次都会执行哦');
   },
 
   async beforeDestroy() {
     // 离开页面时关闭对话
     const id = this.currentChat.id;
     console.log('关闭对话的id:', id);
+    // 保存旧对话记录
+    const saveresponse = await apisaveChatHistory({ chat_id: id });
+    if (saveresponse.status === 200) {
+      console.log('保存旧对话记录成功！:', saveresponse);
+    } else {
+      console.error('保存旧对话记录失败！:', saveresponse);
+    }
     const response = await apicloseChat({ chat_id: id });
     if (response.status === 200) {
       console.log('关闭对话:', response);
@@ -92,12 +99,44 @@ export default {
     await this.createOrFetchChat(); // 创建或获取对话
   },
   watch: {
-    '$route.params.id'(newId, oldId) {
-      this.chatId = newId;
-      console.log('Updated Chat ID:', oldId, 'to', this.chatId);
-      console.log('watch每次都会执行哦');
-      this.getChatHistory();
-      this.createOrFetchChat();
+    // '$route.params.id'(newId, oldId) {
+    //   this.chatId = newId;
+    //   console.log('Updated Chat ID:', oldId, 'to', this.chatId);
+    //   console.log('watch每次都会执行哦');
+    //   this.getChatHistory();
+    //   this.createOrFetchChat();
+    // },
+    '$route.params.id': {
+      async handler(newId, oldId) {
+        this.chatId = newId;
+        console.log('Updated Chat ID:', oldId, 'to', this.chatId);
+        console.log('watch每次都会执行哦');
+
+        if (oldId) {
+          // 保存旧对话记录
+          const saveresponse = await apisaveChatHistory({ chat_id: oldId });
+          if (saveresponse.status === 200) {
+            console.log('保存旧对话记录成功！:', saveresponse);
+          } else {
+            console.error('保存旧对话记录失败！:', saveresponse);
+          }
+
+          // 关闭旧对话
+          console.log('关闭旧对话:', oldId);
+          const response = await apicloseChat({ chat_id: oldId });
+          if (response.status === 200) {
+            console.log('关闭旧对话成功！:', response);
+          } else {
+            console.error('关闭旧对话失败！:', response);
+          }
+        }
+        // 更新当前聊天ID
+        this.chatId = newId;
+        // 获取聊天记录和当前对话信息
+        await this.getChatHistory();
+        await this.createOrFetchChat();
+      },
+      immediate: true, // 立即执行
     },
   },
   methods: {

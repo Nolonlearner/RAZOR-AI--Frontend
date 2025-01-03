@@ -109,8 +109,8 @@ export const sendMessage = (payload) =>
   );
 
 export const saveChatHistory = (chatId) =>
-  api.post(`/agent/chat/save/${chatId}`, {
-    headers: { skipAuth: false },
+  api.post(`/agent/chat/save/${chatId.chat_id}`, {
+    headers: { skipAuth: true },
   });
 
 export const closeChat = (chatId) =>
