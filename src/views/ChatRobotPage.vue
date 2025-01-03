@@ -46,6 +46,11 @@
 
 <script>
 import { fetchChatDetailedHistory as apifetchChatDetailedHistory } from '../utils/api';
+// import { deleteChat as apideleteChat } from '../utils/api'; // 删除对话
+import { closeChat as apicloseChat } from '../utils/api'; // 关闭对话
+// import { saveChatHistory as apisaveChatHistory } from '../utils/api'; // 保存对话
+// import { sendMessage as apisendMessage } from '../utils/api'; // 发送消息
+import { createChat as apicreateChat } from '../utils/api'; // 创建对话
 import { mapActions } from 'vuex';
 
 export default {
@@ -59,10 +64,30 @@ export default {
       currentChat: null,
     };
   },
-  created() {
+
+  mounted() {
+    this.chatId = this.$route.params.id;
+    this.getChatHistory();
+  },
+
+  async beforeDestroy() {
+    // 离开页面时关闭对话
+    const id = this.currentChat.id;
+    console.log('关闭对话的id:', id);
+    const response = await apicloseChat({ chat_id: id });
+    if (response.status === 200) {
+      console.log('关闭对话:', response);
+    } else {
+      console.error('关闭对话失败:', response);
+    }
+    // this.saveChatHistory();
+  },
+
+  async created() {
     this.chatId = this.$route.params.id;
     console.log('Chat ID:', this.chatId);
-    this.getChatHistory();
+    await this.getChatHistory(); // 先获取聊天记录和当前对话信息
+    await this.createOrFetchChat(); // 创建或获取对话
   },
   watch: {
     '$route.params.id'(newId, oldId) {
@@ -76,6 +101,7 @@ export default {
     async getChatHistory() {
       try {
         this.currentChat = await this.getChatByID(this.chatId);
+        console.log('currentChat Info:', this.currentChat);
       } catch (error) {
         console.error('获取聊天记录失败:', error);
       }
@@ -90,6 +116,26 @@ export default {
         });
       } catch (error) {
         console.error('获取聊天记录失败：', error);
+      }
+    },
+    async createOrFetchChat() {
+      try {
+        const requestBody = {
+          agent_id: this.currentChat.agent_id,
+          user_id: this.currentChat.user_id,
+          name: this.currentChat.name,
+        };
+        if (this.currentChat.id) {
+          requestBody.chat_id = this.currentChat.id; // 如果是历史会话需要 chat_id
+        }
+        const response = await apicreateChat(requestBody); // 创建会话
+        if (response.status === 200) {
+          console.log('会话创建成功:', response);
+        } else {
+          console.error('会话创建失败:', response);
+        }
+      } catch (error) {
+        console.error('会话创建失败:', error);
       }
     },
     scrollToBottom() {

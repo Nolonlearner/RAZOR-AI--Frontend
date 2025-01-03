@@ -202,7 +202,10 @@ export default {
 
       if (subscribedRobot && subscribedRobot.status) {
         // 已订阅，跳转到查看对话历史页面
-        this.$router.push(`/conversation-history/${this.robot.id}`);
+        this.$router.push({
+          name: 'ConversationHistory',
+          params: { id: this.robot.id },
+        });
       } else {
         // 未订阅，打开订阅弹窗
         this.openSubscriptionDialog();

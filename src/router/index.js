@@ -15,6 +15,7 @@ import RobotDetail from '@/views/RobotDetailPage.vue';
 import Explorer from '@/views/ExplorerPage.vue';
 import CreateBots from '@/views/CreateBotsPage.vue';
 import HelperCenter from '@/views/HelperCenterPage.vue';
+import ConversationHistory from '@/views/ConversationHistory.vue';
 //import { component } from 'vue/types/umd';
 
 Vue.use(VueRouter);
@@ -127,6 +128,14 @@ const routes = [
         component: HelperCenter,
         meta: {
           title: 'RazorAI-帮助中心',
+        },
+      },
+      {
+        path: '/conversationHistory/:id',
+        name: 'ConversationHistory',
+        component: ConversationHistory,
+        meta: {
+          title: 'RazorAI-对话历史',
         },
       },
     ],

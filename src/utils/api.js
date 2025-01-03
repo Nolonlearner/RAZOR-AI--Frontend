@@ -93,3 +93,32 @@ export const createAI = (payload) =>
   api.post('/agent/user/creation', payload, {
     headers: { skipAuth: false },
   });
+
+export const createChat = (payload) =>
+  api.post('/agent/user/chat/creation', payload, {
+    headers: { skipAuth: false },
+  });
+
+export const sendMessage = (chatId, message) =>
+  api.post(
+    `/agent/user/chat/${chatId}`,
+    { question: message },
+    {
+      headers: { skipAuth: false },
+    }
+  );
+
+export const saveChatHistory = (chatId) =>
+  api.post(`/agent/chat/save/${chatId}`, {
+    headers: { skipAuth: false },
+  });
+
+export const closeChat = (chatId) =>
+  api.delete(`/agent/user/chat/${chatId.chat_id}`, {
+    headers: { skipAuth: false },
+  });
+
+export const deleteChat = (chatId) =>
+  api.delete(`/agent/user/chat/delete/${chatId}`, {
+    headers: { skipAuth: false },
+  });

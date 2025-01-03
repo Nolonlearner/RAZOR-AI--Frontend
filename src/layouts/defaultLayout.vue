@@ -128,7 +128,7 @@ export default {
     ...mapState('user', ['isLoggedIn', 'userName', 'userId', 'token']), // 绑定 Vuex 状态，当信息改变时，自动更新
     headername() {
       // 从当前路由的 meta 信息中获取标题
-      console.log('当前路由：', this.$route);
+      // console.log('当前路由：', this.$route);
       return this.$route.meta.title || '默认标题';
     },
   },
