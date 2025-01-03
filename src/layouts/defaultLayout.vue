@@ -37,11 +37,14 @@
           <span>{{ chat.agent_name }}</span>
         </div>
       </div>
-      <div class="menu-item" @click="navigateTo('Explorer')">
+      <!-- <div class="menu-item" @click="navigateTo('Explorer')">
         <el-icon name="goods" class="menu-item-icon"></el-icon>探索机器人
-      </div>
-      <div class="menu-item" @click="navigateTo('DeveloperCenter')">
+      </div> -->
+      <!-- <div class="menu-item" @click="navigateTo('DeveloperCenter')">
         <el-icon name="coordinate" class="menu-item-icon"></el-icon>开发者中心
+      </div> -->
+      <div class="menu-item" @click="navigateTo('CreateBots')">
+        <el-icon name="coordinate" class="menu-item-icon"></el-icon>创造机器人
       </div>
       <div class="menu-item" @click="navigateTo('PersonalHome')">
         <el-icon name="s-custom" class="menu-item-icon"></el-icon>个人主页
