@@ -31,13 +31,17 @@ const actions = {
   async fetchChats({ commit }, payload) {
     try {
       const response = await apifetchAllChats(payload);
-      console.log('response in chat.js:', response);
       commit('SET_CHATS', response.data);
       return { success: true, message: '获取会话列表成功' };
     } catch (error) {
       console.log('Error occurred in chat.js:', error);
       return { success: false, message: error.message };
     }
+  },
+  getChatByID({ commit }, chatid) {
+    const chat = state.chats.find((chat) => chat.id === chatid);
+    commit('SET_CURRENT_CHAT', chat);
+    return chat;
   },
   // async createChat({ commit }, chatData) {
   //   const response = await axios.post('/agent/user/chat/creation', chatData);

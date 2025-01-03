@@ -1,9 +1,8 @@
-<!--src/views/ChatPage.vue-->
 <template>
-  <div class="about-page">
+  <div class="chat-page">
     <title>Robot Center</title>
     <h1 class="title">Robot Chat</h1>
-    <p class="second-title">有什么可以帮忙的?</p>
+    <p class="second-title">可以开始对话了</p>
     <div class="chat-window">
       <div class="chat-log" id="chat-log" ref="chatlog">
         <div
@@ -19,7 +18,7 @@
             alt="avatar"
             class="avatar"
           />
-          <div class="text">{{ msg.content }}</div>
+          <div class="text" ref="test">{{ msg.content }}</div>
         </div>
       </div>
       <div class="input-container">
@@ -38,66 +37,76 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { fetchChatDetailedHistory as apifetchChatDetailedHistory } from '../utils/api';
+import { mapActions } from 'vuex'; // 引入 mapGetters, mapActions
 export default {
   name: 'ChatRobot',
   data() {
     return {
       newMessage: '',
-      selectedOption: '', // 添加选中的选项
-      messages: [
-        { content: '我叫宋金宇', role: 'user' },
-        { content: '2+2等于几', role: 'user' },
-        { content: '2 加 2 等于 4。', role: 'assistant' },
-        { content: '你刚刚说的什么', role: 'user' },
-        {
-          content:
-            '我说的“2 加 2 等于 4”。这是一个简单的数学运算。如果你有其他问题或者需要帮助，请随时告诉我。',
-          role: 'assistant',
-        },
-      ],
+      messages: [],
       userAvatar: require('@/assets/images/Avatar/User.png'),
       botAvatar: require('@/assets/images/Avatar/Assistant.png'),
+      currentChat: null,
     };
   },
-  methods: {
-    selectOption(option) {
-      this.selectedOption = option; // 保存选中的选项
-      this.newMessage = option; // 选项填入输入框
+  created() {
+    this.chatId = this.$route.params.id;
+    console.log('Chat ID:', this.chatId);
+    this.getChatHistory();
+  },
+  watch: {
+    '$route.params.id'(newId, oldId) {
+      // 当路由的 id 变化时，更新 chatId 并获取聊天记录
+      this.chatId = newId;
+      console.log('Updated Chat ID:', oldId, 'to', this.chatId);
+      this.getChatHistory();
     },
-    scrollToBottom() {
-      const chatLog = this.$refs.chatlog;
-      if (chatLog) {
-        console.log('chatLog:', chatLog); // 确保这里能够打印出 DOM 元素
-        chatLog.scrollTop = chatLog.scrollHeight; // 滚动到聊天日志的底部
-      } else {
-        console.error('chatLog is not defined');
+  },
+  methods: {
+    ...mapActions('chat', ['getChatByID']), // 映射 actions, 用于设置当前聊天
+    async getChatHistory() {
+      try {
+        this.currentChat = await this.getChatByID(this.chatId);
+        // console.log('获取当前聊天记录', this.currentChat);
+        console.log('当前聊天的agent_id', this.currentChat.agent_id);
+        console.log('当前聊天的user_id', this.currentChat.user_id);
+        console.log('当前聊天的chat_id', this.currentChat.id);
+        console.log('当前聊天的agent_name', this.currentChat.agent_name);
+        console.log('当前聊天的name', this.currentChat.name);
+      } catch (error) {
+        console.error('获取聊天记录失败:', error);
+      }
+      try {
+        const response = await apifetchChatDetailedHistory({
+          chat_id: this.chatId,
+        });
+        console.log('获取聊天记录成功：', response);
+        this.messages = response.data;
+        this.$nextTick(() => {
+          this.scrollToBottom();
+        });
+      } catch (error) {
+        console.error('获取聊天记录失败：', error);
       }
     },
-    async sendMessage() {
+    scrollToBottom() {
+      const lastMessage = this.$refs.chatlog.lastElementChild; // 获取最后一条消息
+      if (lastMessage) {
+        lastMessage.scrollIntoView({ behavior: 'smooth' }); // 滚动到最后一条消息
+      }
+    },
+    sendMessage() {
       if (this.newMessage.trim() !== '') {
         this.messages.push({ content: this.newMessage, role: 'user' });
-        const userMessage = this.newMessage;
-        const optionMessage = this.selectedOption; // 获取选中的选项
+        this.messages.push({
+          content: '这是一个机器人回复',
+          role: 'assistant',
+        });
         this.newMessage = '';
-        this.selectedOption = ''; // 发送后清空选项
-        try {
-          const response = await axios.post('YOUR_BACKEND_API_URL', {
-            message: userMessage,
-            selectedOption: optionMessage, // 发送选项到后端
-          });
-          this.messages.push({
-            content: response.data.reply,
-            role: 'assistant',
-          });
-        } catch (error) {
-          console.error('Error fetching assistant reply:', error);
-          this.messages.push({
-            content: '无法接收后端传来的数据。',
-            role: 'assistant',
-          });
+        this.$nextTick(() => {
           this.scrollToBottom();
-        }
+        });
       }
     },
     adjustInputWidth() {
@@ -118,82 +127,78 @@ export default {
 <style lang="scss" scoped>
 @use '@/assets/styles/mixins.scss' as *;
 @use '@/assets/styles/variables.scss' as *;
-.about-page {
-  max-width: 100%; /* 填满整个宽度 */
-  height: 100%; /* 填满整个高度 */
-  margin: 0; /* 无边距 */
+.chat-page {
+  max-width: 100%;
+  height: auto; // 适应内容高度,这样子可以自行下滑
+  margin: 0;
   padding: 20px;
   background-color: $background-color;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
-  color: $text-color; /* 白色文字 */
+  color: $text-color;
   display: flex;
-  flex-direction: column; /* 纵向排列 */
-  align-items: center; /* 内容居中 */
-  overflow-y: auto; /* 允许页面滚动 */
+  flex-direction: column;
+  align-items: center;
 }
+
 .title {
   font-size: 3em;
   text-align: center;
   margin-bottom: 10px;
 }
+
 .second-title {
   font-size: 2em;
   text-align: center;
   margin-bottom: 5px;
 }
+
 .chat-window {
-  position: relative; /* 使菜单相对于 chat-window 定位 */
-  flex: 1; /* 占用剩余空间 */
+  position: relative;
+  flex: 1;
   margin-top: 20px;
   padding: 10px;
   width: 100%;
-  max-width: 1000px; /*最大高度8*/
+  max-width: 1000px;
   border-radius: 10px;
-  overflow-y: auto; /* 允许滚动 */
   display: flex;
-  flex-direction: column; /* 纵向排列 */
-  background-color: #2c2c2c; /* 设置背景颜色 */
+  flex-direction: column;
+  background-color: #2c2c2c;
 }
 
 .chat-log {
   display: flex;
-  flex-direction: column; /* 纵向排列消息 */
-  overflow-y: auto; /* 允许滚动 */
+  flex-direction: column;
   padding: 10px;
   flex: 1;
-  padding-bottom: 70px; /* 为发送框留出空间 */
-  background-color: transparent; /* 使背景透明 */
+  background-color: transparent;
+}
+
+.user-message,
+.bot-message {
+  color: $text-color;
+  margin: 5px 0;
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 50%;
+  word-wrap: break-word;
 }
 
 .user-message {
-  color: $text-color;
-  background-color: darken($accent-color, 10%); /* 深色 */
-  margin: 5px 0;
-  padding: 8px 12px;
-  border-radius: 12px;
-  max-width: 50%;
-  word-wrap: break-word;
-  align-self: flex-end; /* 用户消息右对齐 */
+  background-color: darken($accent-color, 10%);
+  align-self: flex-end;
 }
 
 .bot-message {
-  color: $text-color;
-  background-color: $accent-color; /* 主色 */
-  margin: 5px 0;
-  padding: 8px 12px;
-  border-radius: 12px;
-  max-width: 50%;
-  word-wrap: break-word;
-  align-self: flex-start; /* 机器人消息左对齐 */
+  background-color: $accent-color;
+  align-self: flex-start;
 }
 
 .input-container {
-  display: flex; /* 使用 flexbox 布局 */
-  justify-content: center; /* 居中对齐 */
-  align-items: center; /* 垂直居中 */
-  background-color: #2c2c2c; /* 背景颜色与聊天窗口一致 */
-  padding: 10px; /* 内边距 */
-  z-index: 10; /* 确保在其他元素之上 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2c2c2c;
+  padding: 10px;
+  z-index: 10;
 }
 
 input[type='text'] {
@@ -202,22 +207,22 @@ input[type='text'] {
   border-radius: 4px;
   margin-right: 10px;
   flex: 1;
-  min-width: 150px; /* 最小宽度 */
-  background-color: #444; /* 背景颜色 */
-  color: white; /* 字体颜色 */
-  transition: width 0.2s; /* 动画过渡效果 */
+  min-width: 150px;
+  background-color: #444;
+  color: white;
+  transition: width 0.2s;
 }
 
 button {
   padding: 10px;
-  border: none; /* 去掉边框 */
-  background-color: #007bff; /* 按钮背景颜色 */
-  color: white; /* 按钮字体颜色 */
+  border: none;
+  background-color: #007bff;
+  color: white;
   border-radius: 4px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #0056b3; /* 悬停效果 */
+  background-color: #0056b3;
 }
 </style>

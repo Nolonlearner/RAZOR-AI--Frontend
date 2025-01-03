@@ -71,6 +71,14 @@ export const fetchUserSubscriptions = async (userId) => {
   return response;
 };
 
+export const fetchChatDetailedHistory = async (chat_id) => {
+  console.log('chat_id in api.js:', chat_id);
+  const response = await api.get(`/agent/user/chat/${chat_id.chat_id}`, {
+    headers: { skipAuth: false },
+  });
+  return response;
+};
+
 export const fetchAllChats = (user_id) =>
   api.post('/agent/user/chat/all', user_id, {
     headers: { skipAuth: false },
