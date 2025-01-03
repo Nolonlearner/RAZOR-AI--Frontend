@@ -212,6 +212,10 @@ export default {
           }
         } catch (error) {
           console.error('发送消息失败:', error);
+          this.messages.push({
+            content: '对不起，当前机器人宕机啦。',
+            role: 'assistant',
+          });
         }
         this.newMessage = '';
         this.$nextTick(() => {

@@ -49,23 +49,23 @@
       <div class="menu-item" @click="navigateTo('PersonalHome')">
         <el-icon name="s-custom" class="menu-item-icon"></el-icon>个人主页
       </div>
-      <div class="menu-item" @click="navigateTo('Test')">
+      <!-- <div class="menu-item" @click="navigateTo('Test')">
         <el-icon name="chat-line-round" class="menu-item-icon"></el-icon
         >睿择社区
-      </div>
-      <div class="menu-item" @click="navigateTo('Setting')">
+      </div> -->
+      <!-- <div class="menu-item" @click="navigateTo('Setting')">
         <el-icon name="setting" class="menu-item-icon"></el-icon>系统设置
-      </div>
-      <div class="menu-item" @click="navigateTo('About')">
+      </div> -->
+      <!-- <div class="menu-item" @click="navigateTo('About')">
         <el-icon name="info" class="menu-item-icon"></el-icon>关于我们
-      </div>
+      </div> -->
       <!-- <div class="divider"></div> -->
       <div class="menu-item" @click="navigateTo('Test')">
         <el-icon name="loading" class="menu-item-icon"></el-icon>测试页面
       </div>
-      <div class="menu-item" @click="navigateTo('HelperCenter')">
+      <!-- <div class="menu-item" @click="navigateTo('HelperCenter')">
         <el-icon name="question" class="menu-item-icon"></el-icon>帮助中心
-      </div>
+      </div> -->
     </aside>
 
     <!-- 右侧内容区域 -->
