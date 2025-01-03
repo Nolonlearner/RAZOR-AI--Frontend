@@ -49,7 +49,7 @@ import { fetchChatDetailedHistory as apifetchChatDetailedHistory } from '../util
 // import { deleteChat as apideleteChat } from '../utils/api'; // 删除对话
 import { closeChat as apicloseChat } from '../utils/api'; // 关闭对话
 // import { saveChatHistory as apisaveChatHistory } from '../utils/api'; // 保存对话
-// import { sendMessage as apisendMessage } from '../utils/api'; // 发送消息
+import { sendMessage as apisendMessage } from '../utils/api'; // 发送消息
 import { createChat as apicreateChat } from '../utils/api'; // 创建对话
 import { mapActions } from 'vuex';
 
@@ -68,6 +68,7 @@ export default {
   mounted() {
     this.chatId = this.$route.params.id;
     this.getChatHistory();
+    console.log('mounted每次都会执行哦');
   },
 
   async beforeDestroy() {
@@ -87,13 +88,16 @@ export default {
     this.chatId = this.$route.params.id;
     console.log('Chat ID:', this.chatId);
     await this.getChatHistory(); // 先获取聊天记录和当前对话信息
+    console.log('created每次都会执行哦');
     await this.createOrFetchChat(); // 创建或获取对话
   },
   watch: {
     '$route.params.id'(newId, oldId) {
       this.chatId = newId;
       console.log('Updated Chat ID:', oldId, 'to', this.chatId);
+      console.log('watch每次都会执行哦');
       this.getChatHistory();
+      this.createOrFetchChat();
     },
   },
   methods: {
@@ -128,6 +132,7 @@ export default {
         if (this.currentChat.id) {
           requestBody.chat_id = this.currentChat.id; // 如果是历史会话需要 chat_id
         }
+        console.log('创建会话的请求体:', requestBody);
         const response = await apicreateChat(requestBody); // 创建会话
         if (response.status === 200) {
           console.log('会话创建成功:', response);
@@ -144,13 +149,32 @@ export default {
         lastMessage.scrollIntoView({ behavior: 'smooth' });
       }
     },
-    sendMessage() {
+    async sendMessage() {
       if (this.newMessage.trim() !== '') {
         this.messages.push({ content: this.newMessage, role: 'user' });
-        this.messages.push({
-          content: '这是一个机器人回复',
-          role: 'assistant',
-        });
+        const payload = {
+          chat_id: this.currentChat.id,
+          content: this.newMessage,
+        };
+        console.log('发送消息的请求体:', payload);
+        try {
+          const response = await apisendMessage(payload);
+          if (response.status === 200) {
+            console.log('发送消息成功!!!:', response);
+            this.messages.push({
+              content: response.data.content,
+              role: 'assistant',
+            });
+          } else {
+            console.error('发送消息失败!!!:', response);
+            this.messages.push({
+              content: '对不起，我宕机啦。',
+              role: 'assistant',
+            });
+          }
+        } catch (error) {
+          console.error('发送消息失败:', error);
+        }
         this.newMessage = '';
         this.$nextTick(() => {
           this.scrollToBottom();

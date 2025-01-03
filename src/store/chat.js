@@ -45,7 +45,6 @@ const actions = {
   getChatByID({ commit }, chatid) {
     // const chat = state.chats.find((chat) => chat.id === chatid);
     for (const chat of state.chats) {
-      console.log('单次chat:', chat);
       if (Number(chat.id) === Number(chatid)) {
         commit('SET_CURRENT_CHAT', chat);
         return chat;

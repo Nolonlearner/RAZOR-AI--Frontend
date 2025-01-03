@@ -99,10 +99,10 @@ export const createChat = (payload) =>
     headers: { skipAuth: false },
   });
 
-export const sendMessage = (chatId, message) =>
+export const sendMessage = (payload) =>
   api.post(
-    `/agent/user/chat/${chatId}`,
-    { question: message },
+    `/agent/user/chat/${payload.chat_id}`,
+    { question: payload.content },
     {
       headers: { skipAuth: false },
     }
