@@ -2,7 +2,15 @@
   <div class="chat-page">
     <title>Robot Center</title>
     <h1 class="title">Robot Chat</h1>
-    <p class="second-title">可以开始对话了</p>
+    <div class="chat-info">
+      <div class="chat-info-header">
+        <strong>当前对话信息</strong>
+      </div>
+      <div class="chat-info-content">
+        <div><strong>机器人名称:</strong> {{ currentChat.agent_name }}</div>
+        <div><strong>会话名称:</strong> {{ currentChat.name }}</div>
+      </div>
+    </div>
     <div class="chat-window">
       <div class="chat-log" id="chat-log" ref="chatlog">
         <div
@@ -18,7 +26,7 @@
             alt="avatar"
             class="avatar"
           />
-          <div class="text" ref="test">{{ msg.content }}</div>
+          <div class="text">{{ msg.content }}</div>
         </div>
       </div>
       <div class="input-container">
@@ -38,7 +46,8 @@
 
 <script>
 import { fetchChatDetailedHistory as apifetchChatDetailedHistory } from '../utils/api';
-import { mapActions } from 'vuex'; // 引入 mapGetters, mapActions
+import { mapActions } from 'vuex';
+
 export default {
   name: 'ChatRobot',
   data() {
@@ -57,23 +66,16 @@ export default {
   },
   watch: {
     '$route.params.id'(newId, oldId) {
-      // 当路由的 id 变化时，更新 chatId 并获取聊天记录
       this.chatId = newId;
       console.log('Updated Chat ID:', oldId, 'to', this.chatId);
       this.getChatHistory();
     },
   },
   methods: {
-    ...mapActions('chat', ['getChatByID']), // 映射 actions, 用于设置当前聊天
+    ...mapActions('chat', ['getChatByID']),
     async getChatHistory() {
       try {
         this.currentChat = await this.getChatByID(this.chatId);
-        // console.log('获取当前聊天记录', this.currentChat);
-        console.log('当前聊天的agent_id', this.currentChat.agent_id);
-        console.log('当前聊天的user_id', this.currentChat.user_id);
-        console.log('当前聊天的chat_id', this.currentChat.id);
-        console.log('当前聊天的agent_name', this.currentChat.agent_name);
-        console.log('当前聊天的name', this.currentChat.name);
       } catch (error) {
         console.error('获取聊天记录失败:', error);
       }
@@ -91,9 +93,9 @@ export default {
       }
     },
     scrollToBottom() {
-      const lastMessage = this.$refs.chatlog.lastElementChild; // 获取最后一条消息
+      const lastMessage = this.$refs.chatlog.lastElementChild;
       if (lastMessage) {
-        lastMessage.scrollIntoView({ behavior: 'smooth' }); // 滚动到最后一条消息
+        lastMessage.scrollIntoView({ behavior: 'smooth' });
       }
     },
     sendMessage() {
@@ -127,9 +129,10 @@ export default {
 <style lang="scss" scoped>
 @use '@/assets/styles/mixins.scss' as *;
 @use '@/assets/styles/variables.scss' as *;
+
 .chat-page {
   max-width: 100%;
-  height: auto; // 适应内容高度,这样子可以自行下滑
+  height: auto;
   margin: 0;
   padding: 20px;
   background-color: $background-color;
@@ -145,10 +148,26 @@ export default {
   margin-bottom: 10px;
 }
 
-.second-title {
-  font-size: 2em;
+.chat-info {
+  background-color: rgba(255, 255, 255, 0.907);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  width: 50%;
+  max-width: 900px;
+}
+
+.chat-info-header {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: $accent-color;
   text-align: center;
-  margin-bottom: 5px;
+}
+
+.chat-info-content {
+  font-size: 1.2em;
+  color: $text-color;
+  text-align: center;
 }
 
 .chat-window {
