@@ -27,12 +27,16 @@
           v-model="userInput"
           type="textarea"
           :autosize="{ minRows: 2, maxRows: 4 }"
-          placeholder="输入您的问题..."
+          placeholder="选择机器人并输入您的问题..."
           class="chat-input"
           clearable
         ></el-input>
-        <el-button class="send-button" type="info" icon="el-icon-upload2"
-          >发送</el-button
+        <el-button
+          class="send-button"
+          type="info"
+          icon="el-icon-upload2"
+          @click="sendMessageToRobot"
+          >发送并创建对话</el-button
         >
       </div>
     </div>
@@ -169,6 +173,11 @@
 <script>
 import user from '@/store/user';
 import { mapActions, mapState } from 'vuex';
+import { saveChatHistory as apisaveChatHistory } from '../utils/api'; // 保存对话
+import { sendMessage as apisendMessage } from '../utils/api'; // 发送消息
+import { createChat as apicreateChat } from '../utils/api'; // 创建对话
+import { closeChat as apicloseChat } from '../utils/api'; // 关闭对话
+import { deleteChat as apideleteChat } from '../utils/api'; // 删除对话
 export default {
   data() {
     return {
@@ -204,27 +213,6 @@ export default {
       'fetchAgentDetail',
       'fetchUserSubscriptions',
     ]),
-    // async getAllAgentsData() {
-    //   this.loading = true; // 开始加载
-    //   // 如果当前Vuex textAgents、imageAgents、videoAgents数据为空，则才进行获取
-    //   if (
-    //     this.$store.state.agent.textRobots === null &&
-    //     this.$store.state.agent.imageRobots === null &&
-    //     this.$store.state.agent.videoRobots === null
-    //   ) {
-    //     try {
-    //       const response = await this.fetchAllAgentsData();
-    //       console.log('response from getAllAgentsData:', response);
-    //     } catch (error) {
-    //       console.error('error in fetchAllAgentsData:', error);
-    //     } finally {
-    //       this.loading = false; // 结束加载
-    //     }
-    //   } else {
-    //     console.log('已有机器人数据，无需再次获取:', this.$store.state.agent);
-    //     this.loading = false; // 结束加载
-    //   }
-    // },
     async getAllAgentsData() {
       this.loading = true; // 开始加载
       // 如果当前Vuex textAgents、imageAgents、videoAgents数据为空，则才进行获取
@@ -255,6 +243,12 @@ export default {
           'subscribed agents:',
           this.$store.state.agent.haveSubscribed
         );
+        if (this.$store.state.agent.haveSubscribed.length === 0) {
+          this.$message.info('您还没有订阅任何机器人');
+        } else {
+          this.$message.success('获取订阅机器人列表成功');
+          this.selectedRobot = this.haveSubscribed[0].agent_name; // 默认选择第一个机器人
+        }
         console.log('response from getUserSubscriptions:', response);
       } catch (error) {
         console.error('error in getUserSubscriptions:', error);
@@ -266,16 +260,182 @@ export default {
       }
       return text.length > length ? text.slice(0, length) + '...' : text;
     },
-    sendMessage() {
+    async sendMessageToRobot() {
       if (this.userInput.trim() && this.selectedRobot) {
+        // 名字为时间戳YMD+时间格式(精确到时分)
+        const defaultName =
+          new Date().toLocaleDateString().replace(/\//g, '') +
+          new Date().toLocaleTimeString().slice(0, 5);
+
+        // 第一步，创造对话
+        // 第二步，发送消息
+        // 第三步, 保存用户发送消息和机器人回复消息
+        // 第四步，获取对话详细信息
+        // 第五步，更新对话列表
+        // 第六步，转到对话详细页面
+
+        // 第一步，创造对话, 获得chat_id
+        const chat_id = await this.createChatinHome(defaultName);
+        if (!chat_id) {
+          this.$message.error('无法创建对话，请稍后重试');
+          return;
+        }
+        // 第二步，发送消息
+        const answer = await this.sendMessageinHome(chat_id, this.userInput);
+        if (!answer) {
+          this.$message.error('无法发送消息，请稍后重试');
+          await this.closeChatinHome(chat_id);
+          await this.deleteChatinHome(chat_id);
+          return;
+        }
         this.$message.success(
-          `已向机器人 ${this.selectedRobot} 发送消息: ${this.userInput}`
+          `已向机器人 ${this.selectedRobot} 发送消息: ${this.userInput} 名称: ${defaultName} chat_id: ${chat_id}`
         );
+        console.log('answer.content:', answer.content);
+        console.log('answer.role:', answer.role);
         this.userInput = '';
+
+        // 第三步，保存用户发送消息和机器人恢复信息到数据库
+        const responseFromSave = await this.saveChatHistoryinHome(chat_id);
+        if (responseFromSave.status === 200) {
+          console.log('保存对话成功:', responseFromSave);
+        } else {
+          this.$message.error('保存对话失败:', responseFromSave.message);
+          await this.closeChatinHome(chat_id);
+          await this.deleteChatinHome(chat_id);
+          return;
+        }
+        console.log('responseFromSave:', responseFromSave);
+
+        // 第四步，关闭会话
+        const responseFromClose = await this.closeChatinHome(chat_id);
+        if (responseFromClose.status === 200) {
+          this.$message.success('关闭对话成功:', responseFromClose.message);
+        } else {
+          this.$message.error('关闭对话失败:', responseFromClose.message);
+          await this.deleteChatinHome(chat_id);
+          return;
+        }
+
+        // 第五步，刷新并跳转到对话详情页面
+        await this.handleReloadAndNavigate(chat_id);
+        // await location.reload(); // 刷新页面
+        // await this.$router.replace({
+        //   name: 'ChatRobot',
+        //   params: { id: chat_id },
+        // });
       } else {
         this.$message.warning('请选择机器人并输入内容');
       }
     },
+
+    async handleReloadAndNavigate(chat_id) {
+      this.homepageloading = true;
+      try {
+        // 跳转到目标页面，使用 replace 以替换当前历史记录
+        await this.$router.replace({
+          name: 'ChatRobot',
+          params: { id: chat_id },
+        });
+      } catch (error) {
+        console.error('导航失败:', error);
+      } finally {
+        location.reload(); // 刷新页面
+      }
+    },
+
+    async deleteChatinHome(id) {
+      try {
+        const response = await apideleteChat({ chat_id: id });
+        if (response.status === 200) {
+          console.log('删除对话成功:', response);
+        } else {
+          console.error('删除对话失败:', response);
+        }
+        return response;
+      } catch (error) {
+        console.error('error in deleteChatinHome:', error);
+      }
+    },
+
+    async createChatinHome(defaultName) {
+      try {
+        // 根据this.selectedRobot获取agent_id
+        const robot = this.haveSubscribed.find(
+          (robot) => robot.agent_name === this.selectedRobot
+        );
+        if (!robot || !robot.agent_id) {
+          this.$message.error('无法获取机器人信息，请稍后重试');
+          return;
+        } else {
+          console.log('robot:', robot);
+          const payload = {
+            agent_id: robot.agent_id,
+            user_id: user.state.userId,
+            name: defaultName,
+          };
+          console.log('xxxxxpayload:', payload);
+          const responseFromCreate = await apicreateChat(payload);
+          if (responseFromCreate.status === 200) {
+            console.log('创建对话成功:', responseFromCreate);
+            console.log(
+              'response.data.chat_id:',
+              responseFromCreate.data.chat_id
+            );
+            return responseFromCreate.data.chat_id;
+          } else {
+            console.error('创建对话失败:', responseFromCreate);
+          }
+        }
+      } catch (error) {
+        console.error('error in sendMessageToRobot:', error);
+      }
+    },
+    async sendMessageinHome(chat_id, content) {
+      try {
+        const payload = {
+          chat_id: chat_id,
+          content: content,
+        };
+        console.log('xxxxxpayload:', payload);
+        const response = await apisendMessage(payload);
+        if (response.status === 200) {
+          console.log('发送消息成功:', response);
+          return response.data;
+        } else {
+          console.error('发送消息失败:', response);
+        }
+      } catch (error) {
+        console.error('error in sendMessageinHome:', error);
+      }
+    },
+    async saveChatHistoryinHome(id) {
+      try {
+        const response = await apisaveChatHistory({ chat_id: id });
+        if (response.status === 200) {
+          console.log('保存对话成功:', response);
+        } else {
+          console.error('保存对话失败:', response);
+        }
+        return response;
+      } catch (error) {
+        console.error('error in saveChatHistoryinHome:', error);
+      }
+    },
+    async closeChatinHome(id) {
+      try {
+        const response = await apicloseChat({ chat_id: id });
+        if (response.status === 200) {
+          console.log('关闭对话成功:', response);
+        } else {
+          console.error('关闭对话失败:', response);
+        }
+        return response;
+      } catch (error) {
+        console.error('error in closeChatinHome:', error);
+      }
+    },
+
     filterRobots() {
       const keyword = this.searchKeyword.toLowerCase();
       this.filteredRobots = this.getRobotsByType(this.dialogType).filter(
@@ -478,7 +638,7 @@ export default {
     }
 
     .send-button {
-      width: 15%;
+      width: 25%;
       height: 100%;
     }
   }

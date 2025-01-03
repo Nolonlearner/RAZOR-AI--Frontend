@@ -46,7 +46,6 @@
 
 <script>
 import { fetchChatDetailedHistory as apifetchChatDetailedHistory } from '../utils/api';
-// import { deleteChat as apideleteChat } from '../utils/api'; // 删除对话
 import { closeChat as apicloseChat } from '../utils/api'; // 关闭对话
 import { saveChatHistory as apisaveChatHistory } from '../utils/api'; // 保存对话
 import { sendMessage as apisendMessage } from '../utils/api'; // 发送消息

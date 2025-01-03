@@ -119,6 +119,6 @@ export const closeChat = (chatId) =>
   });
 
 export const deleteChat = (chatId) =>
-  api.delete(`/agent/user/chat/delete/${chatId}`, {
+  api.delete(`/agent/user/chat/delete/${chatId.chat_id}`, {
     headers: { skipAuth: false },
   });
