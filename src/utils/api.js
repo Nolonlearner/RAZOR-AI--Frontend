@@ -105,6 +105,7 @@ export const sendMessage = (payload) =>
     { question: payload.content },
     {
       headers: { skipAuth: false },
+      timeout: 30000, // 设置 30 秒超时时间
     }
   );
 

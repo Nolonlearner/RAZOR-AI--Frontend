@@ -282,7 +282,7 @@ export default {
         }
         // 第二步，发送消息
         const answer = await this.sendMessageinHome(chat_id, this.userInput);
-        if (!answer) {
+        if (!answer || !answer.content) {
           this.$message.error('无法发送消息，请稍后重试');
           await this.closeChatinHome(chat_id);
           await this.deleteChatinHome(chat_id);
@@ -330,7 +330,6 @@ export default {
     },
 
     async handleReloadAndNavigate(chat_id) {
-      this.homepageloading = true;
       try {
         // 跳转到目标页面，使用 replace 以替换当前历史记录
         await this.$router.replace({
@@ -340,6 +339,8 @@ export default {
       } catch (error) {
         console.error('导航失败:', error);
       } finally {
+        // 刷新页面
+        this.$message.success('刷新页面');
         location.reload(); // 刷新页面
       }
     },
@@ -392,22 +393,36 @@ export default {
       }
     },
     async sendMessageinHome(chat_id, content) {
-      try {
-        const payload = {
-          chat_id: chat_id,
-          content: content,
-        };
-        console.log('xxxxxpayload:', payload);
-        const response = await apisendMessage(payload);
-        if (response.status === 200) {
-          console.log('发送消息成功:', response);
-          return response.data;
-        } else {
-          console.error('发送消息失败:', response);
-        }
-      } catch (error) {
-        console.error('error in sendMessageinHome:', error);
+      // try {
+      //   const payload = {
+      //     chat_id: chat_id,
+      //     content: content,
+      //   };
+      //   console.log('xxxxxpayload:', payload);
+      //   const response = await apisendMessage(payload);
+      //   if (response.status === 200) {
+      //     console.log('发送消息成功:', response);
+      //     return response.data;
+      //   } else {
+      //     console.error('发送消息失败:', response);
+      //   }
+      //   console.log('test-response:', response);
+      // } catch (error) {
+      //   console.error('出错在sendMessageinHome:', error);
+      // }
+      const payload = {
+        chat_id: chat_id,
+        content: content,
+      };
+      console.log('xxxxxpayload:', payload);
+      const response = await apisendMessage(payload);
+      if (response.status === 200) {
+        console.log('发送消息成功:', response);
+        return response.data;
+      } else {
+        console.error('发送消息失败:', response);
       }
+      console.log('test-response:', response);
     },
     async saveChatHistoryinHome(id) {
       try {
